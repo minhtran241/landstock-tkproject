@@ -7,16 +7,6 @@ const AutoLoad = require('@fastify/autoload');
 module.exports.options = {};
 
 module.exports = async function (fastify, opts) {
-    // This loads cors plugin
-    fastify.register(require('@fastify/cors'), {
-        origin: [
-            'http://localhost:8080',
-            'http://127.0.0.1:8080',
-            'http://localhost:3000',
-        ],
-        methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    });
-
     // This loads healthcheck plugin for the server
     fastify.register(require('fastify-healthcheck'));
 
