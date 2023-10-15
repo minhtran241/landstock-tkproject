@@ -28,7 +28,8 @@ const getCityById = async (request, reply) => {
         });
         const data = await result.stream();
         const city = await data.read();
-        console.log(result.json());
+        const x = await result.json();
+        console.log(x);
         if (city === null) {
             // Handle the case where no data was found for the given ID
             reply.status(404).send({ error: 'City not found' });
