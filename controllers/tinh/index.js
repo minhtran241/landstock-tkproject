@@ -23,7 +23,7 @@ const getCityById = async (request, reply) => {
     try {
         const result = await client.query({
             query,
-            query_params: { id },
+            query_params: { id: id },
             format: 'JSONEachRow',
         });
         const data = await result.stream();
