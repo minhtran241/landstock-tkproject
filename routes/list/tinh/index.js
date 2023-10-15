@@ -30,7 +30,10 @@ const getCitiesOpts = {
 const getCityByIdOpts = {
     schema: {
         response: {
-            200: City,
+            200: {
+                type: 'array',
+                cities: City,
+            },
         },
     },
     handler: getCityById,
