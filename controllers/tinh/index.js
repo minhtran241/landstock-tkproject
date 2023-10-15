@@ -41,19 +41,14 @@ const getCityById = async (request, reply) => {
 };
 
 const postCity = async (request, reply) => {
-    let { iID_MaTinh, sTenTinh } = request.body;
-    sTenTinh = `'${sTenTinh}'`;
-    const query = `INSERT INTO tinh (iID_MaTinh, sTenTinh) VALUES (${Number(
-        iID_MaTinh
-    )},${sTenTinh})`;
-
     try {
-        const resultSet = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
-        const city = await resultSet.json();
-        reply.code(201).send(city);
+        const { iID_MaTinh, sTenTinh } = request.body;
+
+        // Insert data into ClickHouse using parameterized query
+        const query = 'INSERT INTO tinh (iID_MaTinh, sTenTinh) VALUES (?, ?)';
+        await client.query(query, [Number(iID_MaTinh), sTenTinh]);
+
+        reply.code(201).send({ message: 'City inserted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.status(500).send({ error: 'Query failed' });
