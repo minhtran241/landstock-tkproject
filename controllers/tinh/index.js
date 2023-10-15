@@ -25,8 +25,8 @@ const getCityById = async (request, reply) => {
             query,
             query_params: { id },
         });
-        console.log(result);
-        const city = result.json();
+        const data = await result.stream();
+        const city = await data.read();
         console.log(city);
 
         if (!city) {
