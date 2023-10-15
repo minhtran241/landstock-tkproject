@@ -50,8 +50,9 @@ const postCityOpts = {
         },
         response: {
             201: {
-                type: 'array',
-                cities: City,
+                properties: {
+                    message: { type: 'string' },
+                },
             },
         },
     },
@@ -62,9 +63,8 @@ const deleteCityOpts = {
     schema: {
         response: {
             200: {
-                type: 'object',
                 properties: {
-                    sTenTinh: { type: 'string' },
+                    message: { type: 'string' },
                 },
             },
         },
