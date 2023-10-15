@@ -18,24 +18,25 @@ const getCities = async (request, reply) => {
 
 const getCityById = async (request, reply) => {
     const { id } = request.params;
-    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = {id: Int64}';
+    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = :id';
 
     try {
         const result = await client.query({
             query,
-            query_params: { id: id },
+            params: { id: id },
             format: 'JSONEachRow',
         });
         const data = await result.stream();
         const city = await data.read();
-        console.log(city);
 
-        if (!city) {
+        if (city === null) {
             // Handle the case where no data was found for the given ID
-            return null;
-        } else {
-            return city;
+            reply.status(404).send({ error: 'City not found' });
+            return;
         }
+
+        console.log(city);
+        reply.send(city);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         throw error;
