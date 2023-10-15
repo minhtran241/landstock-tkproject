@@ -47,12 +47,15 @@ const postCity = async (request, reply) => {
         // Insert data into ClickHouse using parameterized query
         const query =
             'INSERT INTO tinh (iID_MaTinh, sTenTinh) VALUES ({iID_MaTinh: Int64}, {sTenTinh: String})';
-        await client.query({
-            query,
-            query_params: {
-                iID_MaTinh: Number(iID_MaTinh),
-                sTenTinh: String(sTenTinh),
-            },
+        await client.insert({
+            table: 'tinh',
+            values: [
+                {
+                    iID_MaTinh: Number(iID_MaTinh),
+                    sTenTinh: String(sTenTinh),
+                },
+            ],
+            format: 'JSONEachRow',
         });
 
         reply.code(201).send({ message: 'City inserted successfully' });
