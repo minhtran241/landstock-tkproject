@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clickhouse/client": "^0.2.3",
     "@fastify/autoload": "^5.0.0",
     "@fastify/cors": "^8.4.0",
     "@fastify/env": "^4.2.0",
