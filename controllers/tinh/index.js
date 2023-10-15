@@ -21,7 +21,7 @@ const getCityById = async (request, reply) => {
     const query = 'SELECT * FROM tinh WHERE iID_MaTinh = ?';
 
     try {
-        const resultSet = await clickhouse.query({
+        const resultSet = await client.query({
             query,
             params: { id },
             format: 'JSONEachRow',
