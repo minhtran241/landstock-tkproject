@@ -48,7 +48,7 @@ const postCity = async (request, reply) => {
         const resultSet = await client.query({
             query,
             query_params: {
-                sTenTinh,
+                sTenTinh: String(sTenTinh),
             },
             format: 'JSONEachRow',
         });
