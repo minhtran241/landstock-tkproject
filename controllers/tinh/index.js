@@ -24,7 +24,7 @@ const getCityById = async (request, reply) => {
         const result = await client.query({
             query,
             params: { id },
-            format: 'JSONEachRow',
+            // format: 'JSONEachRow',
         });
         console.log(result);
         const city = result.json();
