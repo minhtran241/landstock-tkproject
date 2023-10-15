@@ -9,7 +9,7 @@ const client = clickhouse.createClient({
 });
 
 const getCities = async (request, reply) => {
-    console.log(fastify.config.CLICKHOUSE_HOST);
+    console.log(client);
     const resultSet = await client.query({
         query: 'SELECT number FROM system.numbers LIMIT 10',
         format: 'JSONEachRow',
