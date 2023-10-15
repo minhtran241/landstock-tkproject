@@ -18,12 +18,12 @@ const getCities = async (request, reply) => {
 
 const getCityById = async (request, reply) => {
     const { id } = request.params;
-    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = :id';
+    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = ?';
 
     try {
         const result = await client.query({
             query,
-            params: { id: id },
+            query_params: id,
             format: 'JSONEachRow',
         });
         const data = await result.stream();
