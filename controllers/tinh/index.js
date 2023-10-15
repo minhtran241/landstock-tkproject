@@ -9,16 +9,13 @@ const client = clickhouse.createClient({
 });
 
 const getCities = async (request, reply) => {
-    console.log(client);
     const resultSet = await client.query({
-        query: 'SELECT number FROM system.numbers LIMIT 10',
+        query: 'SELECT * FROM db_test.tinh LIMIT 10',
         format: 'JSONEachRow',
     });
-    for await (const rows of resultSet.stream()) {
-        rows.forEach((row) => {
-            console.log(row.text);
-        });
-    }
+    const citySet = await resultSet.json();
+    console.log(citySet);
+    reply.send(citySet);
 };
 
 module.exports = {
