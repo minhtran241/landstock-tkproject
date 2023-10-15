@@ -18,12 +18,12 @@ const getCities = async (request, reply) => {
 
 const getCityById = async (request, reply) => {
     const { id } = request.params;
-    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = :id'; // Use :id as the parameter placeholder
+    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = {id: Int64}';
 
     try {
         const result = await client.query({
             query,
-            params: { id }, // Pass the parameter as an object with the placeholder name
+            query_params: { id },
         });
         console.log(result);
         const city = result.json();
