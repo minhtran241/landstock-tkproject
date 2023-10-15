@@ -16,29 +16,31 @@ const getCities = async (request, reply) => {
     }
 };
 
-const getCity = async (request, reply) => {
+const getCityById = async (request, reply) => {
     const { id } = request.params;
     const query = 'SELECT * FROM tinh WHERE iID_MaTinh = ?';
 
     try {
-        const resultSet = await client.query({
+        const resultSet = await clickhouse.query({
             query,
-            params: [id],
+            params: { id },
             format: 'JSONEachRow',
         });
-        const city = await resultSet.json();
-        if (city.length === 0) {
-            // Handle the case where no data was found for the given id
-            reply.status(404).send({ error: 'City not found' });
+
+        const data = await resultSet.stream();
+        const city = await data.read();
+
+        if (!city) {
+            // Handle the case where no data was found for the given ID
+            return null;
         } else {
-            reply.send(city);
+            return city;
         }
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'Query failed' });
+        throw error;
     }
 };
-
 const postCity = async (request, reply) => {
     const { sTenTinh } = request.body;
     const query = 'INSERT INTO tinh (sTenTinh) VALUES (?)';
@@ -59,6 +61,6 @@ const postCity = async (request, reply) => {
 
 module.exports = {
     getCities,
-    getCity,
+    getCityById,
     postCity,
 };
