@@ -18,20 +18,16 @@ const getCities = async (request, reply) => {
 
 const getCityById = async (request, reply) => {
     const { id } = request.params;
-    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = ?';
+    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = :id'; // Use :id as the parameter placeholder
 
     try {
         const result = await client.query({
             query,
-            params: { id },
-            // format: 'JSONEachRow',
+            params: { id }, // Pass the parameter as an object with the placeholder name
         });
         console.log(result);
         const city = result.json();
         console.log(city);
-
-        // const data = await resultSet.stream();
-        // const city = await data.read();
 
         if (!city) {
             // Handle the case where no data was found for the given ID
@@ -44,6 +40,7 @@ const getCityById = async (request, reply) => {
         throw error;
     }
 };
+
 const postCity = async (request, reply) => {
     const { sTenTinh } = request.body;
     const query = 'INSERT INTO tinh (sTenTinh) VALUES (?)';
