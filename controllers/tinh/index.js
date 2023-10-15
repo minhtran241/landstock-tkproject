@@ -26,8 +26,8 @@ const getCityById = async (request, reply) => {
             query_params: { id: Number(id) },
             format: 'JSONEachRow',
         });
-        const city = await result.json()[0];
-        console.log(city);
+        const city = await result.json();
+        console.log(JSON.parse(city));
         if (city === null) {
             // Handle the case where no data was found for the given ID
             reply.status(404).send({ error: 'City not found' });
