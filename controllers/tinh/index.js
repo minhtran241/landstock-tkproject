@@ -21,14 +21,17 @@ const getCityById = async (request, reply) => {
     const query = 'SELECT * FROM tinh WHERE iID_MaTinh = ?';
 
     try {
-        const resultSet = await client.query({
+        const result = await client.query({
             query,
             params: { id },
             format: 'JSONEachRow',
         });
+        console.log(result);
+        const city = result.json();
+        console.log(city);
 
-        const data = await resultSet.stream();
-        const city = await data.read();
+        // const data = await resultSet.stream();
+        // const city = await data.read();
 
         if (!city) {
             // Handle the case where no data was found for the given ID
