@@ -43,9 +43,8 @@ const postCityOpts = {
     schema: {
         body: {
             type: 'object',
-            required: ['iID_MaTinh, sTenTinh'],
             properties: {
-                iID_MaTinh: { type: 'number' },
+                iID_MaTinh: { type: 'integer' },
                 sTenTinh: { type: 'string' },
             },
         },
