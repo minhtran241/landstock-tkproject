@@ -24,6 +24,7 @@ const getCityById = async (request, reply) => {
         const result = await client.query({
             query,
             query_params: { id },
+            format: 'JSONEachRow',
         });
         const data = await result.stream();
         const city = await data.read();
