@@ -26,17 +26,12 @@ const getCityById = async (request, reply) => {
             query_params: { id: Number(id) },
             format: 'JSONEachRow',
         });
-        const data = await result.stream();
-        const city = await data.read();
-        const x = await result.json();
-        console.log(x);
+        const city = await result.json();
         if (city === null) {
             // Handle the case where no data was found for the given ID
             reply.status(404).send({ error: 'City not found' });
             return;
         }
-
-        console.log(city);
         reply.send(city);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
