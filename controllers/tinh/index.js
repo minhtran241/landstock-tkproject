@@ -41,8 +41,11 @@ const getCityById = async (request, reply) => {
 };
 
 const postCity = async (request, reply) => {
-    const { sTenTinh } = request.body;
-    const query = `INSERT INTO tinh (sTenTinh) VALUES (${sTenTinh})`;
+    let { iID_MaTinh, sTenTinh } = request.body;
+    sTenTinh = `'${sTenTinh}'`;
+    const query = `INSERT INTO tinh (iID_MaTinh, sTenTinh) VALUES (${Number(
+        iID_MaTinh
+    )},${sTenTinh})`;
 
     try {
         const resultSet = await client.query({
