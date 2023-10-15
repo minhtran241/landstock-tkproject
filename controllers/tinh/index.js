@@ -42,12 +42,14 @@ const getCityById = async (request, reply) => {
 
 const postCity = async (request, reply) => {
     const { sTenTinh } = request.body;
-    const query = 'INSERT INTO tinh (sTenTinh) VALUES (?)';
+    const query = 'INSERT INTO tinh (sTenTinh) VALUES ({sTenTinh: String})';
 
     try {
         const resultSet = await client.query({
             query,
-            params: [sTenTinh],
+            query_params: {
+                sTenTinh,
+            },
             format: 'JSONEachRow',
         });
         const city = await resultSet.json();

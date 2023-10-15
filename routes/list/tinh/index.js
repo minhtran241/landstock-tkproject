@@ -49,7 +49,10 @@ const postCityOpts = {
             },
         },
         response: {
-            201: City,
+            201: {
+                type: 'array',
+                cities: City,
+            },
         },
     },
     handler: postCity,
