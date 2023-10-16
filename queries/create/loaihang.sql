@@ -1,5 +1,2 @@
-CREATE TABLE loaihang (
-	sCode Int64 PRIMARY KEY,
-	sTen String NOT NULL,
-) ENGINE = MergeTree()
+CREATE TABLE loaihang (sCode Int64, sTen String NOT NULL) ENGINE = MergeTree() PRIMARY KEY sCode
 ORDER BY sCode;

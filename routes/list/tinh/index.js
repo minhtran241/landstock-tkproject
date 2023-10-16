@@ -4,6 +4,7 @@ const {
     getCities,
     getCityById,
     postCity,
+    deleteCity,
 } = require('../../../controllers/tinh');
 
 // city/tỉnh schema
@@ -51,6 +52,7 @@ const postCityOpts = {
         response: {
             201: {
                 properties: {
+                    type: 'object',
                     message: { type: 'string' },
                 },
             },
@@ -64,17 +66,18 @@ const deleteCityOpts = {
         response: {
             200: {
                 properties: {
+                    type: 'object',
                     message: { type: 'string' },
                 },
             },
         },
     },
-    // handler: deleteItem,
+    handler: deleteCity,
 };
 
 module.exports = async function (fastify, opts) {
     fastify.get('/', getCitiesOpts);
     fastify.get('/:id', getCityByIdOpts);
     fastify.post('/', postCityOpts);
-    // fastify.delete('/:id', deleteCityOpts);
+    fastify.delete('/:id', deleteCityOpts);
 };

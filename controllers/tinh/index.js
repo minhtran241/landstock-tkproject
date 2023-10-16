@@ -12,7 +12,7 @@ const getCities = async (request, reply) => {
         reply.send(citySet);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'Query failed' });
+        reply.status(500).send({ error: 'query failed' });
     }
 };
 
@@ -30,7 +30,7 @@ const getCityById = async (request, reply) => {
         console.log(city);
         if (city === null) {
             // Handle the case where no data was found for the given ID
-            reply.status(404).send({ error: 'City not found' });
+            reply.status(404).send({ error: 'city not found' });
             return;
         }
         reply.send(city);
@@ -57,8 +57,22 @@ const postCity = async (request, reply) => {
             ],
             format: 'JSONEachRow',
         });
+        reply.code(201).send({ message: 'city inserted successfully' });
+    } catch (error) {
+        console.error('Error executing ClickHouse query:', error);
+        reply.status(500).send({ error: 'query failed' });
+    }
+};
 
-        reply.code(201).send({ message: 'City inserted successfully' });
+const deleteCity = async (request, reply) => {
+    const { id } = request.params;
+    const query = 'DELETE FROM tinh WHERE iID_MaTinh = {id: Int64}';
+    try {
+        await client.query({
+            query,
+            query_params: { id: Number(id) },
+        });
+        reply.send({ message: 'city deleted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.status(500).send({ error: 'Query failed' });
@@ -69,4 +83,5 @@ module.exports = {
     getCities,
     getCityById,
     postCity,
+    deleteCity,
 };
