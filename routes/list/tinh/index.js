@@ -77,6 +77,6 @@ const deleteCityOpts = {
 module.exports = async function (fastify, opts) {
     fastify.get('/', getCitiesOpts);
     fastify.get('/:id', getCityByIdOpts);
-    fastify.post('/', postCityOpts);
+    // fastify.post('/', postCityOpts);
     // fastify.delete('/:id', deleteCityOpts);
 };
