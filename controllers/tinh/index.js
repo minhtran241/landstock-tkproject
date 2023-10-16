@@ -62,12 +62,11 @@ const postCity = async (request, reply) => {
 
 const deleteCity = async (request, reply) => {
     const { id } = request.params;
-    const query = 'DELETE FROM tinh WHERE iID_MaTinh = {id: Int64}';
+    const query = 'ALTER TABLE tinh DELETE WHERE iID_MaTinh = {id: Int64}';
     try {
         await client.query({
             query,
             query_params: { id: Number(id) },
-            format: 'JSONEachRow',
         });
         reply.send({ message: 'city deleted successfully' });
     } catch (error) {
