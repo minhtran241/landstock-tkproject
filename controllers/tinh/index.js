@@ -43,10 +43,6 @@ const getCityById = async (request, reply) => {
 const postCity = async (request, reply) => {
     try {
         const { iID_MaTinh, sTenTinh } = request.body;
-
-        // Insert data into ClickHouse using parameterized query
-        const query =
-            'INSERT INTO tinh (iID_MaTinh, sTenTinh) VALUES ({iID_MaTinh: Int64}, {sTenTinh: String})';
         await client.insert({
             table: 'tinh',
             values: [
@@ -64,24 +60,24 @@ const postCity = async (request, reply) => {
     }
 };
 
-const deleteCity = async (request, reply) => {
-    const { id } = request.params;
-    const query = 'DELETE FROM tinh WHERE iID_MaTinh = {iID_MaTinh: Int64}';
-    try {
-        await client.query({
-            query,
-            query_params: { iID_MaTinh: Number(id) },
-        });
-        reply.send({ message: 'city deleted successfully' });
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
-};
+// const deleteCity = async (request, reply) => {
+//     const { id } = request.params;
+//     const query = 'DELETE FROM tinh WHERE iID_MaTinh = {iID_MaTinh: Int64}';
+//     try {
+//         await client.query({
+//             query,
+//             query_params: { iID_MaTinh: Number(id) },
+//         });
+//         reply.send({ message: 'city deleted successfully' });
+//     } catch (error) {
+//         console.error('Error executing ClickHouse query:', error);
+//         reply.status(500).send({ error: 'query failed' });
+//     }
+// };
 
 module.exports = {
     getCities,
     getCityById,
     postCity,
-    deleteCity,
+    // deleteCity,
 };
