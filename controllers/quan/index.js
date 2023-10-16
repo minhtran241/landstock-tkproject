@@ -3,7 +3,7 @@ const client = require('../../data/clickhouse');
 
 const getDistricts = async (request, reply) => {
     try {
-        const query = 'SELECT * FROM quan LIMIT';
+        const query = 'SELECT * FROM quan';
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
