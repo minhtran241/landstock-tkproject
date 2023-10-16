@@ -75,7 +75,7 @@ const deleteCity = async (request, reply) => {
         reply.send({ message: 'city deleted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'Query failed' });
+        reply.status(500).send({ error: 'query failed' });
     }
 };
 
