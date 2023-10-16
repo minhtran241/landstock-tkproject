@@ -45,7 +45,7 @@ const postCityOpts = {
         body: {
             type: 'object',
             properties: {
-                iID_MaTinh: { type: 'integer' },
+                iID_MaTinh: { type: 'number' },
                 sTenTinh: { type: 'string' },
             },
         },
