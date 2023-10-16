@@ -1,24 +1,24 @@
 'use strict';
 const client = require('../../data/clickhouse');
 
-const getCities = async (request, reply) => {
+const getDistricts = async (request, reply) => {
     try {
-        const query = 'SELECT * FROM tinh';
+        const query = 'SELECT * FROM quan LIMIT';
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
         });
-        const citySet = await resultSet.json();
-        reply.send(citySet);
+        const districtSet = await resultSet.json();
+        reply.send(districtSet);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.status(500).send({ error: 'query failed' });
     }
 };
 
-const getCityById = async (request, reply) => {
+const getDistrictById = async (request, reply) => {
     const { id } = request.params;
-    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = {id: Int64}';
+    const query = 'SELECT * FROM quan WHERE iID_MaQuan = {id: Int64}';
 
     try {
         const result = await client.query({
@@ -26,49 +26,49 @@ const getCityById = async (request, reply) => {
             query_params: { id: Number(id) },
             format: 'JSONEachRow',
         });
-        const city = await result.json();
-        console.log(city);
-        if (city === null) {
+        const district = await result.json();
+        console.log(district);
+        if (district === null) {
             // Handle the case where no data was found for the given ID
-            reply.status(404).send({ error: 'city not found' });
+            reply.status(404).send({ error: 'district not found' });
             return;
         }
-        reply.send(city);
+        reply.send(district);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         throw error;
     }
 };
 
-const postCity = async (request, reply) => {
+const postDistrict = async (request, reply) => {
     try {
-        const { iID_MaTinh, sTenTinh } = request.body;
+        const { iID_MaQuan, sTenQuan } = request.body;
         await client.insert({
-            table: 'tinh',
+            table: 'quan',
             values: [
                 {
-                    iID_MaTinh: Number(iID_MaTinh),
-                    sTenTinh: String(sTenTinh),
+                    iID_MaQuan: Number(iID_MaQuan),
+                    sTenQuan: String(sTenQuan),
                 },
             ],
             format: 'JSONEachRow',
         });
-        reply.code(201).send({ message: 'city inserted successfully' });
+        reply.code(201).send({ message: 'district inserted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.status(500).send({ error: 'query failed' });
     }
 };
 
-const deleteCity = async (request, reply) => {
+const deleteDistrict = async (request, reply) => {
     const { id } = request.params;
-    const query = 'ALTER TABLE tinh DELETE WHERE iID_MaTinh = {id: Int64}';
+    const query = 'ALTER TABLE quan DELETE WHERE iID_MaQuan = {id: Int64}';
     try {
         await client.query({
             query,
             query_params: { id: Number(id) },
         });
-        reply.send({ message: 'city deleted successfully' });
+        reply.send({ message: 'district deleted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.status(500).send({ error: 'query failed' });
@@ -76,8 +76,8 @@ const deleteCity = async (request, reply) => {
 };
 
 module.exports = {
-    getCities,
-    getCityById,
-    postCity,
-    deleteCity,
+    getDistricts,
+    getDistrictById,
+    postDistrict,
+    deleteDistrict,
 };
