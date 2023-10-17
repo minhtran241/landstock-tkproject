@@ -126,7 +126,7 @@ const deleteRealEstateOpts = {
 
 module.exports = async function (fastify, opts) {
     fastify.get('/', getRealEstatesOpts);
-    fastify.get('/:id', getRealEstateByIdOpts);
+    fastify.get('/:sID', getRealEstateByIdOpts);
     fastify.post('/', postRealEstateOpts);
-    fastify.delete('/:id', deleteRealEstateOpts);
+    fastify.delete('/:sID', deleteRealEstateOpts);
 };
