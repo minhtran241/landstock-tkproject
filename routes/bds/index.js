@@ -5,7 +5,7 @@ const {
     getRealEstateById,
     postRealEstate,
     deleteRealEstate,
-} = require('../../../controllers/bds');
+} = require('../../controllers/bds');
 
 // BDS schema
 const RealEstates = {
