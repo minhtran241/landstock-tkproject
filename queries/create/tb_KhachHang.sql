@@ -4,6 +4,6 @@ CREATE TABLE tb_KhachHang (
 	sDienThoai String NOT NULL,
 	iTrangThai Int32,
 	sMa String,
-	createdAt DateTime DEFAULT now() NOT NULL,
+	createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree()
 ORDER BY createdAt;
