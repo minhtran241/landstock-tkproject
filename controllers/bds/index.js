@@ -30,13 +30,13 @@ const getRealEstates = async (request, reply) => {
 };
 
 const getRealEstateById = async (request, reply) => {
-    const { id } = request.params;
-    const query = `SELECT ${getRealEstateByIdReply} FROM ${table} WHERE sID = {id: String}`;
+    const { sID } = request.params;
+    const query = `SELECT ${getRealEstateByIdReply} FROM ${table} WHERE sID = {sID: String}`;
 
     try {
         const result = await client.query({
             query,
-            query_params: { sID: String(id) },
+            query_params: { sID: String(sID) },
             format: 'JSONEachRow',
         });
         const realEstate = await result.json();
