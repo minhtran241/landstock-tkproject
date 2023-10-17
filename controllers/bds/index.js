@@ -31,12 +31,12 @@ const getRealEstates = async (request, reply) => {
 
 const getRealEstateById = async (request, reply) => {
     const { sID } = request.params;
-    const query = `SELECT ${getRealEstateByIdReply} FROM ${table} WHERE sID = {sID: UUID}`;
+    const query = `SELECT ${getRealEstateByIdReply} FROM ${table} WHERE sID = toUUID({sID: String})`;
 
     try {
         const result = await client.query({
             query,
-            query_params: { sID: sID },
+            query_params: { sID: String(sID) },
             format: 'JSONEachRow',
         });
         const realEstate = await result.json();
