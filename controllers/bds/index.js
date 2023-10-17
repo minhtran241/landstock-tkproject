@@ -107,7 +107,7 @@ const postRealEstate = async (request, reply) => {
 
 const deleteRealEstate = async (request, reply) => {
     const { sID } = request.params;
-    const query = `ALTER TABLE ${table} DELETE WHERE sID = {sID: String}`;
+    const query = `ALTER TABLE ${table} DELETE WHERE sID = toUUID({sID: String})`;
     try {
         await client.query({
             query,

@@ -7,7 +7,7 @@ const {
     deleteDistrict,
 } = require('../../../controllers/quan');
 
-// district/quận schema
+// district/Quan schema
 const District = {
     type: 'object',
     properties: {

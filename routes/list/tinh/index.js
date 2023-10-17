@@ -7,7 +7,7 @@ const {
     deleteCity,
 } = require('../../../controllers/tinh');
 
-// city/tỉnh schema
+// city/Tinh schema
 const City = {
     type: 'object',
     properties: {
