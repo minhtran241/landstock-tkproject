@@ -1,11 +1,11 @@
 'use strict';
 const client = require('../../data/clickhouse');
 
-const tableName = 'tb_Tinh';
+const table = 'tb_Tinh';
 
 const getCities = async (request, reply) => {
     try {
-        const query = `SELECT * FROM ${tableName}`;
+        const query = `SELECT * FROM ${table}`;
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -20,7 +20,7 @@ const getCities = async (request, reply) => {
 
 const getCityById = async (request, reply) => {
     const { id } = request.params;
-    const query = `SELECT * FROM ${tableName} WHERE iID_MaTinh = {id: Int64}`;
+    const query = `SELECT * FROM ${table} WHERE iID_MaTinh = {id: Int64}`;
 
     try {
         const result = await client.query({
@@ -46,7 +46,7 @@ const postCity = async (request, reply) => {
     try {
         const { iID_MaTinh, sTenTinh } = request.body;
         await client.insert({
-            table: 'tinh',
+            table,
             values: [
                 {
                     iID_MaTinh: Number(iID_MaTinh),
@@ -64,7 +64,7 @@ const postCity = async (request, reply) => {
 
 const deleteCity = async (request, reply) => {
     const { id } = request.params;
-    const query = `ALTER TABLE ${tableName} DELETE WHERE iID_MaTinh = {id: Int64}`;
+    const query = `ALTER TABLE ${table} DELETE WHERE iID_MaTinh = {id: Int64}`;
     try {
         await client.query({
             query,
