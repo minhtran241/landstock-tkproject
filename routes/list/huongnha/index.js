@@ -11,8 +11,8 @@ const {
 const Direction = {
     type: 'object',
     properties: {
-        iID_MaQuan: { type: 'integer' },
-        sTenQuan: { type: 'string' },
+        iID_HuongNha: { type: 'integer' },
+        sHuongNha: { type: 'string' },
     },
 };
 
@@ -45,8 +45,8 @@ const postDirectionOpts = {
         body: {
             type: 'object',
             properties: {
-                iID_MaQuan: { type: 'integer' },
-                sTenQuan: { type: 'string' },
+                iID_HuongNha: { type: 'integer' },
+                sHuongNha: { type: 'string' },
             },
         },
         response: {

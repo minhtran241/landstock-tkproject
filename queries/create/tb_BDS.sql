@@ -21,6 +21,7 @@ CREATE OR REPLACE TABLE tb_BDS (
 		iSoToilet Int32,
 		sMoTa String NOT NULL,
 		sFiles Array(String),
+		sAvatar String,
 		sLat String,
 		sLng String,
 		sHotline FixedString(10),

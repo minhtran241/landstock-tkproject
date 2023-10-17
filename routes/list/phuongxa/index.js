@@ -11,8 +11,9 @@ const {
 const Ward = {
     type: 'object',
     properties: {
+        iID_MaPhuongXa: { type: 'integer' },
+        sTenPhuongXa: { type: 'string' },
         iID_MaQuan: { type: 'integer' },
-        sTenQuan: { type: 'string' },
     },
 };
 
@@ -45,8 +46,9 @@ const postWardOpts = {
         body: {
             type: 'object',
             properties: {
+                iID_MaPhuongXa: { type: 'integer' },
+                sTenPhuongXa: { type: 'string' },
                 iID_MaQuan: { type: 'integer' },
-                sTenQuan: { type: 'string' },
             },
         },
         response: {

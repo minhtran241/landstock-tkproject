@@ -52,13 +52,14 @@ const getWardById = async (request, reply) => {
 
 const postWard = async (request, reply) => {
     try {
-        const { iID_MaPhuongXa, sTenPhuongXa } = request.body;
+        const { iID_MaPhuongXa, sTenPhuongXa, iID_MaQuan } = request.body;
         await client.insert({
             table,
             values: [
                 {
                     iID_MaPhuongXa: Number(iID_MaPhuongXa),
                     sTenPhuongXa: String(sTenPhuongXa),
+                    iID_MaQuan: Number(iID_MaQuan),
                 },
             ],
             format: 'JSONEachRow',

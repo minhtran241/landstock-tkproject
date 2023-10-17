@@ -13,6 +13,7 @@ const District = {
     properties: {
         iID_MaQuan: { type: 'integer' },
         sTenQuan: { type: 'string' },
+        iID_MaTinh: { type: 'integer' },
     },
 };
 
@@ -47,6 +48,7 @@ const postDistrictOpts = {
             properties: {
                 iID_MaQuan: { type: 'integer' },
                 sTenQuan: { type: 'string' },
+                iID_MaTinh: { type: 'integer' },
             },
         },
         response: {

@@ -52,13 +52,14 @@ const getDistrictById = async (request, reply) => {
 
 const postDistrict = async (request, reply) => {
     try {
-        const { iID_MaQuan, sTenQuan } = request.body;
+        const { iID_MaQuan, sTenQuan, iID_MaTinh } = request.body;
         await client.insert({
             table,
             values: [
                 {
                     iID_MaQuan: Number(iID_MaQuan),
                     sTenQuan: String(sTenQuan),
+                    iID_MaTinh: Number(iID_MaTinh),
                 },
             ],
             format: 'JSONEachRow',
