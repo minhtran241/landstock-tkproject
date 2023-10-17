@@ -3,9 +3,19 @@ const client = require('../../data/clickhouse');
 
 const getCities = async (request, reply) => {
     try {
-        const query = 'SELECT * FROM tinh';
+        let query;
+        let query_params;
+        const { iID_MaTinh } = request.query;
+        if (iID_MaTinh) {
+            query = 'SELECT * FROM tinh WHERE iID_MaTinh = {iID_MaTinh: Int64}';
+            query_params = { iID_MaTinh: Number(iID_MaTinh) };
+        } else {
+            query = 'SELECT * FROM tinh';
+            query_params = {};
+        }
         const resultSet = await client.query({
             query,
+            query_params,
             format: 'JSONEachRow',
         });
         const citySet = await resultSet.json();
