@@ -5,7 +5,7 @@ const table = 'tb_Tinh';
 
 const getCities = async (request, reply) => {
     try {
-        const query = `SELECT * FROM ${table}`;
+        const query = `SELECT iID_MaTinh, sTenTinh FROM ${table}`;
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -20,7 +20,7 @@ const getCities = async (request, reply) => {
 
 const getCityById = async (request, reply) => {
     const { id } = request.params;
-    const query = `SELECT * FROM ${table} WHERE iID_MaTinh = {id: Int64}`;
+    const query = `SELECT iID_MaTinh, sTenTinh FROM ${table} WHERE iID_MaTinh = {id: Int64}`;
 
     try {
         const result = await client.query({

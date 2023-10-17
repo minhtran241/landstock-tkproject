@@ -8,7 +8,7 @@ const getDistricts = async (request, reply) => {
         let query, query_params;
         const { iID_MaTinh } = request.query;
         if (iID_MaTinh) {
-            query = `SELECT * FROM ${table} WHERE iID_MaTinh = {iID_MaTinh: Int64}`;
+            query = `SELECT iID_MaQuan, sTenQuan FROM ${table} WHERE iID_MaTinh = {iID_MaTinh: Int64}`;
             query_params = { iID_MaTinh: Number(iID_MaTinh) };
         } else {
             query = `SELECT * FROM ${table}`;
@@ -29,7 +29,7 @@ const getDistricts = async (request, reply) => {
 
 const getDistrictById = async (request, reply) => {
     const { id } = request.params;
-    const query = `SELECT * FROM ${table} WHERE iID_MaQuan = {id: Int64}`;
+    const query = `SELECT iID_MaQuan, sTenQuan FROM ${table} WHERE iID_MaQuan = {id: Int64}`;
 
     try {
         const result = await client.query({
@@ -38,7 +38,6 @@ const getDistrictById = async (request, reply) => {
             format: 'JSONEachRow',
         });
         const district = await result.json();
-        console.log(district);
         if (district === null) {
             // Handle the case where no data was found for the given ID
             reply.status(404).send({ error: 'district not found' });

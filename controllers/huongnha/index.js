@@ -5,7 +5,7 @@ const table = 'tb_HuongNha';
 
 const getDirections = async (request, reply) => {
     try {
-        const query = `SELECT * FROM ${table}`;
+        const query = `SELECT iID_HuongNha, sHuongNha FROM ${table}`;
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -20,7 +20,7 @@ const getDirections = async (request, reply) => {
 
 const getDirectionById = async (request, reply) => {
     const { id } = request.params;
-    const query = `SELECT * FROM ${table} WHERE iID_HuongNha = {id: Int64}`;
+    const query = `SELECT iID_HuongNha, sHuongNha FROM ${table} WHERE iID_HuongNha = {id: Int64}`;
 
     try {
         const result = await client.query({

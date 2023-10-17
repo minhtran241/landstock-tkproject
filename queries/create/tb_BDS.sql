@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE tb_BDS (
-		sID UUID DEFAULT generateUUIDv4(),
+		sID UUID DEFAULT generateUUIDv4() NOT NULL,
 		sMa String NOT NULL,
 		sNoiDung String NOT NULL,
 		sTenTinh String NOT NULL,
@@ -25,5 +25,5 @@ CREATE OR REPLACE TABLE tb_BDS (
 		sLng String,
 		sHotline FixedString(10),
 		dNgayTao DateTime,
-		createdAt DateTime DEFAULT now()
+		createdAt DateTime DEFAULT now() NOT NULL
 	) ENGINE = MergeTree PRIMARY KEY createdAt PARTITION BY toYYYYMM(createdAt);

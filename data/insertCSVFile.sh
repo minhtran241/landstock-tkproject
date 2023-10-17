@@ -1,1 +1,1 @@
-clickhouse-client --user=default --password=qd8HNx2sgzftGQW -q "INSERT INTO landstock.tb_PhuongXa FORMAT CSVWithNames" < tb_PhuongXa.csv
+clickhouse-client --user=default --password=qd8HNx2sgzftGQW -q "INSERT INTO landstock.tb_HuongNha FORMAT CSVWithNames" < tb_HuongNha.csv

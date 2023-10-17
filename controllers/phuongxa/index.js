@@ -8,7 +8,7 @@ const getWards = async (request, reply) => {
         let query, query_params;
         const { iID_MaQuan } = request.query;
         if (iID_MaQuan) {
-            query = `SELECT * FROM ${table} WHERE iID_MaQuan = {iID_MaQuan: Int64}`;
+            query = `SELECT iID_MaPhuongXa, sTenPhuongXa FROM ${table} WHERE iID_MaQuan = {iID_MaQuan: Int64}`;
             query_params = { iID_MaQuan: Number(iID_MaQuan) };
         } else {
             query = `SELECT * FROM ${table}`;
@@ -29,7 +29,7 @@ const getWards = async (request, reply) => {
 
 const getWardById = async (request, reply) => {
     const { id } = request.params;
-    const query = `SELECT * FROM ${table} WHERE iID_MaPhuongXa = {id: Int64}`;
+    const query = `SELECT iID_MaPhuongXa, sTenPhuongXa FROM ${table} WHERE iID_MaPhuongXa = {id: Int64}`;
 
     try {
         const result = await client.query({
