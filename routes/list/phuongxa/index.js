@@ -1,14 +1,9 @@
 'use strict';
 
-const {
-    getDistricts,
-    getDistrictById,
-    postDistrict,
-    deleteDistrict,
-} = require('../../../controllers/quan');
+const { getWards, postWard, deleteWard } = require('../../../controllers/quan');
 
-// district/quận schema
-const District = {
+// ward/phường xã schema
+const Ward = {
     type: 'object',
     properties: {
         iID_MaQuan: { type: 'integer' },
@@ -16,31 +11,19 @@ const District = {
     },
 };
 
-const getDistrictsOpts = {
+const getWardsOpts = {
     schema: {
         response: {
             200: {
                 type: 'array',
-                districts: District,
+                wards: Ward,
             },
         },
     },
-    handler: getDistricts,
+    handler: getWards,
 };
 
-const getDistrictByIdOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                districts: District,
-            },
-        },
-    },
-    handler: getDistrictById,
-};
-
-const postDistrictOpts = {
+const postWardOpts = {
     schema: {
         body: {
             type: 'object',
@@ -58,10 +41,10 @@ const postDistrictOpts = {
             },
         },
     },
-    handler: postDistrict,
+    handler: postWard,
 };
 
-const deleteDistrictOpts = {
+const deleteWardOpts = {
     schema: {
         response: {
             200: {
@@ -72,12 +55,11 @@ const deleteDistrictOpts = {
             },
         },
     },
-    handler: deleteDistrict,
+    handler: deleteWard,
 };
 
 module.exports = async function (fastify, opts) {
-    fastify.get('/', getDistrictsOpts);
-    fastify.get('/:id', getDistrictByIdOpts);
-    fastify.post('/', postDistrictOpts);
-    fastify.delete('/:id', deleteDistrictOpts);
+    fastify.get('/', getWardsOpts);
+    fastify.post('/', postWardOpts);
+    fastify.delete('/:id', deleteWardOpts);
 };

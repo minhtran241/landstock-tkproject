@@ -2,7 +2,7 @@
 
 const {
     getCities,
-    // getCityById,
+    getCityById,
     postCity,
     deleteCity,
 } = require('../../../controllers/tinh');
@@ -28,17 +28,17 @@ const getCitiesOpts = {
     handler: getCities,
 };
 
-// const getCityByIdOpts = {
-//     schema: {
-//         response: {
-//             200: {
-//                 type: 'array',
-//                 cities: City,
-//             },
-//         },
-//     },
-//     handler: getCityById,
-// };
+const getCityByIdOpts = {
+    schema: {
+        response: {
+            200: {
+                type: 'array',
+                cities: City,
+            },
+        },
+    },
+    handler: getCityById,
+};
 
 const postCityOpts = {
     schema: {
@@ -77,7 +77,7 @@ const deleteCityOpts = {
 
 module.exports = async function (fastify, opts) {
     fastify.get('/', getCitiesOpts);
-    // fastify.get('/:id', getCityByIdOpts);
+    fastify.get('/:id', getCityByIdOpts);
     fastify.post('/', postCityOpts);
     fastify.delete('/:id', deleteCityOpts);
 };
