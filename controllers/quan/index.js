@@ -3,9 +3,18 @@ const client = require('../../data/clickhouse');
 
 const getDistricts = async (request, reply) => {
     try {
-        const query = 'SELECT * FROM quan';
+        let query, query_params;
+        const { iID_MaQuan } = request.query;
+        if (iID_MaQuan) {
+            query = 'SELECT * FROM quan WHERE iID_MaQuan = {iID_MaQuan: Int64}';
+            query_params = { iID_MaQuan: Number(iID_MaQuan) };
+        } else {
+            query = 'SELECT * FROM quan';
+            query_params = {};
+        }
         const resultSet = await client.query({
             query,
+            query_params,
             format: 'JSONEachRow',
         });
         const districtSet = await resultSet.json();
@@ -16,29 +25,29 @@ const getDistricts = async (request, reply) => {
     }
 };
 
-const getDistrictById = async (request, reply) => {
-    const { id } = request.params;
-    const query = 'SELECT * FROM quan WHERE iID_MaQuan = {id: Int64}';
+// const getDistrictById = async (request, reply) => {
+//     const { id } = request.params;
+//     const query = 'SELECT * FROM quan WHERE iID_MaQuan = {id: Int64}';
 
-    try {
-        const result = await client.query({
-            query,
-            query_params: { id: Number(id) },
-            format: 'JSONEachRow',
-        });
-        const district = await result.json();
-        console.log(district);
-        if (district === null) {
-            // Handle the case where no data was found for the given ID
-            reply.status(404).send({ error: 'district not found' });
-            return;
-        }
-        reply.send(district);
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        throw error;
-    }
-};
+//     try {
+//         const result = await client.query({
+//             query,
+//             query_params: { id: Number(id) },
+//             format: 'JSONEachRow',
+//         });
+//         const district = await result.json();
+//         console.log(district);
+//         if (district === null) {
+//             // Handle the case where no data was found for the given ID
+//             reply.status(404).send({ error: 'district not found' });
+//             return;
+//         }
+//         reply.send(district);
+//     } catch (error) {
+//         console.error('Error executing ClickHouse query:', error);
+//         throw error;
+//     }
+// };
 
 const postDistrict = async (request, reply) => {
     try {
@@ -77,7 +86,7 @@ const deleteDistrict = async (request, reply) => {
 
 module.exports = {
     getDistricts,
-    getDistrictById,
+    // getDistrictById,
     postDistrict,
     deleteDistrict,
 };

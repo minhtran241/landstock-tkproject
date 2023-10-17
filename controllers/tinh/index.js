@@ -26,29 +26,29 @@ const getCities = async (request, reply) => {
     }
 };
 
-const getCityById = async (request, reply) => {
-    const { id } = request.params;
-    const query = 'SELECT * FROM tinh WHERE iID_MaTinh = {id: Int64}';
+// const getCityById = async (request, reply) => {
+//     const { id } = request.params;
+//     const query = 'SELECT * FROM tinh WHERE iID_MaTinh = {id: Int64}';
 
-    try {
-        const result = await client.query({
-            query,
-            query_params: { id: Number(id) },
-            format: 'JSONEachRow',
-        });
-        const city = await result.json();
-        console.log(city);
-        if (city === null) {
-            // Handle the case where no data was found for the given ID
-            reply.status(404).send({ error: 'city not found' });
-            return;
-        }
-        reply.send(city);
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        throw error;
-    }
-};
+//     try {
+//         const result = await client.query({
+//             query,
+//             query_params: { id: Number(id) },
+//             format: 'JSONEachRow',
+//         });
+//         const city = await result.json();
+//         console.log(city);
+//         if (city === null) {
+//             // Handle the case where no data was found for the given ID
+//             reply.status(404).send({ error: 'city not found' });
+//             return;
+//         }
+//         reply.send(city);
+//     } catch (error) {
+//         console.error('Error executing ClickHouse query:', error);
+//         throw error;
+//     }
+// };
 
 const postCity = async (request, reply) => {
     try {
@@ -87,7 +87,7 @@ const deleteCity = async (request, reply) => {
 
 module.exports = {
     getCities,
-    getCityById,
+    // getCityById,
     postCity,
     deleteCity,
 };
