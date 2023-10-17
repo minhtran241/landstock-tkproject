@@ -1,16 +1,17 @@
 'use strict';
 const client = require('../../data/clickhouse');
 
+const tableName = 'tb_Quan';
+
 const getDistricts = async (request, reply) => {
     try {
         let query, query_params;
         const { iID_MaTinh } = request.query;
         if (iID_MaTinh) {
-            query =
-                'SELECT * FROM tb_Quan WHERE iID_MaTinh = {iID_MaTinh: Int64}';
+            query = `SELECT * FROM ${tableName} WHERE iID_MaTinh = {iID_MaTinh: Int64}`;
             query_params = { iID_MaTinh: Number(iID_MaTinh) };
         } else {
-            query = 'SELECT * FROM tb_Quan';
+            query = `SELECT * FROM ${tableName}`;
             query_params = {};
         }
         const resultSet = await client.query({
@@ -28,7 +29,7 @@ const getDistricts = async (request, reply) => {
 
 const getDistrictById = async (request, reply) => {
     const { id } = request.params;
-    const query = 'SELECT * FROM tb_Quan WHERE iID_MaQuan = {id: Int64}';
+    const query = `SELECT * FROM ${tableName} WHERE iID_MaQuan = {id: Int64}`;
 
     try {
         const result = await client.query({
@@ -72,7 +73,7 @@ const postDistrict = async (request, reply) => {
 
 const deleteDistrict = async (request, reply) => {
     const { id } = request.params;
-    const query = 'ALTER TABLE quan DELETE WHERE iID_MaQuan = {id: Int64}';
+    const query = `ALTER TABLE ${tableName} DELETE WHERE iID_MaQuan = {id: Int64}`;
     try {
         await client.query({
             query,
