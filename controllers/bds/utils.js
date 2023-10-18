@@ -44,7 +44,7 @@ const getRealEstatesQuery = (request, table, getRealEstatesReply) => {
     const limitValue = limit || maxUInt64;
 
     // Construct the final SQL query
-    const query = `SELECT ${getRealEstatesReply} FROM ${table} WHERE 1 = 1${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
+    const query = `SELECT ${getRealEstatesReply} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
 
     return query;
 };
