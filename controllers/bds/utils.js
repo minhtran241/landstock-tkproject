@@ -1,80 +1,62 @@
 'use strict';
 
+// Define the maximum value for a 64-bit unsigned integer
 const maxUInt64 = '18446744073709551615';
 
+// Define a function to convert a parameter and its value into a SQL condition
+const paramToCondition = (po, v) => {
+    // Check if the operator is 'IN'; if so, create a condition with comma-separated values enclosed in parentheses
+    const condition =
+        po.o === 'IN'
+            ? `(${v
+                  .split(',')
+                  .map((value) => `'${value}'`)
+                  .join(',')})`
+            : v; // If the operator is not 'IN', use the value as is
+    return `AND ${po.p} ${po.o} ${condition}`; // Return the SQL condition
+};
+
+// Main function to construct the SQL query
 const getRealEstatesQuery = (request, table, getRealEstatesReply) => {
-    const {
-        skip,
-        limit,
-        iID_MaTinh,
-        iID_MaQuan,
-        sLoaiHang,
-        iTuDienTich,
-        iDenDienTich,
-        iTuTang,
-        iDenTang,
-        iTuMatTien,
-        iDenMatTien,
-        iTuGia,
-        iDenGia,
-        iID_HuongNha,
-        iSoPhongNgu,
-        iSoToilet,
-        sMa,
-    } = request.query; // Extract skip and limit from the request query parameters
+    const rq = request.query;
+    // Define an array of objects that map the query parameters to the SQL operators
+    const paramsOperations = [
+        { p: 'iID_MaTinh', o: 'IN' },
+        { p: 'iID_MaQuan', o: 'IN' },
+        { p: 'sLoaiHang', o: 'IN' },
+        { p: 'iTuDienTich', o: '>=' },
+        { p: 'iDenDienTich', o: '<=' },
+        { p: 'iTuTang', o: '>=' },
+        { p: 'iDenTang', o: '<=' },
+        { p: 'iTuMatTien', o: '>=' },
+        { p: 'iDenMatTien', o: '<=' },
+        { p: 'iTuGia', o: '>=' },
+        { p: 'iDenGia', o: '<=' },
+        { p: 'iID_HuongNha', o: 'IN' },
+        { p: 'iSoPhongNgu', o: 'IN' },
+        { p: 'iSoToilet', o: 'IN' },
+        { p: 'sMa', o: 'IN' },
+    ];
 
-    // Set default values for skip and limit if they are not provided
+    // Initialize the WHERE clause
+    let where = '';
+
+    paramsOperations.forEach((po) => {
+        const value = rq[po.p];
+        if (value) {
+            // Use the paramToCondition function to convert the parameter and its value into a SQL condition
+            where = concatWithSpace(where, paramToCondition(po, value));
+        }
+    });
+
+    // Add the LIMIT and OFFSET clauses
+    const { skip, limit } = rq;
     const skipValue = skip || 0;
-    const limitValue = limit || maxUInt64; // Use the maximum UInt64 value for unlimited
+    const limitValue = limit || maxUInt64;
 
-    let query = `SELECT ${getRealEstatesReply} FROM ${table}`;
-    if (iID_MaTinh) {
-        query = concatWithSpace(query, `WHERE iID_MaTinh = ${iID_MaTinh}`);
-    }
-    if (iID_MaQuan) {
-        query = concatWithSpace(query, `AND iID_MaQuan = ${iID_MaQuan}`);
-    }
-    if (sLoaiHang) {
-        query = concatWithSpace(query, `AND sLoaiHang = ${sLoaiHang}`);
-    }
-    if (iTuDienTich) {
-        query = concatWithSpace(query, `AND iDienTich >= ${iTuDienTich}`);
-    }
-    if (iDenDienTich) {
-        query = concatWithSpace(query, `AND iDienTich <= ${iDenDienTich}`);
-    }
-    if (iTuTang) {
-        query = concatWithSpace(query, `AND iSoTang >= ${iTuTang}`);
-    }
-    if (iDenTang) {
-        query = concatWithSpace(query, `AND iSoTang <= ${iDenTang}`);
-    }
-    if (iTuMatTien) {
-        query = concatWithSpace(query, `AND iMatTien >= ${iTuMatTien}`);
-    }
-    if (iDenMatTien) {
-        query = concatWithSpace(query, `AND iMatTien <= ${iDenMatTien}`);
-    }
-    if (iTuGia) {
-        query = concatWithSpace(query, `AND iGiaChaoHopDong >= ${iTuGia}`);
-    }
-    if (iDenGia) {
-        query = concatWithSpace(query, `AND iGiaChaoHopDong <= ${iDenGia}`);
-    }
-    if (iID_HuongNha) {
-        query = concatWithSpace(query, `AND iID_HuongNha = ${iID_HuongNha}`);
-    }
-    if (iSoPhongNgu) {
-        query = concatWithSpace(query, `AND iSoPhongNgu = ${iSoPhongNgu}`);
-    }
-    if (iSoToilet) {
-        query = concatWithSpace(query, `AND iSoToilet = ${iSoToilet}`);
-    }
-    if (sMa) {
-        query = concatWithSpace(query, `AND sMa = ${sMa}`);
-    }
+    // Construct the final SQL query
+    const query = `SELECT ${getRealEstatesReply} FROM ${table} WHERE 1 = 1${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
 
-    query = concatWithSpace(query, `LIMIT ${limitValue} OFFSET ${skipValue}`);
     return query;
 };
 
@@ -88,6 +70,7 @@ function removeNullValues(obj) {
     return obj;
 }
 
+// Function to concatenate two strings with a space in between
 const concatWithSpace = (str1, str2) => {
     if (str1 && str2) {
         return `${str1} ${str2}`;

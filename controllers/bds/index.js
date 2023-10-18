@@ -120,7 +120,7 @@ const postRealEstate = async (request, reply) => {
             format: 'JSONEachRow',
         });
 
-        reply.code(201).send({ message: 'Real estate inserted successfully' });
+        reply.code(201).send({ message: 'real estate inserted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.status(500).send({ error: 'Insertion failed' });
