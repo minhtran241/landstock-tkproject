@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment');
 const client = require('../../data/clickhouse');
 const { getRealEstatesQuery, removeNullValues } = require('./utils');
 
@@ -105,7 +106,7 @@ const postRealEstate = async (request, reply) => {
             sLat,
             sLng,
             sHotline,
-            dNgayTao: new Date(), // You can adjust the date value as needed
+            dNgayTao: moment.utc(new Date()).format('YYYY-MM-DD HH:mm:ss'),
         };
         console.log(values);
 
