@@ -60,7 +60,7 @@ const paramToCondition = (po, v) => {
                   .join(',')})`
             : v; // If the operator is not 'IN', use the value as is
     let ta = po.p;
-    if (po.o == '>=' || po.o == '<=') {
+    if (po.o === '>=' || po.o === '<=') {
         ta = ta.replace('Tu', '').replace('Den', '');
     }
     return `AND ${ta} ${po.o} ${condition}`; // Return the SQL condition
