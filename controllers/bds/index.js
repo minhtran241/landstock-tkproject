@@ -1,8 +1,8 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { getRealEstatesQuery, removeNullValues } = require('./utils');
 
 const table = 'tb_BDS';
-const maxUInt64 = '18446744073709551615';
 const getRealEstatesReply =
     'sID, sMa, sNoiDung, iDienTich, sGiaChaoHopDong, sAvatar, sHotline';
 const getRealEstateByIdReply =
@@ -10,13 +10,8 @@ const getRealEstateByIdReply =
 
 const getRealEstates = async (request, reply) => {
     try {
-        const { skip, limit } = request.query; // Extract skip and limit from the request query parameters
-
-        // Set default values for skip and limit if they are not provided
-        const skipValue = skip || 0;
-        const limitValue = limit || maxUInt64; // Use the maximum UInt64 value for unlimited
-
-        const query = `SELECT ${getRealEstatesReply} FROM ${table} LIMIT ${limitValue} OFFSET ${skipValue}`;
+        const query = getRealEstatesQuery(request, getRealEstatesReply);
+        console.log(query);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -54,47 +49,73 @@ const getRealEstateById = async (request, reply) => {
 
 const postRealEstate = async (request, reply) => {
     try {
+        // Extract data from the request body
         const {
+            sMa,
+            sNoiDung,
+            sTenTinh,
             iID_MaTinh,
+            sTenQuan,
             iID_MaQuan,
+            sTenPhuongXa,
+            iID_MaPhuongXa,
+            sTenDuong,
             sLoaiHang,
-            iTuDienTich,
-            iDenDienTich,
-            iTuTang,
-            iDenTang,
-            iTuMatTien,
-            iDenMatTien,
-            iTuGia,
-            iDenGia,
+            iDienTich,
+            iSoTang,
+            iMatTien,
+            iGiaChaoHopDong,
+            sGiaChaoHopDong,
+            sHuongNha,
             iID_HuongNha,
             iSoPhongNgu,
             iSoToilet,
-            sMa,
+            sMoTa,
+            sFiles,
+            sAvatar,
+            sLat,
+            sLng,
+            sHotline,
         } = request.body;
 
-        // Define the values object to be inserted into the ClickHouse table
+        // Construct the values object
         const values = {
-            iID_MaTinh: Number(iID_MaTinh),
-            iID_MaQuan: iID_MaQuan ? Number(iID_MaQuan) : null,
-            sLoaiHang: sLoaiHang || null,
-            iTuDienTich: iTuDienTich !== null ? Number(iTudienTich) : null,
-            iDenDienTich: iDenDienTich !== null ? Number(iDenDienTich) : null,
-            iTuTang: iTuTang !== null ? Number(iTuTang) : null,
-            iDenTang: iDenTang !== null ? Number(iDenTang) : null,
-            iTuMatTien: iTuMatTien !== null ? Number(iTuMatTien) : null,
-            iDenMatTien: iDenMatTien !== null ? Number(iDenMatTien) : null,
-            iTuGia: iTuGia !== null ? Number(iTuGia) : null,
-            iDenGia: iDenGia !== null ? Number(iDenGia) : null,
-            iID_HuongNha: iID_HuongNha !== null ? Number(iID_HuongNha) : null,
-            iSoPhongNgu: iSoPhongNgu !== null ? Number(iSoPhongNgu) : null,
-            iSoToilet: iSoToilet !== null ? Number(iSoToilet) : null,
-            sMa: sMa || null,
+            sMa,
+            sNoiDung,
+            sTenTinh,
+            iID_MaTinh,
+            sTenQuan,
+            iID_MaQuan,
+            sTenPhuongXa,
+            iID_MaPhuongXa,
+            sTenDuong,
+            sLoaiHang,
+            iDienTich,
+            iSoTang,
+            iMatTien,
+            iGiaChaoHopDong,
+            sGiaChaoHopDong,
+            sHuongNha,
+            iID_HuongNha,
+            iSoPhongNgu,
+            iSoToilet,
+            sMoTa,
+            sFiles,
+            sAvatar,
+            sLat,
+            sLng,
+            sHotline,
+            dNgayTao: new Date(), // You can adjust the date value as needed
         };
+        console.log(values);
+
+        // Remove null or undefined values from the object
+        const cleanedValues = removeNullValues(values);
 
         // Insert the values into the ClickHouse table
         await client.insert({
-            table: 'your_table_name', // Replace 'your_table_name' with the actual table name
-            values: [values],
+            table,
+            values: [cleanedValues],
             format: 'JSONEachRow',
         });
 
