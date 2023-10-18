@@ -27,7 +27,7 @@ const getRealEstatesQuery = (request, table, getRealEstatesReply) => {
     const skipValue = skip || 0;
     const limitValue = limit || maxUInt64; // Use the maximum UInt64 value for unlimited
 
-    const query = `SELECT ${getRealEstatesReply} FROM ${table}`;
+    let query = `SELECT ${getRealEstatesReply} FROM ${table}`;
     if (iID_MaTinh) {
         query = concatWithSpace(query, `WHERE iID_MaTinh = ${iID_MaTinh}`);
     }
