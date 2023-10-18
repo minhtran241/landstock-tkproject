@@ -2,7 +2,7 @@
 
 const maxUInt64 = '18446744073709551615';
 
-const getRealEstatesQuery = (request, getRealEstatesReply) => {
+const getRealEstatesQuery = (request, table, getRealEstatesReply) => {
     const {
         skip,
         limit,

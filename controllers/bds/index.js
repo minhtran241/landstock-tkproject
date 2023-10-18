@@ -10,7 +10,7 @@ const getRealEstateByIdReply =
 
 const getRealEstates = async (request, reply) => {
     try {
-        const query = getRealEstatesQuery(request, getRealEstatesReply);
+        const query = getRealEstatesQuery(request, table, getRealEstatesReply);
         console.log(query);
         const resultSet = await client.query({
             query,
