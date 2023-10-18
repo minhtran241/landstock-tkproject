@@ -44,7 +44,7 @@ const getRealEstatesQuery = (request, table, getRealEstatesReply) => {
     const limitValue = limit || maxUInt64;
 
     // Construct the final SQL query
-    const query = `SELECT ${getRealEstatesReply} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
+    const query = `SELECT ${getRealEstatesReply} FROM ${table} WHERE 1 = 1${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
 
     return query;
 };
@@ -59,7 +59,11 @@ const paramToCondition = (po, v) => {
                   .map((value) => `'${value}'`)
                   .join(',')})`
             : v; // If the operator is not 'IN', use the value as is
-    return `AND ${po.p} ${po.o} ${condition}`; // Return the SQL condition
+    let ta = po.p;
+    if (po.o == '>=' || po.o == '<=') {
+        ta = ta.replace('Tu', '').replace('Den', '');
+    }
+    return `AND ${ta} ${po.o} ${condition}`; // Return the SQL condition
 };
 
 // Function to remove null or undefined values from an object
