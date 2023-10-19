@@ -16,7 +16,7 @@
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
 - [Table of Contents](#-table-of-contents)
 - [Overview](#-overview)
@@ -175,7 +175,7 @@ Please ensure you have the following dependencies installed on your system:
 - [fastify](https://www.fastify.io/) (v3.20.1 or higher)
 - [ClickHouse](https://clickhouse.tech/) (v21.3.10.1 or higher)
 
-### 🔧 Installation
+### Installation
 
 1. Clone the landstock-tkproject repository:
 
@@ -241,7 +241,7 @@ The project maintainers will review your changes and provide feedback or merge t
 
 ## License
 
-This project is confidential and not open-source. All rights to this code and its usage are reserved exclusively for Minh Tran. Unauthorized distribution, modification, or use of this code is strictly prohibited. For any inquiries or collaboration requests, please contact [Your Company's Contact Information].
+This project is confidential and not open-source. All rights to this code and its usage are reserved exclusively for Minh Tran. Unauthorized distribution, modification, or use of this code is strictly prohibited. For any inquiries or collaboration requests, please [email me](mailto:minhthevenus@gmail.com).
 
 ---
 
