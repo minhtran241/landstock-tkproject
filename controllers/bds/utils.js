@@ -51,25 +51,26 @@ const getRealEstatesQuery = (request, table, getRealEstatesReply) => {
 
 // Define a function to convert a parameter and its value into a SQL condition
 const paramToCondition = (po, v) => {
+    let ta = po.p;
+    if (po.o === '>=' || po.o === '<=') {
+        ta = ta.replace('Tu', '').replace('Den', '');
+    }
     // If the operator is equal, larger than, or smaller than, use the operator as is
-    let condition = v;
+    let condition = `AND ${ta} ${po.o} ${v}`;
     // Check if the operator is 'IN'; if so, create a condition with comma-separated values enclosed in parentheses
     if (po.o === 'IN') {
         condition = `(${v
             .split(',')
             .map((value) => `'${value}'`)
             .join(',')})`;
+        condition += `AND ${ta} ${po.o}`;
     } else if (po.o === 'AND') {
         condition = v
             .split(',')
             .map((value) => `sLoaiHang LIKE '%${value}%'`)
             .join(' AND ');
     }
-    let ta = po.p;
-    if (po.o === '>=' || po.o === '<=') {
-        ta = ta.replace('Tu', '').replace('Den', '');
-    }
-    return `AND ${ta} ${po.o} ${condition}`; // Return the SQL condition
+    return condition; // Return the SQL condition
 };
 
 // Function to remove null or undefined values from an object
