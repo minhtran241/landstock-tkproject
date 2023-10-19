@@ -1,16 +1,12 @@
 <div align="center">
 <h1 align="center">
-<img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="100" />
+<img src="https://icons.veryicon.com/png/o/system/easemob-management-background-icon/rest-api.png" width="100" />
 <br>LANDSTOCK-TKPROJECT</h1>
-<h3>◦ HTTPStatus Exception: 401</h3>
 <h3>◦ Developed with the software and tools below.</h3>
 
 <p align="center">
-<img src="https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?style&logo=GNU-Bash&logoColor=white" alt="GNU%20Bash" />
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style&logo=JavaScript&logoColor=black" alt="JavaScript" />
 <img src="https://img.shields.io/badge/Fastify-000000.svg?style&logo=Fastify&logoColor=white" alt="Fastify" />
-<img src="https://img.shields.io/badge/JSON-000000.svg?style&logo=JSON&logoColor=white" alt="JSON" />
-<img src="https://img.shields.io/badge/Markdown-000000.svg?style&logo=Markdown&logoColor=white" alt="Markdown" />
+<img src="https://img.shields.io/badge/ClickHouse-00AFC7.svg?style&logo=ClickHouse&logoColor=white" alt="ClickHouse" />
 </p>
 <img src="https://img.shields.io/github/license/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub license" />
 <img src="https://img.shields.io/github/last-commit/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="git-last-commit" />
@@ -21,296 +17,242 @@
 ---
 
 ## 📖 Table of Contents
-- [📖 Table of Contents](#-table-of-contents)
-- [📍 Overview](#-overview)
-- [📦 Features](#-features)
-- [📂 Repository Structure](#-repository-structure)
-- [⚙️ Modules](#modules)
-- [🚀 Getting Started](#-getting-started)
-    - [🔧 Installation](#-installation)
-    - [🤖 Running landstock-tkproject](#-running-landstock-tkproject)
-    - [🧪 Tests](#-tests)
-- [🛣 Roadmap](#-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [👏 Acknowledgments](#-acknowledgments)
+
+- [Table of Contents](#-table-of-contents)
+- [Overview](#-overview)
+- [API Documentation](#-api-documentation)
+- [API Routes](#api-routes)
+- [Getting Started](#-getting-started)
+- [Installation](#-installation)
+- [Running landstock-tkproject](#-running-landstock-tkproject)
+- [Tests](#-tests)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
+## Overview
 
-## 📍 Overview
+- **Framework:** The project is built on the [Fastify](https://fastify.io/) framework, known for its high performance and low overhead.
 
-HTTPStatus Exception: 401
+- **Database:** We use the powerful [ClickHouse](https://clickhouse.tech/) database to efficiently store and manage real estate data.
 
----
-
-## 📦 Features
-
-HTTPStatus Exception: 401
+- **Domain:** Visit our domain at [https://b.thienkhoi.com](https://b.thienkhoi.com) to access the API's endpoints and explore the wealth of information available.
 
 ---
 
+## API Documentation
 
-## 📂 Repository Structure
-
-```sh
-└── landstock-tkproject/
-    ├── .gitignore
-    ├── README.md
-    ├── app.js
-    ├── controllers/
-    │   ├── bds/
-    │   ├── huongnha/
-    │   ├── kh/
-    │   ├── loaihang/
-    │   ├── phuongxa/
-    │   ├── quan/
-    │   └── tinh/
-    ├── data/
-    │   ├── clickhouse.js
-    │   ├── csv/
-    │   ├── insertCSVFile.sh
-    │   └── xlsx/
-    ├── package-lock.json
-    ├── package.json
-    ├── plugins/
-    │   ├── README.md
-    │   ├── sensible.js
-    │   ├── support.js
-    │   ├── swagger.js
-    │   └── usingEnv.js
-    ├── queries/
-    │   ├── create/
-    │   └── users-roles/
-    ├── routes/
-    │   ├── README.md
-    │   ├── bds/
-    │   ├── kh/
-    │   ├── list/
-    │   └── root.js
-    ├── test/
-    │   ├── helper.js
-    │   ├── plugins/
-    │   └── routes/
-    └── test.http
-```
-
+- Explore the API's endpoints and discover how to use it by checking out our detailed [Swagger documentation](https://b.thienkhoi.com/docs).
 
 ---
 
-## ⚙️ Modules
+## API Routes
 
-<details closed><summary>Root</summary>
+<details closed><summary>BDS</summary>
 
-| File                                                                                | Summary                   |
-| ---                                                                                 | ---                       |
-| [test.http](https://github.com/minhtran241/landstock-tkproject/blob/main/test.http) | HTTPStatus Exception: 401 |
-| [app.js](https://github.com/minhtran241/landstock-tkproject/blob/main/app.js)       | HTTPStatus Exception: 401 |
+**Description:**
+This route handles interactions related to real estate properties.
 
-</details>
+- **Get all the real estates:**  
+  Endpoint: `http://b.thienkhoi.com/bds`  
+  Method: `GET`  
+  Returns a list of all available real estate properties.
 
-<details closed><summary>Test</summary>
+- **Get a real estates by *sID*:**  
+  Endpoint: `http://b.thienkhoi.com/bds/sID`  
+  Method: `GET`
+  Query: `sID`
+  Returns a real estate properties that match the provided *sID*.
 
-| File                                                                                     | Summary                   |
-| ---                                                                                      | ---                       |
-| [helper.js](https://github.com/minhtran241/landstock-tkproject/blob/main/test/helper.js) | HTTPStatus Exception: 401 |
+- **Create a new real estates:**  
+  Endpoint: `http://b.thienkhoi.com/bds`  
+  Method: `POST`
+  Creates a new real estate property.
 
-</details>
+- **Delete a real estates by *sID*:**
+  Endpoint: `http://b.thienkhoi.com/bds/sID`  
+  Method: `DELETE`
+  Deletes a real estate property that match the provided *sID*.
 
-<details closed><summary>Plugins</summary>
+[More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/index.js)
 
-| File                                                                                                         | Summary                   |
-| ---                                                                                                          | ---                       |
-| [support.test.js](https://github.com/minhtran241/landstock-tkproject/blob/main/test/plugins/support.test.js) | HTTPStatus Exception: 401 |
-| [sensible.js](https://github.com/minhtran241/landstock-tkproject/blob/main/plugins/sensible.js)              | HTTPStatus Exception: 401 |
-| [usingEnv.js](https://github.com/minhtran241/landstock-tkproject/blob/main/plugins/usingEnv.js)              | HTTPStatus Exception: 401 |
-| [swagger.js](https://github.com/minhtran241/landstock-tkproject/blob/main/plugins/swagger.js)                | HTTPStatus Exception: 401 |
-| [support.js](https://github.com/minhtran241/landstock-tkproject/blob/main/plugins/support.js)                | HTTPStatus Exception: 401 |
-
-</details>
-
-<details closed><summary>Routes</summary>
-
-| File                                                                                                        | Summary                   |
-| ---                                                                                                         | ---                       |
-| [example.test.js](https://github.com/minhtran241/landstock-tkproject/blob/main/test/routes/example.test.js) | HTTPStatus Exception: 401 |
-| [root.test.js](https://github.com/minhtran241/landstock-tkproject/blob/main/test/routes/root.test.js)       | HTTPStatus Exception: 401 |
-| [root.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/root.js)                      | HTTPStatus Exception: 401 |
+Feel free to provide further information or documentation for your routes as needed in your README.
 
 </details>
 
-<details closed><summary>Users-roles</summary>
+<details closed><summary>List</summary>
 
-| File                                                                                                    | Summary                   |
-| ---                                                                                                     | ---                       |
-| [grant.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/users-roles/grant.sql) | HTTPStatus Exception: 401 |
+**Description:**
+This route contains sub-routes that list all properties of a certain type.
 
-</details>
+- **Get all the cities:**  
+  Endpoint: `http://b.thienkhoi.com/list/tinh`  
+  Method: `GET`  
+  Returns a list of all available cities.
 
-<details closed><summary>Create</summary>
+- **Get all the districts:**  
+  Endpoint: `http://b.thienkhoi.com/list/quan`  
+  Method: `GET`  
+  Returns a list of all available districts.
 
-| File                                                                                                             | Summary                   |
-| ---                                                                                                              | ---                       |
-| [tb_Tinh.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_Tinh.sql)           | HTTPStatus Exception: 401 |
-| [tb_BDS.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_BDS.sql)             | HTTPStatus Exception: 401 |
-| [tb_Quan.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_Quan.sql)           | HTTPStatus Exception: 401 |
-| [tb_KhachHang.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_KhachHang.sql) | HTTPStatus Exception: 401 |
-| [tb_HuongNha.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_HuongNha.sql)   | HTTPStatus Exception: 401 |
-| [tb_LoaiHang.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_LoaiHang.sql)   | HTTPStatus Exception: 401 |
-| [tb_PhuongXa.sql](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_PhuongXa.sql)   | HTTPStatus Exception: 401 |
+- **Get all the wards:**  
+  Endpoint: `http://b.thienkhoi.com/list/phuongxa`  
+  Method: `GET`  
+  Returns a list of all available wards.
 
-</details>
+- **Get all the directions:**  
+  Endpoint: `http://b.thienkhoi.com/list/huongnha`  
+  Method: `GET`  
+  Returns a list of all available directions.
 
-<details closed><summary>Tinh</summary>
+- **Get all the sections:**  
+  Endpoint: `http://b.thienkhoi.com/list/loaihang`  
+  Method: `GET`  
+  Returns a list of all available sections.
 
-| File                                                                                               | Summary                   |
-| ---                                                                                                | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/tinh/index.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list/tinh/index.js) | HTTPStatus Exception: 401 |
+[More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list)
 
-</details>
-
-<details closed><summary>Phuongxa</summary>
-
-| File                                                                                                   | Summary                   |
-| ---                                                                                                    | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/phuongxa/index.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list/phuongxa/index.js) | HTTPStatus Exception: 401 |
+Feel free to provide further information or documentation for your routes as needed in your README.
 
 </details>
 
-<details closed><summary>Loaihang</summary>
+<details closed><summary>Customers</summary>
 
-| File                                                                                                   | Summary                   |
-| ---                                                                                                    | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/loaihang/index.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list/loaihang/index.js) | HTTPStatus Exception: 401 |
+**Description:**
+This route handles interactions related to customer properties.
 
-</details>
+- **Get all the customers:**  
+  Endpoint: `http://b.thienkhoi.com/kh`  
+  Method: `GET`  
+  Returns a list of all available customers.
 
-<details closed><summary>Bds</summary>
+- **Get a customer by *sID*:**
+  Endpoint: `http://b.thienkhoi.com/kh/sID`  
+  Method: `GET`
+  Query: `sID`
+  Returns a customer that match the provided *sID*.
 
-| File                                                                                              | Summary                   |
-| ---                                                                                               | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/bds/index.js) | HTTPStatus Exception: 401 |
-| [utils.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/bds/utils.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/index.js)      | HTTPStatus Exception: 401 |
+- **Create a new customer:**
+  Endpoint: `http://b.thienkhoi.com/kh`  
+  Method: `POST`
+  Creates a new customer.
 
-</details>
+- **Delete a customer by *sID*:**
+  Endpoint: `http://b.thienkhoi.com/kh/sID`  
+  Method: `DELETE`
+  Deletes a customer that match the provided *sID*.
 
-<details closed><summary>Quan</summary>
+[More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)
 
-| File                                                                                               | Summary                   |
-| ---                                                                                                | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/quan/index.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list/quan/index.js) | HTTPStatus Exception: 401 |
-
-</details>
-
-<details closed><summary>Kh</summary>
-
-| File                                                                                             | Summary                   |
-| ---                                                                                              | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/kh/index.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)      | HTTPStatus Exception: 401 |
-
-</details>
-
-<details closed><summary>Huongnha</summary>
-
-| File                                                                                                   | Summary                   |
-| ---                                                                                                    | ---                       |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/controllers/huongnha/index.js) | HTTPStatus Exception: 401 |
-| [index.js](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list/huongnha/index.js) | HTTPStatus Exception: 401 |
+Feel free to provide further information or documentation for your routes as needed in your README.
 
 </details>
 
 ---
 
-## 🚀 Getting Started
+## API Models
+
+- BDS models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_BDS.sql)
+- City models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_Tinh.sql)
+- District models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_Quan.sql)
+- Ward models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_PhuongXa.sql)
+- Direction models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_HuongNha.sql)
+- Section models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_LoaiHang.sql)
+- Customer models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_KhachHang.sql)
+
+---
+
+## Getting Started
 
 ***Dependencies***
 
 Please ensure you have the following dependencies installed on your system:
 
-`- ℹ️ Dependency 1`
-
-`- ℹ️ Dependency 2`
-
-`- ℹ️ ...`
+- [Node.js](https://nodejs.org/en/) (v14.17.0 or higher)
+- [npm](https://www.npmjs.com/) (v6.14.13 or higher)
+- [fastify](https://www.fastify.io/) (v3.20.1 or higher)
+- [ClickHouse](https://clickhouse.tech/) (v21.3.10.1 or higher)
 
 ### 🔧 Installation
 
 1. Clone the landstock-tkproject repository:
+
 ```sh
 git clone https://github.com/minhtran241/landstock-tkproject
 ```
 
 2. Change to the project directory:
+
 ```sh
 cd landstock-tkproject
 ```
 
 3. Install the dependencies:
+
 ```sh
 npm install
 ```
 
-### 🤖 Running landstock-tkproject
+### Running landstock-tkproject
 
 ```sh
-node app.js
+npm run start
 ```
 
-### 🧪 Tests
+### Tests
+
 ```sh
 npm test
 ```
 
 ---
 
-
-## 🛣 Roadmap
-
-> - [X] `ℹ️  Task 1: Implement X`
-> - [ ] `ℹ️  Task 2: Implement Y`
-> - [ ] `ℹ️ ...`
-
-
----
-
-## 🤝 Contributing
+## Contributing
 
 Contributions are always welcome! Please follow these steps:
+
 1. Fork the project repository. This creates a copy of the project on your account that you can modify without affecting the original project.
 2. Clone the forked repository to your local machine using a Git client like Git or GitHub Desktop.
 3. Create a new branch with a descriptive name (e.g., `new-feature-branch` or `bugfix-issue-123`).
+
 ```sh
 git checkout -b new-feature-branch
 ```
+
 4. Make changes to the project's codebase.
 5. Commit your changes to your local branch with a clear commit message that explains the changes you've made.
+
 ```sh
 git commit -m 'Implemented new feature.'
 ```
+
 6. Push your changes to your forked repository on GitHub using the following command
+
 ```sh
 git push origin new-feature-branch
 ```
+
 7. Create a new pull request to the original project repository. In the pull request, describe the changes you've made and why they're necessary.
 The project maintainers will review your changes and provide feedback or merge them into the main branch.
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the `ℹ️  LICENSE-TYPE` License. See the [LICENSE-Type](LICENSE) file for additional info.
+This project is confidential and not open-source. All rights to this code and its usage are reserved exclusively for Minh Tran. Unauthorized distribution, modification, or use of this code is strictly prohibited. For any inquiries or collaboration requests, please contact [Your Company's Contact Information].
 
 ---
 
-## 👏 Acknowledgments
+## Acknowledgments
 
-`- ℹ️ List any resources, contributors, inspiration, etc.`
+- [Fastify](https://fastify.io/)
+- [ClickHouse](https://clickhouse.tech/)
+- [Swagger](https://swagger.io/)
+- [Node.js](https://nodejs.org/en/)
+- [npm](https://www.npmjs.com/)
+- [Moment.js](https://momentjs.com/)
 
 [↑ Return](#Top)
 
