@@ -59,16 +59,16 @@ const paramToCondition = (po, v) => {
     let condition = `AND ${ta} ${po.o} ${v}`;
     // Check if the operator is 'IN'; if so, create a condition with comma-separated values enclosed in parentheses
     if (po.o === 'IN') {
-        condition = `AND (${v
+        condition = `(${v
             .split(',')
             .map((value) => `'${value}'`)
             .join(',')})`;
         condition += `AND ${ta} ${po.o}`;
     } else if (po.o === 'AND') {
-        condition = v
+        condition = `AND ${v
             .split(',')
             .map((value) => `sLoaiHang LIKE '%${value}%'`)
-            .join(' AND ');
+            .join(' AND ')}`;
     }
     return condition; // Return the SQL condition
 };
