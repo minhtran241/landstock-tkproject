@@ -11,21 +11,22 @@ module.exports = fp(async function (fastify, opts) {
         routePrefix: '/docs',
         swagger: {
             info: {
-                title: 'My FirstAPP Documentation',
+                title: 'Landstock-TKProject API Documentation',
                 description: 'My FirstApp Backend Documentation description',
                 version: '0.1.0',
-                termsOfService: 'https://mywebsite.io/tos',
+                termsOfService:
+                    'https://github.com/minhtran241/landstock-tkproject/tree/main',
                 contact: {
-                    name: 'John Doe',
-                    url: 'https://www.johndoe.com',
-                    email: 'john.doe@email.com',
+                    name: 'Minh Tran',
+                    url: 'https://minhtran.netlify.app',
+                    email: 'minhthevenus@gmail.com',
                 },
             },
             externalDocs: {
-                url: 'https://www.johndoe.com/api/',
+                url: 'https://github.com/minhtran241/landstock-tkproject/tree/main',
                 description: 'Find more info here',
             },
-            host: '127.0.0.1:3000',
+            host: 'https://b.thienkhoi.com',
             basePath: '',
             schemes: ['http', 'https'],
             consumes: ['application/json'],
@@ -60,7 +61,7 @@ module.exports = fp(async function (fastify, opts) {
             },
         },
         uiConfig: {
-            docExpansion: 'none', // expand/not all the documentations none|list|full
+            docExpansion: 'full', // expand/not all the documentations none|list|full
             deepLinking: true,
         },
         uiHooks: {
