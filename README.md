@@ -195,6 +195,12 @@ cd landstock-tkproject
 npm install
 ```
 
+### Environment Variables
+
+- Create a `.env` file in the root directory of the project.
+- Add the listed environment variables in the [.env.example](https://github.com/minhtran241/landstock-tkproject/blob/main/.env.example) file to the `.env` file.
+- Replace the values of the environment variables with your own values.
+
 ### Running landstock-tkproject
 
 ```sh

@@ -1,6 +1,7 @@
 'use strict';
 const clickhouse = require('@clickhouse/client');
 
+// Create a Clickhouse client instance
 const client = clickhouse.createClient({
     host: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
     username: process.env.CLICKHOUSE_USER ?? 'default',

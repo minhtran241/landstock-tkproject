@@ -1,8 +1,8 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { table } = require('./constants');
 
-const table = 'tb_Tinh';
-
+// Function to get all cities
 const getCities = async (request, reply) => {
     try {
         const query = `SELECT iID_MaTinh, sTenTinh FROM ${table}`;
@@ -18,6 +18,7 @@ const getCities = async (request, reply) => {
     }
 };
 
+// Function to get a city by its ID
 const getCityById = async (request, reply) => {
     const { id } = request.params;
     const query = `SELECT iID_MaTinh, sTenTinh FROM ${table} WHERE iID_MaTinh = {id: Int64}`;
@@ -42,6 +43,7 @@ const getCityById = async (request, reply) => {
     }
 };
 
+// Function to insert a new city
 const postCity = async (request, reply) => {
     try {
         const { iID_MaTinh, sTenTinh } = request.body;
@@ -61,7 +63,7 @@ const postCity = async (request, reply) => {
         reply.status(500).send({ error: 'query failed' });
     }
 };
-
+// Function to delete a city by its ID
 const deleteCity = async (request, reply) => {
     const { id } = request.params;
     const query = `ALTER TABLE ${table} DELETE WHERE iID_MaTinh = {id: Int64}`;
