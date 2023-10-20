@@ -10,11 +10,11 @@ const {
 const getWards = async (request, reply) => {
     try {
         let query = getWardsQuery(request.query);
-        console.info(query);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
         });
+        console.log(resultSet);
         const wardSet = await resultSet.json();
         reply.send(wardSet);
     } catch (error) {
