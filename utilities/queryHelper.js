@@ -77,11 +77,6 @@ function cleanAndConvert(values) {
                 } else if (key.startsWith('b')) {
                     // Convert boolean attributes to boolean
                     cleanedValues[key] = Boolean(values[key]);
-                } else if (key === 'dNgayTao') {
-                    // You may want to parse and validate the date here
-                    cleanedValues[key] = moment
-                        .utc(new Date())
-                        .format('YYYY-MM-DD HH:mm:ss');
                 } else if (key.startsWith('d')) {
                     // Convert date attributes to date
                     cleanedValues[key] = moment(values[key]).format(

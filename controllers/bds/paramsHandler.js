@@ -1,6 +1,5 @@
 'use strict';
 
-const moment = require('moment');
 const {
     maxUInt64,
     paramToCondition,
@@ -118,7 +117,7 @@ const postRealEstateCleanedData = (data) => {
         sLat,
         sLng,
         sHotline,
-        dNgayTao: moment.utc(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        dNgayTao: new Date(),
     };
 
     return cleanAndConvert(values);
