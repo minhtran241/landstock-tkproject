@@ -1,22 +1,18 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { table } = require('./constants');
+const {
+    getDistrictsQuery,
+    getDistrictByIdQuery,
+    deleteDistrictByIdQuery,
+} = require('./paramsHandler');
 
-const table = 'tb_Quan';
-
+// Function to get all districts
 const getDistricts = async (request, reply) => {
     try {
-        let query, query_params;
-        const { iID_MaTinh } = request.query;
-        if (iID_MaTinh) {
-            query = `SELECT iID_MaQuan, sTenQuan FROM ${table} WHERE iID_MaTinh = {iID_MaTinh: Int64}`;
-            query_params = { iID_MaTinh: Number(iID_MaTinh) };
-        } else {
-            query = `SELECT * FROM ${table}`;
-            query_params = {};
-        }
+        const query = getDistrictsQuery(request.query);
         const resultSet = await client.query({
             query,
-            query_params,
             format: 'JSONEachRow',
         });
         const districtSet = await resultSet.json();
@@ -27,14 +23,13 @@ const getDistricts = async (request, reply) => {
     }
 };
 
+// Function to get a district by its ID
 const getDistrictById = async (request, reply) => {
-    const { id } = request.params;
-    const query = `SELECT iID_MaQuan, sTenQuan FROM ${table} WHERE iID_MaQuan = {id: Int64}`;
+    const query = getDistrictByIdQuery(request.params);
 
     try {
         const result = await client.query({
             query,
-            query_params: { id: Number(id) },
             format: 'JSONEachRow',
         });
         const district = await result.json();
@@ -50,6 +45,7 @@ const getDistrictById = async (request, reply) => {
     }
 };
 
+// Function to insert a new district
 const postDistrict = async (request, reply) => {
     try {
         const { iID_MaQuan, sTenQuan, iID_MaTinh } = request.body;
@@ -71,9 +67,9 @@ const postDistrict = async (request, reply) => {
     }
 };
 
+// Function to delete a district by its ID
 const deleteDistrict = async (request, reply) => {
-    const { id } = request.params;
-    const query = `ALTER TABLE ${table} DELETE WHERE iID_MaQuan = {id: Int64}`;
+    const query = deleteDistrictByIdQuery(request.params);
     try {
         await client.query({
             query,
