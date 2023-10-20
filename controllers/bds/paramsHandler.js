@@ -61,66 +61,8 @@ const getRealEstateByIdQuery = ({ sID }) => {
 
 // Function to remove null or undefined values from an object
 const postRealEstateCleanedData = (data) => {
-    // Extract data from the request body
-    const {
-        sMa,
-        sNoiDung,
-        sTenTinh,
-        iID_MaTinh,
-        sTenQuan,
-        iID_MaQuan,
-        sTenPhuongXa,
-        iID_MaPhuongXa,
-        sTenDuong,
-        sLoaiHang,
-        iDienTich,
-        iSoTang,
-        iMatTien,
-        iGiaChaoHopDong,
-        sGiaChaoHopDong,
-        sHuongNha,
-        iID_HuongNha,
-        iSoPhongNgu,
-        iSoToilet,
-        sMoTa,
-        sFiles,
-        sAvatar,
-        sLat,
-        sLng,
-        sHotline,
-    } = data;
-
-    // Construct the values object
-    const values = {
-        sMa,
-        sNoiDung,
-        sTenTinh,
-        iID_MaTinh,
-        sTenQuan,
-        iID_MaQuan,
-        sTenPhuongXa,
-        iID_MaPhuongXa,
-        sTenDuong,
-        sLoaiHang,
-        iDienTich,
-        iSoTang,
-        iMatTien,
-        iGiaChaoHopDong,
-        sGiaChaoHopDong,
-        sHuongNha,
-        iID_HuongNha,
-        iSoPhongNgu,
-        iSoToilet,
-        sMoTa,
-        sFiles,
-        sAvatar,
-        sLat,
-        sLng,
-        sHotline,
-        dNgayTao: new Date(),
-    };
-
-    return cleanAndConvert(values);
+    data.dNgayTao = new Date();
+    return cleanAndConvert(data);
 };
 
 const deleteRealEstateByIdQuery = ({ sID }) => {
