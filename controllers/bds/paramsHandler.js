@@ -4,7 +4,7 @@ const moment = require('moment');
 const {
     maxUInt64,
     paramToCondition,
-    removeNullValues,
+    cleanAndConvert,
 } = require('../../utilities/queryHelper');
 const { concatWithSpace } = require('../../utilities/string');
 const { table, getRealEstatesReply } = require('./constants');
@@ -121,7 +121,7 @@ const postRealEstateCleanedData = (data) => {
         dNgayTao: moment.utc(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     };
 
-    return removeNullValues(values);
+    return cleanAndConvert(values);
 };
 
 const deleteRealEstateByIdQuery = ({ sID }) => {

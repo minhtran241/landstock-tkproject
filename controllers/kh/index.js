@@ -46,10 +46,18 @@ const getCustomerById = async (request, reply) => {
 // Function to insert a new customer
 const postCustomer = async (request, reply) => {
     try {
-        const values = removeNullValues(request.body);
+        const { sTen, sDienThoai, sEmail, iTrangThai, sMa } = request.body;
         await client.insert({
             table,
-            values: [values],
+            values: [
+                {
+                    sTen: String(sTen),
+                    sDienThoai: String(sDienThoai),
+                    sEmail: String(sEmail),
+                    iTrangThai: Number(iTrangThai),
+                    sMa: String(sMa),
+                },
+            ],
             format: 'JSONEachRow',
         });
         reply.code(201).send({ message: 'customer inserted successfully' });
