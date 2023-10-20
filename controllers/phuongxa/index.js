@@ -10,6 +10,7 @@ const {
 const getWards = async (request, reply) => {
     try {
         let query = getWardsQuery(request.query);
+        console.info(query);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
