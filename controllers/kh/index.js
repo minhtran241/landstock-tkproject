@@ -1,5 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { removeNullValues } = require('../../utilities/queryHelper');
 const { table, replyCols } = require('./constants');
 
 // Function to get all customers
@@ -45,17 +46,10 @@ const getCustomerById = async (request, reply) => {
 // Function to insert a new customer
 const postCustomer = async (request, reply) => {
     try {
-        const { sTen, sDienThoai, iTrangThai, sMa } = request.body;
+        const values = removeNullValues(request.body);
         await client.insert({
             table,
-            values: [
-                {
-                    sTen: String(sTen),
-                    sDienThoai: String(sDienThoai),
-                    iTrangThai: Number(iTrangThai),
-                    sMa: String(sMa),
-                },
-            ],
+            values: [values],
             format: 'JSONEachRow',
         });
         reply.code(201).send({ message: 'customer inserted successfully' });
