@@ -1,9 +1,8 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { table, replyCols } = require('./constants');
 
-const table = 'tb_KhachHang';
-const replyCols = 'sTen, sDienThoai, iTrangThai, sMa';
-
+// Function to get all customers
 const getCustomers = async (request, reply) => {
     try {
         const query = `SELECT ${replyCols} FROM ${table}`;
@@ -19,6 +18,7 @@ const getCustomers = async (request, reply) => {
     }
 };
 
+// Function to get a customer by its sID
 const getCustomerById = async (request, reply) => {
     const { sID } = request.params;
     const query = `SELECT ${replyCols} FROM ${table} WHERE sID = toUUID({sID: String})`;
@@ -42,6 +42,7 @@ const getCustomerById = async (request, reply) => {
     }
 };
 
+// Function to insert a new customer
 const postCustomer = async (request, reply) => {
     try {
         const { sTen, sDienThoai, iTrangThai, sMa } = request.body;
@@ -64,6 +65,7 @@ const postCustomer = async (request, reply) => {
     }
 };
 
+// Function to delete a customer by its sID
 const deleteCustomer = async (request, reply) => {
     const { sID } = request.params;
     const query = `ALTER TABLE ${table} DELETE WHERE sID = toUUID({sID: String})`;

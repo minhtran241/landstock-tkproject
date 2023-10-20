@@ -3,6 +3,7 @@ const client = require('../../data/clickhouse');
 
 const table = 'tb_LoaiHang';
 
+// Function to get all sections
 const getSections = async (request, reply) => {
     try {
         const query = `SELECT sCode, sTen FROM ${table}`;
@@ -18,6 +19,7 @@ const getSections = async (request, reply) => {
     }
 };
 
+// Function to get a section by its Code
 const getSectionByCode = async (request, reply) => {
     const { code } = request.params;
     const query = `SELECT sCode, sTen FROM ${table} WHERE sCode = {code: String}`;
@@ -41,6 +43,7 @@ const getSectionByCode = async (request, reply) => {
     }
 };
 
+// Function to insert a new section
 const postSection = async (request, reply) => {
     try {
         const { sCode, sTen } = request.body;
@@ -61,6 +64,7 @@ const postSection = async (request, reply) => {
     }
 };
 
+// Function to delete a section by its Code
 const deleteSection = async (request, reply) => {
     const { code } = request.params;
     const query = `ALTER TABLE ${table} DELETE WHERE sCode = {code: String}`;

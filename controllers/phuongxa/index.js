@@ -1,22 +1,17 @@
 'use strict';
 const client = require('../../data/clickhouse');
-
-const table = 'tb_PhuongXa';
+const { table } = require('./constants');
+const {
+    getWardsQuery,
+    getWardByIdQuery,
+    deleteWardByIdQuery,
+} = require('./paramsHandler');
 
 const getWards = async (request, reply) => {
     try {
-        let query, query_params;
-        const { iID_MaQuan } = request.query;
-        if (iID_MaQuan) {
-            query = `SELECT iID_MaPhuongXa, sTenPhuongXa FROM ${table} WHERE iID_MaQuan = {iID_MaQuan: Int64}`;
-            query_params = { iID_MaQuan: Number(iID_MaQuan) };
-        } else {
-            query = `SELECT * FROM ${table}`;
-            query_params = {};
-        }
+        let query = getWardsQuery(request.query);
         const resultSet = await client.query({
             query,
-            query_params,
             format: 'JSONEachRow',
         });
         const wardSet = await resultSet.json();
@@ -28,13 +23,11 @@ const getWards = async (request, reply) => {
 };
 
 const getWardById = async (request, reply) => {
-    const { id } = request.params;
-    const query = `SELECT iID_MaPhuongXa, sTenPhuongXa FROM ${table} WHERE iID_MaPhuongXa = {id: Int64}`;
+    const query = getWardByIdQuery(request.params);
 
     try {
         const result = await client.query({
             query,
-            query_params: { id: Number(id) },
             format: 'JSONEachRow',
         });
         const ward = await result.json();
@@ -72,12 +65,10 @@ const postWard = async (request, reply) => {
 };
 
 const deleteWard = async (request, reply) => {
-    const { id } = request.params;
-    const query = `ALTER TABLE ${table} DELETE WHERE iID_MaPhuongXa = {id: Int64}`;
+    const query = deleteWardByIdQuery(request.params);
     try {
         await client.query({
             query,
-            query_params: { id: Number(id) },
         });
         reply.send({ message: 'ward deleted successfully' });
     } catch (error) {
