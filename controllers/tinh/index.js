@@ -1,5 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 
 // Function to get all cities
@@ -46,15 +47,10 @@ const getCityById = async (request, reply) => {
 // Function to insert a new city
 const postCity = async (request, reply) => {
     try {
-        const { iID_MaTinh, sTenTinh } = request.body;
+        const value = cleanAndConvert(request.body);
         await client.insert({
             table,
-            values: [
-                {
-                    iID_MaTinh: Number(iID_MaTinh),
-                    sTenTinh: String(sTenTinh),
-                },
-            ],
+            values: [value],
             format: 'JSONEachRow',
         });
         reply.code(201).send({ message: 'city inserted successfully' });

@@ -1,5 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 const {
     getDistrictsQuery,
@@ -48,16 +49,10 @@ const getDistrictById = async (request, reply) => {
 // Function to insert a new district
 const postDistrict = async (request, reply) => {
     try {
-        const { iID_MaQuan, sTenQuan, iID_MaTinh } = request.body;
+        const value = cleanAndConvert(request.body);
         await client.insert({
             table,
-            values: [
-                {
-                    iID_MaQuan: Number(iID_MaQuan),
-                    sTenQuan: String(sTenQuan),
-                    iID_MaTinh: Number(iID_MaTinh),
-                },
-            ],
+            values: [value],
             format: 'JSONEachRow',
         });
         reply.code(201).send({ message: 'district inserted successfully' });
