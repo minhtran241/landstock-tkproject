@@ -47,14 +47,14 @@ const po_KhachHang = [
 const po_Tinh = [
     { p: 'sID', o: 'EQUAL', a: '', sbi: false },
     { p: 'iID_MaTinh', o: 'IN', a: 'kspdc', sbi: true },
-    { p: 'sTenTinh', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'sTenTinh', o: 'IN', a: 'sp', sbi: true },
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
 
 const po_Quan = [
     { p: 'sID', o: 'EQUAL', a: '', sbi: false },
     { p: 'iID_MaQuan', o: 'IN', a: 'kspdc', sbi: true },
-    { p: 'sTenQuan', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'sTenQuan', o: 'IN', a: 'sp', sbi: true },
     { p: 'iID_MaTinh', o: 'IN', a: 'spdc', sbi: true },
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
@@ -62,7 +62,7 @@ const po_Quan = [
 const po_PhuongXa = [
     { p: 'sID', o: 'EQUAL', a: '', sbi: false },
     { p: 'iID_MaPhuongXa', o: 'IN', a: 'kspdc', sbi: true },
-    { p: 'sTenPhuongXa', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'sTenPhuongXa', o: 'IN', a: 'sp', sbi: true },
     { p: 'iID_MaQuan', o: 'IN', a: 'spdc', sbi: true },
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
@@ -70,14 +70,14 @@ const po_PhuongXa = [
 const po_HuongNha = [
     { p: 'sID', o: 'EQUAL', a: '', sbi: false },
     { p: 'iID_HuongNha', o: 'IN', a: 'kspdc', sbi: true },
-    { p: 'sHuongNha', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'sHuongNha', o: 'IN', a: 'sp', sbi: true },
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
 
 const po_LoaiHang = [
     { p: 'sID', o: 'EQUAL', a: '', sbi: false },
     { p: 'sCode', o: 'IN', a: 'kspdc', sbi: true },
-    { p: 'sTen', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'sTen', o: 'IN', a: 'sp', sbi: true },
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
 
