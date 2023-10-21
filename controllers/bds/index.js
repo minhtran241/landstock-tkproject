@@ -7,10 +7,12 @@ const {
     deleteRealEstateByIdQuery,
 } = require('./paramsHandler');
 const { table } = require('./constants');
+const { getSelectQuery } = require('../../utilities/queryHelper');
+const { po_BDS } = require('../../utilities/paramsOperations');
 
 const getRealEstates = async (request, reply) => {
     try {
-        const query = getRealEstatesQuery(request.query);
+        const query = getSelectQuery(request.query, po_BDS);
         console.info(query);
         const resultSet = await client.query({
             query,

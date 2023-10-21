@@ -11,7 +11,7 @@ const paramToCondition = (paramObject, requestValue) => {
     let modifiedParamName = paramName;
 
     // If the operator is greater than or equal to or smaller than or equal to, remove 'Tu' or 'Den' prefix
-    if (['>=', '<='].includes(operator)) {
+    if (['>=', '<=', 'BETWEEN'].includes(operator)) {
         modifiedParamName = paramName.replace(/Tu|Den/, '');
     }
 
@@ -97,9 +97,48 @@ function cleanAndConvert(values) {
     return cleanedValues;
 }
 
+const getSelectAttributes = (paramsOperations) => {
+    const selectAttributes = [];
+    paramsOperations.forEach((po) => {
+        if (po.a.includes('s')) {
+            selectAttributes.push(po.p);
+        }
+    });
+    return selectAttributes;
+};
+
+// Main function to construct the SQL query
+const getSelectQuery = (requestQuery, paramsOperations) => {
+    // Initialize the WHERE clause
+    let where = '';
+
+    if (requestQuery) {
+        paramsOperations.forEach((po) => {
+            const value = requestQuery[po.p];
+            if (value) {
+                // Use the paramToCondition function to convert the parameter and its value into a SQL condition
+                where = concatWithSpace(where, paramToCondition(po, value));
+            }
+        });
+    }
+
+    // Add the LIMIT and OFFSET clauses
+    const { skip, limit } = requestQuery;
+    const skipValue = skip || 0;
+    const limitValue = limit || maxUInt64;
+
+    // Construct the final SQL query
+    const query = `SELECT ${getSelectAttributes(
+        paramsOperations
+    )} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
+
+    return query;
+};
+
 module.exports = {
     maxUInt64,
     paramToCondition,
     removeNullValues,
     cleanAndConvert,
+    getSelectQuery,
 };
