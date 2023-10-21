@@ -60,6 +60,8 @@ This route handles health checks for the API.
   Method: `GET`  
   Returns the health of the API.
 
+</details>
+
 <details closed><summary>BDS</summary>
 
 **Description:**
@@ -87,8 +89,6 @@ This route handles interactions related to real estate properties.
   Deletes a real estate property that match the provided *sID*.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/index.js)
-
-Feel free to provide further information or documentation for your routes as needed in your README.
 
 </details>
 
@@ -124,8 +124,6 @@ This route contains sub-routes that list all properties of a certain type.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list)
 
-Feel free to provide further information or documentation for your routes as needed in your README.
-
 </details>
 
 <details closed><summary>Customers</summary>
@@ -155,8 +153,6 @@ This route handles interactions related to customer properties.
   Deletes a customer that match the provided *sID*.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)
-
-Feel free to provide further information or documentation for your routes as needed in your README.
 
 </details>
 
