@@ -26,7 +26,7 @@ const sqlConditionGenerators = {
     IN: (po, values) => {
         const vps = values[po.p]
             .split(',')
-            .map((val) => `'${val}'`)
+            .map((val) => (po.p.startsWith('s') ? `'${val}'` : `${val}`))
             .join(',');
         return `AND ${po.p} IN (${vps})`;
     },
