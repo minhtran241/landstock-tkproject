@@ -63,7 +63,7 @@ const getSelectByIdQuery = async (
         )} FROM ${table} WHERE ${idCol} = '${id}'`;
     }
     console.log(query);
-    return query;
+    return String(query).trim();
 };
 
 module.exports = {
