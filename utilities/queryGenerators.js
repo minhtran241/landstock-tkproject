@@ -1,12 +1,12 @@
 'use strict';
 
-const { concatWithSpace, generateBetweenParams } = require('./string');
 const { maxUInt64 } = require('./constants');
 const { paramToCondition } = require('./conditionGenerators');
 const {
     getSelectByIdAttributes,
     getAttributesByAction,
 } = require('./actionGenerators');
+const { cleanAndConvert } = require('./queryHelper');
 
 // Function to generate a SELECT query from the request query parameters
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
