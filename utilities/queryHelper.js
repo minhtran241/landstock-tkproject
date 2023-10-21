@@ -57,7 +57,10 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
             const { from, to } = generateBetweenParams(po.p);
             if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
-                where = concatWithSpace(where, paramToCondition(po, values));
+                where = concatWithSpace(
+                    where,
+                    paramToCondition(po, requestQuery)
+                );
             }
         });
     }
