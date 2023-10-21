@@ -109,8 +109,16 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     if (requestQuery) {
         paramsOperations.forEach((po) => {
+            // Handle the special case of BETWEEN
+            let isQueryBetween = false;
+            if (po.o === 'BETWEEN') {
+                const { from, to } = generateBetweenParams(po.p);
+                if (requestQuery[from] || requestQuery[to]) {
+                    isQueryBetween = true;
+                }
+            }
             let value = requestQuery[po.p];
-            if (value) {
+            if (value || isQueryBetween) {
                 // Handle the special case of BETWEEN
                 if (po.o === 'BETWEEN') {
                     const { from, to } = generateBetweenParams(po.p);
