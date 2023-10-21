@@ -39,7 +39,7 @@ const sqlConditionGenerators = {
     },
     BETWEEN: (po, requestValue) => {
         const { from, to } = generateBetweenParams(po.p);
-        return `AND ${po.p} BETWEEN ${requestValue[from]} AND ${requestValue[to]}`;
+        return `AND (${po.p} BETWEEN ${requestValue[from]} AND ${requestValue[to]})`;
     },
 };
 
