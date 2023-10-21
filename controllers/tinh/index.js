@@ -1,12 +1,20 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { po_Tinh } = require('../../utilities/paramsOperations');
+const {
+    getSelectQuery,
+    getSelectByIdQuery,
+    getPostQueryValues,
+    getDeleteQuery,
+} = require('../../utilities/queryGenerators');
 const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 
 // Function to get all cities
 const getCities = async (request, reply) => {
     try {
-        const query = `SELECT iID_MaTinh, sTenTinh FROM ${table}`;
+        // const query = `SELECT iID_MaTinh, sTenTinh FROM ${table}`;
+        const query = getSelectQuery(request.query, po_Tinh, table);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -21,13 +29,18 @@ const getCities = async (request, reply) => {
 
 // Function to get a city by its ID
 const getCityById = async (request, reply) => {
-    const { id } = request.params;
-    const query = `SELECT iID_MaTinh, sTenTinh FROM ${table} WHERE iID_MaTinh = {id: Int64}`;
+    // const { id } = request.params;
+    // const query = `SELECT iID_MaTinh, sTenTinh FROM ${table} WHERE iID_MaTinh = {id: Int64}`;
 
     try {
+        const query = getSelectByIdQuery(
+            request.params,
+            po_Tinh,
+            table,
+            'iID_MaTinh'
+        );
         const result = await client.query({
             query,
-            query_params: { id: Number(id) },
             format: 'JSONEachRow',
         });
         const city = await result.json();
@@ -47,7 +60,8 @@ const getCityById = async (request, reply) => {
 // Function to insert a new city
 const postCity = async (request, reply) => {
     try {
-        const value = cleanAndConvert(request.body);
+        // const value = cleanAndConvert(request.body);
+        const value = getPostQueryValues(request.body, po_Tinh);
         await client.insert({
             table,
             values: [value],
@@ -61,12 +75,12 @@ const postCity = async (request, reply) => {
 };
 // Function to delete a city by its ID
 const deleteCity = async (request, reply) => {
-    const { id } = request.params;
-    const query = `ALTER TABLE ${table} DELETE WHERE iID_MaTinh = {id: Int64}`;
+    // const { id } = request.params;
+    // const query = `ALTER TABLE ${table} DELETE WHERE iID_MaTinh = {id: Int64}`;
     try {
+        const query = getDeleteQuery(request.params, table, 'iID_MaTinh');
         await client.query({
             query,
-            query_params: { id: Number(id) },
         });
         reply.send({ message: 'city deleted successfully' });
     } catch (error) {

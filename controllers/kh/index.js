@@ -7,8 +7,7 @@ const {
     getPostQueryValues,
     getDeleteQuery,
 } = require('../../utilities/queryGenerators');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
-const { table, replyCols } = require('./constants');
+const { table } = require('./constants');
 
 // Function to get all customers
 const getCustomers = async (request, reply) => {
@@ -28,8 +27,6 @@ const getCustomers = async (request, reply) => {
 
 // Function to get a customer by its sID
 const getCustomerById = async (request, reply) => {
-    // const { sID } = request.params;
-    // const query = `SELECT ${replyCols} FROM ${table} WHERE sID = toUUID({sID: String})`;
     try {
         const query = getSelectByIdQuery(
             request.params,
@@ -57,7 +54,6 @@ const getCustomerById = async (request, reply) => {
 // Function to insert a new customer
 const postCustomer = async (request, reply) => {
     try {
-        // const value = cleanAndConvert(request.body);
         const value = getPostQueryValues(request.body, po_KhachHang);
         await client.insert({
             table,
@@ -73,13 +69,10 @@ const postCustomer = async (request, reply) => {
 
 // Function to delete a customer by its sID
 const deleteCustomer = async (request, reply) => {
-    // const { sID } = request.params;
-    // const query = `ALTER TABLE ${table} DELETE WHERE sID = toUUID({sID: String})`;
-    const query = getDeleteQuery(request.params, table, 'sID');
     try {
+        const query = getDeleteQuery(request.params, table, 'sID');
         await client.query({
             query,
-            query_params: { sID: String(sID) },
         });
         reply.send({ message: 'customer deleted successfully' });
     } catch (error) {

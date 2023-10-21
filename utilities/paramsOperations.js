@@ -44,30 +44,13 @@ const po_KhachHang = [
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
 
-// const po_BDS = [
-//     { p: 'iID_MaTinh', o: 'IN', a: 'spd', sbi: true },
-//     { p: 'iID_MaQuan', o: 'IN' },
-//     { p: 'sLoaiHang', o: 'LIKEAND' },
-//     { p: 'iTuDienTich', o: '>=' },
-//     { p: 'iDenDienTich', o: '<=' },
-//     { p: 'iTuTang', o: '>=' },
-//     { p: 'iDenTang', o: '<=' },
-//     { p: 'iTuMatTien', o: '>=' },
-//     { p: 'iDenMatTien', o: '<=' },
-//     { p: 'iTuGia', o: '>=' },
-//     { p: 'iDenGia', o: '<=' },
-//     { p: 'iID_HuongNha', o: 'IN' },
-//     { p: 'iSoPhongNgu', o: 'IN' },
-//     { p: 'iSoToilet', o: 'IN' },
-//     { p: 'sMa', o: 'IN' },
-// ];
-
 const po_Tinh = [
-    { p: 'iID_MaTinh', o: 'IN', a: 'kspd' },
-    { p: 'iID_MaQuan', o: 'IN', a: 'kspd' },
+    { p: 'iID_MaTinh', o: 'IN', a: 'kspdc', sbi: true },
+    { p: 'sTenTinh', o: 'IN', a: 'spdc', sbi: true },
 ];
 
 module.exports = {
     po_BDS,
     po_KhachHang,
+    po_Tinh,
 };
