@@ -7,41 +7,39 @@ const { concatWithSpace, generateBetweenParams } = require('./string');
 const maxUInt64 = '18446744073709551615';
 
 // Define a function to convert a parameter and its value into a SQL condition
-const paramToCondition = (paramObject, requestQuery) => {
-    const { p: paramName, o: operator } = paramObject;
+const paramToCondition = (po, requestQuery) => {
+    const { p: paramName, o: operator } = po;
 
     // Get the appropriate condition generator function or use the default
     const generateCondition =
         sqlConditionGenerators[operator] || defaultConditionGenerator;
-    return generateCondition(paramObject, requestQuery);
+    return generateCondition(po, requestQuery);
 };
 
 // Default condition generator for basic conditions
-const defaultConditionGenerator = (paramObject, requestQuery) => {
-    return `AND ${paramObject.p} ${paramObject.o} ${
-        requestQuery[paramObject.p]
-    }`;
+const defaultConditionGenerator = (po, requestQuery) => {
+    return `AND ${po.p} ${po.o} ${requestQuery[po.p]}`;
 };
 
 // Condition generators for special conditions
 const sqlConditionGenerators = {
-    IN: (paramObject, requestValue) => {
-        const values = requestValue[paramObject.p]
+    IN: (po, requestValue) => {
+        const values = requestValue[po.p]
             .split(',')
             .map((val) => `'${val}'`)
             .join(',');
-        return `AND ${paramObject.p} IN (${values})`;
+        return `AND ${po.p} IN (${values})`;
     },
-    LIKEAND: (paramObject, requestValue) => {
-        const likeConditions = requestValue[paramObject.p]
+    LIKEAND: (po, requestValue) => {
+        const likeConditions = requestValue[po.p]
             .split(',')
-            .map((val) => `${paramObject.p} LIKE '%${val}%'`)
+            .map((val) => `${po.p} LIKE '%${val}%'`)
             .join(' AND ');
         return `AND ${likeConditions}`;
     },
-    BETWEEN: (paramObject, requestValue) => {
-        const { from, to } = generateBetweenParams(paramObject.p);
-        return `AND ${paramObject.p} BETWEEN ${requestValue[from]} AND ${requestValue[to]}`;
+    BETWEEN: (po, requestValue) => {
+        const { from, to } = generateBetweenParams(po.p);
+        return `AND ${po.p} BETWEEN ${requestValue[from]} AND ${requestValue[to]}`;
     },
 };
 
@@ -52,7 +50,8 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     if (requestQuery) {
         paramsOperations.forEach((po) => {
-            if (requestQuery[po.p] || generateBetweenParams(po.p)) {
+            const { from, to } = generateBetweenParams(po.p);
+            if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
                 where = concatWithSpace(
                     where,
