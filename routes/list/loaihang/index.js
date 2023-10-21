@@ -77,7 +77,7 @@ const deleteSectionOpts = {
 
 module.exports = async function (fastify, opts) {
     fastify.get('/', getSectionsOpts);
-    fastify.get('/:code', getSectionByidOpts);
+    fastify.get('/:id', getSectionByCodeOpts);
     fastify.post('/', postSectionOpts);
     fastify.delete('/:id', deleteSectionOpts);
 };
