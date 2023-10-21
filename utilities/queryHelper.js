@@ -26,14 +26,14 @@ const defaultConditionGenerator = (paramObject, requestQuery) => {
 // Condition generators for special conditions
 const sqlConditionGenerators = {
     IN: (paramObject, requestValue) => {
-        const values = requestValue
+        const values = requestValue[paramObject.p]
             .split(',')
             .map((val) => `'${val}'`)
             .join(',');
         return `AND ${paramObject.p} IN (${values})`;
     },
     LIKEAND: (paramObject, requestValue) => {
-        const likeConditions = requestValue
+        const likeConditions = requestValue[paramObject.p]
             .split(',')
             .map((val) => `${paramObject.p} LIKE '%${val}%'`)
             .join(' AND ');
