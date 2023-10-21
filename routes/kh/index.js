@@ -81,7 +81,7 @@ const deleteCustomerOpts = {
 
 module.exports = async function (fastify, opts) {
     fastify.get('/', getCustomersOpts);
-    fastify.get('/:sID', getCustomerByIdOpts);
+    fastify.get('/:id', getCustomerByIdOpts);
     fastify.post('/', postCustomerOpts);
-    fastify.delete('/:sID', deleteCustomerOpts);
+    fastify.delete('/:id', deleteCustomerOpts);
 };

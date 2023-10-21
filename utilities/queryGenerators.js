@@ -46,7 +46,7 @@ const getSelectByIdQuery = async (
     table,
     idCol
 ) => {
-    const id = Object.values(requestParams);
+    const { id } = requestParams;
     console.log(id);
     let query;
     if (idCol === 'sID') {
