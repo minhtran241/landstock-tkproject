@@ -11,7 +11,7 @@ const {
 const getAllStandard = require('../standard/selectAll');
 
 const getRealEstates = async (request, reply) => {
-    getAllStandard(request, reply, po_BDS, table);
+    return getAllStandard(request, reply, po_BDS, table);
 };
 
 // Function to get a real estate by its sID
