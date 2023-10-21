@@ -5,7 +5,7 @@
 
 const po_BDS = [
     { p: 'sID', o: 'EQUAL', a: 'ks', sbi: true }, // Primary key, Select for sID
-    { p: 'sMa', o: 'EQUAL', a: 's', sbi: true }, // Select for sMa
+    { p: 'sMa', o: 'EQUAL', a: 'sdc', sbi: true }, // Select for sMa
     { p: 'sNoiDung', o: 'LIKE', a: 'sp', sbi: true }, // Select and Post for sNoiDung
     { p: 'sTenTinh', o: 'LIKE', a: 'p', sbi: true }, // Select and Post for sTenTinh
     { p: 'iID_MaTinh', o: 'IN', a: 'pdc', sbi: true }, // Post, Delete, and Condition for iID_MaTinh
@@ -45,12 +45,48 @@ const po_KhachHang = [
 ];
 
 const po_Tinh = [
+    { p: 'sID', o: 'EQUAL', a: '', sbi: false },
     { p: 'iID_MaTinh', o: 'IN', a: 'kspdc', sbi: true },
     { p: 'sTenTinh', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
+];
+
+const po_Quan = [
+    { p: 'sID', o: 'EQUAL', a: '', sbi: false },
+    { p: 'iID_MaQuan', o: 'IN', a: 'kspdc', sbi: true },
+    { p: 'sTenQuan', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'iID_MaTinh', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
+];
+
+const po_PhuongXa = [
+    { p: 'sID', o: 'EQUAL', a: '', sbi: false },
+    { p: 'iID_MaPhuongXa', o: 'IN', a: 'kspdc', sbi: true },
+    { p: 'sTenPhuongXa', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'iID_MaQuan', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
+];
+
+const po_HuongNha = [
+    { p: 'sID', o: 'EQUAL', a: '', sbi: false },
+    { p: 'iID_HuongNha', o: 'IN', a: 'kspdc', sbi: true },
+    { p: 'sHuongNha', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
+];
+
+const po_LoaiHang = [
+    { p: 'sID', o: 'EQUAL', a: '', sbi: false },
+    { p: 'sCode', o: 'IN', a: 'kspdc', sbi: true },
+    { p: 'sTen', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
 ];
 
 module.exports = {
     po_BDS,
     po_KhachHang,
     po_Tinh,
+    po_Quan,
+    po_PhuongXa,
+    po_HuongNha,
+    po_LoaiHang,
 };

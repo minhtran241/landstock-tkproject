@@ -1,17 +1,19 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
-const { table } = require('./constants');
+const { po_Quan } = require('../../utilities/paramsOperations');
 const {
-    getDistrictsQuery,
-    getDistrictByIdQuery,
-    deleteDistrictByIdQuery,
-} = require('./paramsHandler');
+    getSelectQuery,
+    getSelectByIdQuery,
+    getPostQueryValues,
+    getDeleteQuery,
+} = require('../../utilities/queryGenerators');
+const { table } = require('./constants');
 
 // Function to get all districts
 const getDistricts = async (request, reply) => {
     try {
-        const query = getDistrictsQuery(request.query);
+        // const query = getDistrictsQuery(request.query);
+        const query = getSelectQuery(request.query, po_Quan, table);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -26,9 +28,15 @@ const getDistricts = async (request, reply) => {
 
 // Function to get a district by its ID
 const getDistrictById = async (request, reply) => {
-    const query = getDistrictByIdQuery(request.params);
+    // const query = getDistrictByIdQuery(request.params);
 
     try {
+        const query = getSelectByIdQuery(
+            request.params,
+            po_Quan,
+            table,
+            'iID_MaQuan'
+        );
         const result = await client.query({
             query,
             format: 'JSONEachRow',
@@ -49,7 +57,8 @@ const getDistrictById = async (request, reply) => {
 // Function to insert a new district
 const postDistrict = async (request, reply) => {
     try {
-        const value = cleanAndConvert(request.body);
+        // const value = cleanAndConvert(request.body);
+        const value = getPostQueryValues(request.body, po_Quan);
         await client.insert({
             table,
             values: [value],
@@ -64,8 +73,9 @@ const postDistrict = async (request, reply) => {
 
 // Function to delete a district by its ID
 const deleteDistrict = async (request, reply) => {
-    const query = deleteDistrictByIdQuery(request.params);
+    // const query = deleteDistrictByIdQuery(request.params);
     try {
+        const query = getDeleteQuery(request.params, table, 'iID_MaQuan');
         await client.query({
             query,
             query_params: { id: Number(id) },
