@@ -13,6 +13,7 @@ const { po_BDS } = require('../../utilities/paramsOperations');
 const getRealEstates = async (request, reply) => {
     try {
         const query = getSelectQuery(request.query, po_BDS, table);
+        print(request.query);
         console.info(query);
         const resultSet = await client.query({
             query,
