@@ -34,18 +34,15 @@ const po_BDS = [
     { p: 'createdAt', o: 'EQUAL', a: '', sbi: false }, // No specific action for createdAt
 ];
 
-const convertToType = (name, value) => {
-    if (name.startWith('i')) {
-        return Number(value);
-    } else if (name.startWith('d')) {
-        return new Date(value);
-    } else if (name.startWith('s')) {
-        return String(value);
-    } else if (name.startWith('b')) {
-        return Boolean(value);
-    }
-    return value;
-};
+const po_KhachHang = [
+    { p: 'sID', o: 'EQUAL', a: 'ks', sbi: true },
+    { p: 'sTen', o: 'LIKE', a: 'sp', sbi: true },
+    { p: 'sDienThoai', o: 'EQUAL', a: 'spdc', sbi: true },
+    { p: 'sEmail', o: 'LIKE', a: 'spdc', sbi: true },
+    { p: 'iTrangThai', o: 'IN', a: 'spdc', sbi: true },
+    { p: 'sMa', o: 'LIKE', a: 'spdc', sbi: true },
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false },
+];
 
 // const po_BDS = [
 //     { p: 'iID_MaTinh', o: 'IN', a: 'spd', sbi: true },
@@ -72,5 +69,5 @@ const po_Tinh = [
 
 module.exports = {
     po_BDS,
-    convertToType,
+    po_KhachHang,
 };

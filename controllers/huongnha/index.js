@@ -1,6 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { cleanAndConvertRequestBody } = require('../../utilities/queryHelper');
+const { cleanAndConvert } = require('../../utilities/queryHelper');
 
 const table = 'tb_HuongNha';
 
@@ -44,7 +44,7 @@ const getDirectionById = async (request, reply) => {
 
 const postDirection = async (request, reply) => {
     try {
-        const value = cleanAndConvertRequestBody(request.body);
+        const value = cleanAndConvert(request.body);
         await client.insert({
             table,
             values: [value],

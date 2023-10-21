@@ -1,6 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { cleanAndConvertRequestBody } = require('../../utilities/queryHelper');
+const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 const {
     getDistrictsQuery,
@@ -49,7 +49,7 @@ const getDistrictById = async (request, reply) => {
 // Function to insert a new district
 const postDistrict = async (request, reply) => {
     try {
-        const value = cleanAndConvertRequestBody(request.body);
+        const value = cleanAndConvert(request.body);
         await client.insert({
             table,
             values: [value],

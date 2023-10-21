@@ -1,14 +1,16 @@
 'use strict';
 const client = require('../../data/clickhouse');
 const {
-    getRealEstatesQuery,
     postRealEstateCleanedData,
     getRealEstateByIdQuery,
     deleteRealEstateByIdQuery,
 } = require('./paramsHandler');
 const { table } = require('./constants');
-const { getSelectQuery } = require('../../utilities/queryHelper');
 const { po_BDS } = require('../../utilities/paramsOperations');
+const {
+    getSelectQuery,
+    getSelectByIdQuery,
+} = require('../../utilities/queryGenerators');
 
 const getRealEstates = async (request, reply) => {
     try {
@@ -30,7 +32,7 @@ const getRealEstates = async (request, reply) => {
 // Function to get a real estate by its sID
 const getRealEstateById = async (request, reply) => {
     try {
-        const query = getRealEstateByIdQuery(request.params);
+        const query = getSelectByIdQuery(request.params, po_BDS, table, 'sID');
         const result = await client.query({
             query,
             format: 'JSONEachRow',

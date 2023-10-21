@@ -1,6 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { cleanAndConvertRequestBody } = require('../../utilities/queryHelper');
+const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 
 // Function to get all cities
@@ -47,7 +47,7 @@ const getCityById = async (request, reply) => {
 // Function to insert a new city
 const postCity = async (request, reply) => {
     try {
-        const value = cleanAndConvertRequestBody(request.body);
+        const value = cleanAndConvert(request.body);
         await client.insert({
             table,
             values: [value],

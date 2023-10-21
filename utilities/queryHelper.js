@@ -1,106 +1,9 @@
 'use strict';
 
 const moment = require('moment');
-const { concatWithSpace, generateBetweenParams } = require('./string');
-
-// Define the maximum value for a 64-bit unsigned integer
-const maxUInt64 = '18446744073709551615';
-
-// Define a function to convert a parameter and its value into a SQL condition
-const paramToCondition = (po, values) => {
-    // Get the appropriate condition generator function or use the default
-    const generateCondition =
-        sqlConditionGenerators[po.o] || defaultConditionGenerator;
-    return generateCondition(po, values);
-};
-
-// Default condition generator for basic conditions
-const defaultConditionGenerator = (po, values) => {
-    return `AND ${po.p} ${po.o} ${values[po.p]}`;
-};
-
-// Condition generators for special conditions
-const sqlConditionGenerators = {
-    EQUAL: (po, values) => {
-        if (po.p.startsWith('s')) {
-            return `AND ${po.p} = '${values[po.p]}'`;
-        }
-        return `AND ${po.p} = ${values[po.p]}`;
-    },
-    IN: (po, values) => {
-        const vps = values[po.p]
-            .split(',')
-            .map((val) => `'${val}'`)
-            .join(',');
-        return `AND ${po.p} IN (${vps})`;
-    },
-    LIKEAND: (po, values) => {
-        const likeConditions = values[po.p]
-            .split(',')
-            .map((val) => `${po.p} LIKE '%${val}%'`)
-            .join(' AND ');
-        return `AND ${likeConditions}`;
-    },
-    BETWEEN: (po, values) => {
-        const { from, to } = generateBetweenParams(po.p);
-        if (values[from] && values[to]) {
-            return `AND (${po.p} BETWEEN ${values[from]} AND ${values[to]})`;
-        } else if (values[from]) {
-            return `AND (${po.p} >= ${values[from]})`;
-        } else if (values[to]) {
-            return `AND (${po.p} <= ${values[to]})`;
-        }
-    },
-};
-
-// Main function to construct the SQL query
-const getSelectQuery = (requestQuery, paramsOperations, table) => {
-    // Initialize the WHERE clause
-    let where = '';
-
-    if (requestQuery) {
-        paramsOperations.forEach((po) => {
-            const { from, to } = generateBetweenParams(po.p);
-            if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
-                // Use the paramToCondition function to convert the parameter and its value into a SQL condition
-                where = concatWithSpace(
-                    where,
-                    paramToCondition(po, requestQuery)
-                );
-            }
-        });
-    }
-
-    // Add the LIMIT and OFFSET clauses
-    const { skip, limit } = requestQuery;
-    const skipValue = skip || 0;
-    const limitValue = limit || maxUInt64;
-
-    // Construct the final SQL query
-    const query = `SELECT ${getSelectAttributes(
-        paramsOperations
-    )} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
-
-    return query;
-};
-
-// Function to remove null or undefined values from an object
-function removeNullValues(obj) {
-    for (const key in obj) {
-        if (
-            obj[key] === null ||
-            obj[key] === undefined ||
-            obj[key] === '' ||
-            obj[key] === 'null'
-        ) {
-            delete obj[key];
-        }
-    }
-    return obj;
-}
 
 // Function to clean and convert values
-function cleanAndConvertRequestBody(values) {
+function cleanAndConvert(values) {
     const cleanedValues = {};
     for (const key in values) {
         if (
@@ -135,20 +38,22 @@ function cleanAndConvertRequestBody(values) {
     return cleanedValues;
 }
 
-const getSelectAttributes = (paramsOperations) => {
-    const selectAttributes = [];
-    paramsOperations.forEach((po) => {
-        if (po.a.includes('s')) {
-            selectAttributes.push(po.p);
+// Function to remove null or undefined values from an object
+function removeNullValues(obj) {
+    for (const key in obj) {
+        if (
+            obj[key] === null ||
+            obj[key] === undefined ||
+            obj[key] === '' ||
+            obj[key] === 'null'
+        ) {
+            delete obj[key];
         }
-    });
-    return selectAttributes;
-};
+    }
+    return obj;
+}
 
 module.exports = {
-    maxUInt64,
-    paramToCondition,
+    cleanAndConvert,
     removeNullValues,
-    cleanAndConvertRequestBody,
-    getSelectQuery,
 };
