@@ -7,36 +7,72 @@ const { concatWithSpace, generateBetweenParams } = require('./string');
 const maxUInt64 = '18446744073709551615';
 
 // Define a function to convert a parameter and its value into a SQL condition
-const paramToCondition = (paramObject, requestValue) => {
+const paramToCondition = (paramObject, requestQuery) => {
     const { p: paramName, o: operator } = paramObject;
 
     // Get the appropriate condition generator function or use the default
     const generateCondition =
         sqlConditionGenerators[operator] || defaultConditionGenerator;
-    return generateCondition(paramName, requestValue);
+    return generateCondition(paramObject, requestQuery);
 };
 
 // Default condition generator for basic conditions
-const defaultConditionGenerator = (paramName, requestValue) => {
-    return `AND ${paramName} ${requestValue}`;
+const defaultConditionGenerator = (paramObject, requestQuery) => {
+    return `AND ${paramObject.p} ${paramObject.o} ${
+        requestQuery[paramObject.p]
+    }`;
 };
 
 // Condition generators for special conditions
 const sqlConditionGenerators = {
-    IN: (paramName, requestValue) => {
+    IN: (paramObject, requestValue) => {
         const values = requestValue
             .split(',')
             .map((val) => `'${val}'`)
             .join(',');
-        return `AND ${paramName} IN (${values})`;
+        return `AND ${paramObject.p} IN (${values})`;
     },
-    LIKEAND: (paramName, requestValue) => {
+    LIKEAND: (paramObject, requestValue) => {
         const likeConditions = requestValue
             .split(',')
-            .map((val) => `${paramName} LIKE '%${val}%'`)
+            .map((val) => `${paramObject.p} LIKE '%${val}%'`)
             .join(' AND ');
         return `AND ${likeConditions}`;
     },
+    BETWEEN: (paramObject, requestValue) => {
+        const { from, to } = generateBetweenParams(paramObject.p);
+        return `AND ${paramObject.p} BETWEEN ${requestValue[from]} AND ${requestValue[to]}`;
+    },
+};
+
+// Main function to construct the SQL query
+const getSelectQuery = (requestQuery, paramsOperations, table) => {
+    // Initialize the WHERE clause
+    let where = '';
+
+    if (requestQuery) {
+        paramsOperations.forEach((po) => {
+            if (requestQuery[po.p] || generateBetweenParams(po.p)) {
+                // Use the paramToCondition function to convert the parameter and its value into a SQL condition
+                where = concatWithSpace(
+                    where,
+                    paramToCondition(po, requestQuery)
+                );
+            }
+        });
+    }
+
+    // Add the LIMIT and OFFSET clauses
+    const { skip, limit } = requestQuery;
+    const skipValue = skip || 0;
+    const limitValue = limit || maxUInt64;
+
+    // Construct the final SQL query
+    const query = `SELECT ${getSelectAttributes(
+        paramsOperations
+    )} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
+
+    return query;
 };
 
 // Function to remove null or undefined values from an object
@@ -100,47 +136,6 @@ const getSelectAttributes = (paramsOperations) => {
         }
     });
     return selectAttributes;
-};
-
-// Main function to construct the SQL query
-const getSelectQuery = (requestQuery, paramsOperations, table) => {
-    // Initialize the WHERE clause
-    let where = '';
-
-    if (requestQuery) {
-        paramsOperations.forEach((po) => {
-            // Handle the special case of BETWEEN
-            let isQueryBetween = false;
-            if (po.o === 'BETWEEN') {
-                const { from, to } = generateBetweenParams(po.p);
-                if (requestQuery[from] || requestQuery[to]) {
-                    isQueryBetween = true;
-                }
-            }
-            let value = requestQuery[po.p];
-            if (value || isQueryBetween) {
-                // Handle the special case of BETWEEN
-                if (po.o === 'BETWEEN') {
-                    const { from, to } = generateBetweenParams(po.p);
-                    value = `${requestQuery[from]} AND ${requestQuery[to]}`;
-                }
-                // Use the paramToCondition function to convert the parameter and its value into a SQL condition
-                where = concatWithSpace(where, paramToCondition(po, value));
-            }
-        });
-    }
-
-    // Add the LIMIT and OFFSET clauses
-    const { skip, limit } = requestQuery;
-    const skipValue = skip || 0;
-    const limitValue = limit || maxUInt64;
-
-    // Construct the final SQL query
-    const query = `SELECT ${getSelectAttributes(
-        paramsOperations
-    )} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
-
-    return query;
 };
 
 module.exports = {
