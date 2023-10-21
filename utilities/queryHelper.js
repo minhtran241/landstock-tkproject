@@ -51,7 +51,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
             const { from, to } = generateBetweenParams(po.p);
             if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
                 // Convert all the params values to the appropriate type
-                const values = cleanAndConvert(requestQuery);
+                const values = cleanAndConvertRequestQuery(requestQuery);
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
                 where = concatWithSpace(where, paramToCondition(po, values));
             }
@@ -87,7 +87,7 @@ function removeNullValues(obj) {
 }
 
 // Function to clean and convert values
-function cleanAndConvert(values) {
+function cleanAndConvertRequestBody(values) {
     const cleanedValues = {};
     for (const key in values) {
         if (values.hasOwnProperty(key)) {
@@ -124,6 +124,46 @@ function cleanAndConvert(values) {
     return cleanedValues;
 }
 
+function cleanAndConvertRequestQuery(queryString) {
+    const cleanedValues = {};
+    const pairs = queryString.split('&');
+
+    for (const pair of pairs) {
+        const [key, value] = pair.split('=');
+
+        if (
+            value !== null ||
+            value !== undefined ||
+            value !== '' ||
+            value !== 'null'
+        ) {
+            if (key.startsWith('i') || key.startsWith('f')) {
+                // Convert numeric attributes to numbers
+                cleanedValues[key] = Number(value);
+            } else if (key.startsWith('s') && key.endsWith('s')) {
+                // Convert string array attributes to string arrays. Example: sFiles
+                cleanedValues[key] = value.split(',');
+            } else if (key.startsWith('s')) {
+                // Convert string attributes to strings
+                cleanedValues[key] = String(value);
+            } else if (key.startsWith('b')) {
+                // Convert boolean attributes to boolean
+                cleanedValues[key] = Boolean(value);
+            } else if (key.startsWith('d')) {
+                // Convert date attributes to date (assuming the value is a valid date string)
+                cleanedValues[key] = moment(value).format(
+                    'YYYY-MM-DD HH:mm:ss'
+                );
+            } else {
+                // Keep other attributes as-is
+                cleanedValues[key] = value;
+            }
+        }
+    }
+
+    return cleanedValues;
+}
+
 const getSelectAttributes = (paramsOperations) => {
     const selectAttributes = [];
     paramsOperations.forEach((po) => {
@@ -138,6 +178,6 @@ module.exports = {
     maxUInt64,
     paramToCondition,
     removeNullValues,
-    cleanAndConvert,
+    cleanAndConvertRequestBody,
     getSelectQuery,
 };

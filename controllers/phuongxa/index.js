@@ -1,6 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
+const { cleanAndConvertRequestBody } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 const {
     getWardsQuery,
@@ -47,7 +47,7 @@ const getWardById = async (request, reply) => {
 
 const postWard = async (request, reply) => {
     try {
-        const value = cleanAndConvert(request.body);
+        const value = cleanAndConvertRequestBody(request.body);
         await client.insert({
             table,
             values: [value],

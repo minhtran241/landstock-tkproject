@@ -3,7 +3,7 @@
 const {
     maxUInt64,
     paramToCondition,
-    cleanAndConvert,
+    cleanAndConvertRequestBody,
 } = require('../../utilities/queryHelper');
 const { concatWithSpace } = require('../../utilities/string');
 const { table, getRealEstatesReply } = require('./constants');
@@ -62,7 +62,7 @@ const getRealEstateByIdQuery = ({ sID }) => {
 // Function to remove null or undefined values from an object
 const postRealEstateCleanedData = (data) => {
     data.dNgayTao = new Date();
-    return cleanAndConvert(data);
+    return cleanAndConvertRequestBody(data);
 };
 
 const deleteRealEstateByIdQuery = ({ sID }) => {

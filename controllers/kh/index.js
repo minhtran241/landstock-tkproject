@@ -1,6 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
+const { cleanAndConvertRequestBody } = require('../../utilities/queryHelper');
 const { table, replyCols } = require('./constants');
 
 // Function to get all customers
@@ -46,7 +46,7 @@ const getCustomerById = async (request, reply) => {
 // Function to insert a new customer
 const postCustomer = async (request, reply) => {
     try {
-        const value = cleanAndConvert(request.body);
+        const value = cleanAndConvertRequestBody(request.body);
         await client.insert({
             table,
             values: [value],
