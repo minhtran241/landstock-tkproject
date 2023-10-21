@@ -22,7 +22,7 @@ const defaultConditionGenerator = (po, values) => {
 // Condition generators for special conditions
 const sqlConditionGenerators = {
     EQUAL: (po, values) => {
-        if (values[po.p].startsWith('s')) {
+        if (po.p.startsWith('s')) {
             return `AND ${po.p} = '${values[po.p]}'`;
         }
         return `AND ${po.p} = ${values[po.p]}`;
