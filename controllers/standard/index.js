@@ -5,7 +5,7 @@ const {
     getSelectByIdQuery,
     getPostQueryValues,
     getDeleteQuery,
-} = require('../../utilities/queryGenerators');
+} = require('../../utilities/piplines/queryGenerators');
 
 const getAllStandard = async (request, reply, po_Name, table) => {
     try {
