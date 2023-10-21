@@ -22,11 +22,11 @@ const defaultConditionGenerator = (po, values) => {
 // Condition generators for special conditions
 const sqlConditionGenerators = {
     IN: (po, values) => {
-        const values = values[po.p]
+        const vps = values[po.p]
             .split(',')
             .map((val) => `'${val}'`)
             .join(',');
-        return `AND ${po.p} IN (${values})`;
+        return `AND ${po.p} IN (${vps})`;
     },
     LIKEAND: (po, values) => {
         const likeConditions = values[po.p]
