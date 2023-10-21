@@ -46,24 +46,19 @@ const getSelectByIdQuery = async (
     table,
     idCol
 ) => {
-    const { id } = requestParams;
-    console.log(id);
-    let query;
+    let { id } = requestParams;
+    id = String(id);
+    let query = '';
+    const attrs = getSelectByIdAttributes(paramsOperations);
     if (idCol === 'sID') {
-        query = `SELECT ${getSelectByIdAttributes(
-            paramsOperations
-        )} FROM ${table} WHERE sID = toUUID('${id}')`;
+        query = `SELECT ${attrs} FROM ${table} WHERE sID = toUUID('${id}')`;
     } else if (idCol.startWith('i')) {
-        query = `SELECT ${getSelectByIdAttributes(
-            paramsOperations
-        )} FROM ${table} WHERE ${idCol} = ${id}`;
+        query = `SELECT ${attrs} FROM ${table} WHERE ${idCol} = ${id}`;
     } else if (idCol.startWith('s')) {
-        query = `SELECT ${getSelectByIdAttributes(
-            paramsOperations
-        )} FROM ${table} WHERE ${idCol} = '${id}'`;
+        query = `SELECT ${attrs} FROM ${table} WHERE ${idCol} = '${id}'`;
     }
     console.log(query);
-    return String(query).trim();
+    return String(query);
 };
 
 module.exports = {
