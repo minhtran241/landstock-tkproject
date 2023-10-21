@@ -1,5 +1,4 @@
 'use strict';
-
 const client = require('../../data/clickhouse');
 const {
     getSelectQuery,

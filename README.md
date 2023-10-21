@@ -50,6 +50,16 @@
 
 ## API Routes
 
+<details closed><summary>Health Check</summary>
+
+**Description:**
+This route handles health checks for the API.
+
+- **Get the health of the API:**  
+  Endpoint: `http://b.thienkhoi.com/health`  
+  Method: `GET`  
+  Returns the health of the API.
+
 <details closed><summary>BDS</summary>
 
 **Description:**

@@ -1,6 +1,6 @@
 'use strict';
 
-const table = 'tb_KhachHang';
+const table = 'tb_LoaiHang';
 
 module.exports = {
     table,

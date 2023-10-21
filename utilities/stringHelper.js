@@ -8,11 +8,11 @@ const concatWithSpace = (str1, str2) => {
     return str1 || str2;
 };
 
+// Function to generate between parameters from an attribute name
 const generateBetweenParams = (attributeName) => {
-    const type = attributeName[0];
-    const name = attributeName.slice(1);
-    const from = `${type}Tu${name}`;
-    const to = `${type}Den${name}`;
+    const [type, ...name] = attributeName;
+    const from = `${type}Tu${name.join('')}`;
+    const to = `${type}Den${name.join('')}`;
     return { from, to };
 };
 

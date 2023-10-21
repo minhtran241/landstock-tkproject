@@ -1,6 +1,6 @@
 'use strict';
 
-const { generateBetweenParams } = require('./string');
+const { generateBetweenParams } = require('../stringHelper');
 
 // Define a function to convert a parameter and its value into a SQL condition
 const paramToCondition = (po, values) => {

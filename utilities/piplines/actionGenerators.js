@@ -1,16 +1,6 @@
 'use strict';
 
-// Function to get the attributes to select from the query parameters
-const getSelectAttributes = (paramsOperations) => {
-    const selectAttributes = [];
-    paramsOperations.forEach((po) => {
-        if (po.a.includes('s')) {
-            selectAttributes.push(po.p);
-        }
-    });
-    return selectAttributes;
-};
-
+// Function to get attributes by action (select by id)
 const getSelectByIdAttributes = (paramsOperations) => {
     const selectAttributes = [];
     paramsOperations.forEach((po) => {
@@ -21,6 +11,7 @@ const getSelectByIdAttributes = (paramsOperations) => {
     return selectAttributes;
 };
 
+// Function to get attributes by action
 const getAttributesByAction = (paramsOperations, action) => {
     const attributes = [];
     paramsOperations.forEach((po) => {

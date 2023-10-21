@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const { MAX_LIMIT, MAX_OFFSET } = require('./constants');
 
 // Function to clean and convert values
 function cleanAndConvert(values) {
@@ -53,7 +54,15 @@ function removeNullValues(obj) {
     return obj;
 }
 
+const sanitizeLimitAndOffset = (requestQuery) => {
+    const limit = Math.min(Number(requestQuery.limit), MAX_LIMIT);
+    const skip = Math.min(Number(requestQuery.skip), MAX_OFFSET);
+
+    return { limit, skip };
+};
+
 module.exports = {
     cleanAndConvert,
     removeNullValues,
+    sanitizeLimitAndOffset,
 };

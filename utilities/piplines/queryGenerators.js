@@ -1,12 +1,11 @@
 'use strict';
 
-const { maxUInt64 } = require('./constants');
 const { paramToCondition } = require('./conditionGenerators');
 const {
     getSelectByIdAttributes,
     getAttributesByAction,
 } = require('./actionGenerators');
-const { cleanAndConvert } = require('./queryHelper');
+const { cleanAndConvert, sanitizeLimitAndOffset } = require('../queryHelper');
 
 // Function to generate a SELECT query from the request query parameters
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
@@ -18,12 +17,12 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
         conditionAttrs
     );
 
-    const skipValue = requestQuery.skip || 0;
-    const limitValue = requestQuery.limit || maxUInt64;
+    // Sanitize limit and offset values
+    const { limit, skip } = sanitizeLimitAndOffset(requestQuery);
 
-    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${whereConditions} LIMIT ${limitValue} OFFSET ${skipValue}`;
+    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${whereConditions} LIMIT ${limit} OFFSET ${skip}`;
 
-    console.log(query);
+    console.info(query);
 
     return query;
 };
@@ -60,7 +59,7 @@ const getSelectByIdQuery = (requestParams, paramsOperations, table, idCol) => {
         query += `${idCol} = '${id}'`;
     }
 
-    console.log(query);
+    console.info(query);
 
     return query;
 };
@@ -98,7 +97,7 @@ const getDeleteQuery = (requestParams, paramsOperations, table, idCol) => {
         query += `${idCol} = '${id}'`;
     }
 
-    console.log(query);
+    console.info(query);
 
     return query;
 };

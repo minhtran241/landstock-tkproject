@@ -1,75 +1,26 @@
 'use strict';
-const client = require('../../data/clickhouse');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
-
-const table = 'tb_HuongNha';
+const { po_HuongNha } = require('../../utilities/paramsOperations');
+const {
+    getAllStandard,
+    getByIdStandard,
+    postStandard,
+} = require('../standard');
+const { table } = require('./constants');
 
 const getDirections = async (request, reply) => {
-    try {
-        const query = `SELECT iID_HuongNha, sHuongNha FROM ${table}`;
-        const resultSet = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
-        const directionSet = await resultSet.json();
-        reply.send(directionSet);
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
+    return getAllStandard(request, reply, po_HuongNha, table);
 };
 
 const getDirectionById = async (request, reply) => {
-    const { id } = request.params;
-    const query = `SELECT iID_HuongNha, sHuongNha FROM ${table} WHERE iID_HuongNha = {id: Int64}`;
-
-    try {
-        const result = await client.query({
-            query,
-            query_params: { id: Number(id) },
-            format: 'JSONEachRow',
-        });
-        const direction = await result.json();
-        if (direction === null) {
-            // Handle the case where no data was found for the given ID
-            reply.status(404).send({ error: 'direction not found' });
-            return;
-        }
-        reply.send(direction);
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        throw error;
-    }
+    return getByIdStandard(request, reply, po_HuongNha, table, 'iID_HuongNha');
 };
 
 const postDirection = async (request, reply) => {
-    try {
-        const value = cleanAndConvert(request.body);
-        await client.insert({
-            table,
-            values: [value],
-            format: 'JSONEachRow',
-        });
-        reply.code(201).send({ message: 'direction inserted successfully' });
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
+    return postStandard(request, reply, po_HuongNha, table);
 };
 
 const deleteDirection = async (request, reply) => {
-    const { id } = request.params;
-    const query = `ALTER TABLE ${table} DELETE WHERE iID_HuongNha = {id: Int64}`;
-    try {
-        await client.query({
-            query,
-            query_params: { id: Number(id) },
-        });
-        reply.send({ message: 'direction deleted successfully' });
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
+    return postStandard(request, reply, po_HuongNha, table);
 };
 
 module.exports = {
