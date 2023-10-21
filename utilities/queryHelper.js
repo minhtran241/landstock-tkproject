@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const { concatWithSpace, generateBetweenParams } = require('./string');
+const { generateBetweenParams } = require('./string');
 
 // Define the maximum value for a 64-bit unsigned integer
 const maxUInt64 = '18446744073709551615';
@@ -110,11 +110,12 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
     if (requestQuery) {
         paramsOperations.forEach((po) => {
             let value = requestQuery[po.p];
-            if (po.o === 'BETWEEN') {
-                const { from, to } = generateBetweenParams(po.p);
-                value = `(${from} AND ${to})`;
-            }
             if (value) {
+                // Handle the special case of BETWEEN
+                if (po.o === 'BETWEEN') {
+                    const { from, to } = generateBetweenParams(po.p);
+                    value = `${from} AND ${to}`;
+                }
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
                 where = concatWithSpace(where, paramToCondition(po, value));
             }
