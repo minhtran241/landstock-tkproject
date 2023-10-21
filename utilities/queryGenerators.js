@@ -47,6 +47,7 @@ const getSelectByIdQuery = async (
     idCol
 ) => {
     const id = Object.values(requestParams);
+    console.log(id);
     let query;
     if (idCol === 'sID') {
         query = `SELECT ${getSelectByIdAttributes(
@@ -61,6 +62,7 @@ const getSelectByIdQuery = async (
             paramsOperations
         )} FROM ${table} WHERE ${idCol} = '${id}'`;
     }
+    console.log(query);
     return query;
 };
 
