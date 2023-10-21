@@ -7,7 +7,6 @@ const {
     getPostQueryValues,
     getDeleteQuery,
 } = require('../../utilities/queryGenerators');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table } = require('./constants');
 
 // Function to get all cities

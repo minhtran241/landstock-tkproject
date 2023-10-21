@@ -14,6 +14,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
     const whereConditions = generateWhereConditions(
         requestQuery,
+        paramsOperations,
         conditionAttrs
     );
 
@@ -28,7 +29,11 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 };
 
 // Function to generate WHERE conditions based on request query parameters and condition attributes
-const generateWhereConditions = (requestQuery, conditionAttrs) => {
+const generateWhereConditions = (
+    requestQuery,
+    paramsOperations,
+    conditionAttrs
+) => {
     const conditions = conditionAttrs
         .filter((attr) => requestQuery[attr] !== undefined)
         .map((attr) =>
