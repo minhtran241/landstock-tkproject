@@ -1,76 +1,87 @@
 'use strict';
-const client = require('../../data/clickhouse');
-const { cleanAndConvert } = require('../../utilities/queryHelper');
-const { table } = require('./constants');
+
+const { po_PhuongXa } = require('../../utilities/paramsOperations');
 const {
-    getWardsQuery,
-    getWardByIdQuery,
-    deleteWardByIdQuery,
-} = require('./paramsHandler');
+    getAllStandard,
+    getByIdStandard,
+    postStandard,
+    deleteStandard,
+} = require('../standard');
+const { table } = require('./constants');
 
 const getWards = async (request, reply) => {
-    try {
-        let query = getWardsQuery(request.query);
-        const resultSet = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
-        console.log(resultSet);
-        const wardSet = await resultSet.json();
-        reply.send(wardSet);
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
+    return getAllStandard(request, reply, po_PhuongXa, table);
+    // try {
+    //     let query = getWardsQuery(request.query);
+    //     const resultSet = await client.query({
+    //         query,
+    //         format: 'JSONEachRow',
+    //     });
+    //     console.log(resultSet);
+    //     const wardSet = await resultSet.json();
+    //     reply.send(wardSet);
+    // } catch (error) {
+    //     console.error('Error executing ClickHouse query:', error);
+    //     reply.status(500).send({ error: 'query failed' });
+    // }
 };
 
 const getWardById = async (request, reply) => {
-    const query = getWardByIdQuery(request.params);
+    return getByIdStandard(
+        request,
+        reply,
+        po_PhuongXa,
+        table,
+        'iID_MaPhuongXa'
+    );
+    // const query = getWardByIdQuery(request.params);
 
-    try {
-        const result = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
-        const ward = await result.json();
-        if (ward === null) {
-            // Handle the case where no data was found for the given ID
-            reply.status(404).send({ error: 'ward not found' });
-            return;
-        }
-        reply.send(ward);
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        throw error;
-    }
+    // try {
+    //     const result = await client.query({
+    //         query,
+    //         format: 'JSONEachRow',
+    //     });
+    //     const ward = await result.json();
+    //     if (ward === null) {
+    //         // Handle the case where no data was found for the given ID
+    //         reply.status(404).send({ error: 'ward not found' });
+    //         return;
+    //     }
+    //     reply.send(ward);
+    // } catch (error) {
+    //     console.error('Error executing ClickHouse query:', error);
+    //     throw error;
+    // }
 };
 
 const postWard = async (request, reply) => {
-    try {
-        const value = cleanAndConvert(request.body);
-        await client.insert({
-            table,
-            values: [value],
-            format: 'JSONEachRow',
-        });
-        reply.code(201).send({ message: 'ward inserted successfully' });
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
+    return postStandard(request, reply, po_PhuongXa, table);
+    // try {
+    //     const value = cleanAndConvert(request.body);
+    //     await client.insert({
+    //         table,
+    //         values: [value],
+    //         format: 'JSONEachRow',
+    //     });
+    //     reply.code(201).send({ message: 'ward inserted successfully' });
+    // } catch (error) {
+    //     console.error('Error executing ClickHouse query:', error);
+    //     reply.status(500).send({ error: 'query failed' });
+    // }
 };
 
 const deleteWard = async (request, reply) => {
-    const query = deleteWardByIdQuery(request.params);
-    try {
-        await client.query({
-            query,
-        });
-        reply.send({ message: 'ward deleted successfully' });
-    } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
-    }
+    return deleteStandard(request, reply, po_PhuongXa, table, 'iID_MaPhuongXa');
+    // const query = deleteWardByIdQuery(request.params);
+    // try {
+    //     await client.query({
+    //         query,
+    //     });
+    //     reply.send({ message: 'ward deleted successfully' });
+    // } catch (error) {
+    //     console.error('Error executing ClickHouse query:', error);
+    //     reply.status(500).send({ error: 'query failed' });
+    // }
 };
 
 module.exports = {

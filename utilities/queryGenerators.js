@@ -86,7 +86,7 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
 };
 
 // Function to get a delete query real estate by its sID or other ID columns
-const getDeleteQuery = (requestParams, table, idCol) => {
+const getDeleteQuery = (requestParams, paramsOperations, table, idCol) => {
     const id = String(requestParams.id);
     let query = `ALTER TABLE ${table} DELETE WHERE `;
 
