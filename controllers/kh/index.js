@@ -30,17 +30,15 @@ const getCustomers = async (request, reply) => {
 const getCustomerById = async (request, reply) => {
     // const { sID } = request.params;
     // const query = `SELECT ${replyCols} FROM ${table} WHERE sID = toUUID({sID: String})`;
-    const query = getSelectByIdQuery(
-        request.params,
-        po_KhachHang,
-        table,
-        'sID'
-    );
-
     try {
+        const query = getSelectByIdQuery(
+            request.params,
+            po_KhachHang,
+            table,
+            'sID'
+        );
         const result = await client.query({
             query,
-            query_params: { sID: String(sID) },
             format: 'JSONEachRow',
         });
         const customer = await result.json();
