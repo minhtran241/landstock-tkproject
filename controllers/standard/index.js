@@ -10,8 +10,6 @@ const {
 const getAllStandard = async (request, reply, po_Name, table) => {
     try {
         const query = getSelectQuery(request.query, po_Name, table);
-        console.info(request.query);
-        console.info(query);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
