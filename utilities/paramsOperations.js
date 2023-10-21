@@ -4,8 +4,8 @@
 // Action involves the following: k = primary key, s = select, p = post, d = delete, c: in condition (where clause)
 
 const po_BDS = [
-    { p: 'sID', o: '=', a: 'ks', sbi: true }, // Primary key, Select for sID
-    { p: 'sMa', o: '=', a: 's', sbi: true }, // Select for sMa
+    { p: 'sID', o: 'EQUAL', a: 'ks', sbi: true }, // Primary key, Select for sID
+    { p: 'sMa', o: 'EQUAL', a: 's', sbi: true }, // Select for sMa
     { p: 'sNoiDung', o: 'LIKE', a: 'sp', sbi: true }, // Select and Post for sNoiDung
     { p: 'sTenTinh', o: 'LIKE', a: 'p', sbi: true }, // Select and Post for sTenTinh
     { p: 'iID_MaTinh', o: 'IN', a: 'pdc', sbi: true }, // Post, Delete, and Condition for iID_MaTinh
@@ -31,7 +31,7 @@ const po_BDS = [
     { p: 'sLng', o: 'LIKE', a: 'p', sbi: true }, // Select for sLng
     { p: 'sHotline', o: 'IN', a: 'sp', sbi: true }, // Select and Post for sHotline
     { p: 'dNgayTao', o: 'BETWEEN', a: '', sbi: false }, // No specific action for dNgayTao
-    { p: 'createdAt', o: '=', a: '', sbi: false }, // No specific action for createdAt
+    { p: 'createdAt', o: 'EQUAL', a: '', sbi: false }, // No specific action for createdAt
 ];
 
 const convertToType = (name, value) => {

@@ -21,6 +21,12 @@ const defaultConditionGenerator = (po, values) => {
 
 // Condition generators for special conditions
 const sqlConditionGenerators = {
+    EQUAL: (po, values) => {
+        if (values[po.p].startsWith('s')) {
+            return `AND ${po.p} = '${values[po.p]}'`;
+        }
+        return `AND ${po.p} = ${values[po.p]}`;
+    },
     IN: (po, values) => {
         const vps = values[po.p]
             .split(',')
@@ -50,8 +56,6 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
         paramsOperations.forEach((po) => {
             const { from, to } = generateBetweenParams(po.p);
             if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
-                // Convert all the params values to the appropriate type
-                const values = cleanAndConvertRequestBody(requestQuery);
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
                 where = concatWithSpace(where, paramToCondition(po, values));
             }
