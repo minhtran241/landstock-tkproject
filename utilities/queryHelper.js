@@ -108,7 +108,7 @@ const getSelectAttributes = (paramsOperations) => {
 };
 
 // Main function to construct the SQL query
-const getSelectQuery = (requestQuery, paramsOperations) => {
+const getSelectQuery = (requestQuery, paramsOperations, table) => {
     // Initialize the WHERE clause
     let where = '';
 
