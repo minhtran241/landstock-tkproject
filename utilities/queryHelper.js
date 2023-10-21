@@ -51,7 +51,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
             const { from, to } = generateBetweenParams(po.p);
             if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
                 // Convert all the params values to the appropriate type
-                const values = cleanAndConvertRequestQuery(requestQuery);
+                const values = cleanAndConvertRequestBody(requestQuery);
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
                 where = concatWithSpace(where, paramToCondition(po, values));
             }
@@ -90,77 +90,35 @@ function removeNullValues(obj) {
 function cleanAndConvertRequestBody(values) {
     const cleanedValues = {};
     for (const key in values) {
-        if (values.hasOwnProperty(key)) {
-            if (
-                values[key] !== null ||
-                values[key] !== undefined ||
-                values[key] !== '' ||
-                values[key] !== 'null'
-            ) {
-                if (key.startsWith('i') || key.startsWith('f')) {
-                    // Convert numeric attributes to numbers
-                    cleanedValues[key] = Number(values[key]);
-                } else if (key.startsWith('s') && key.endsWith('s')) {
-                    // Convert string array attributes to string arrays. Example: sFiles
-                    cleanedValues[key] = values[key].split(',');
-                } else if (key.startsWith('s')) {
-                    // Convert string attributes to strings
-                    cleanedValues[key] = String(values[key]);
-                } else if (key.startsWith('b')) {
-                    // Convert boolean attributes to boolean
-                    cleanedValues[key] = Boolean(values[key]);
-                } else if (key.startsWith('d')) {
-                    // Convert date attributes to date
-                    cleanedValues[key] = moment(values[key]).format(
-                        'YYYY-MM-DD HH:mm:ss'
-                    );
-                } else {
-                    // Keep other attributes as-is
-                    cleanedValues[key] = values[key];
-                }
-            }
-        }
-    }
-    return cleanedValues;
-}
-
-function cleanAndConvertRequestQuery(queryString) {
-    const cleanedValues = {};
-    const pairs = queryString.split('&');
-
-    for (const pair of pairs) {
-        const [key, value] = pair.split('=');
-
         if (
-            value !== null ||
-            value !== undefined ||
-            value !== '' ||
-            value !== 'null'
+            values[key] !== null ||
+            values[key] !== undefined ||
+            values[key] !== '' ||
+            values[key] !== 'null'
         ) {
             if (key.startsWith('i') || key.startsWith('f')) {
                 // Convert numeric attributes to numbers
-                cleanedValues[key] = Number(value);
+                cleanedValues[key] = Number(values[key]);
             } else if (key.startsWith('s') && key.endsWith('s')) {
                 // Convert string array attributes to string arrays. Example: sFiles
-                cleanedValues[key] = value.split(',');
+                cleanedValues[key] = values[key].split(',');
             } else if (key.startsWith('s')) {
                 // Convert string attributes to strings
-                cleanedValues[key] = String(value);
+                cleanedValues[key] = String(values[key]);
             } else if (key.startsWith('b')) {
                 // Convert boolean attributes to boolean
-                cleanedValues[key] = Boolean(value);
+                cleanedValues[key] = Boolean(values[key]);
             } else if (key.startsWith('d')) {
-                // Convert date attributes to date (assuming the value is a valid date string)
-                cleanedValues[key] = moment(value).format(
+                // Convert date attributes to date
+                cleanedValues[key] = moment(values[key]).format(
                     'YYYY-MM-DD HH:mm:ss'
                 );
             } else {
                 // Keep other attributes as-is
-                cleanedValues[key] = value;
+                cleanedValues[key] = values[key];
             }
         }
     }
-
     return cleanedValues;
 }
 
