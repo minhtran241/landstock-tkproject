@@ -21,7 +21,17 @@ const getSelectByIdAttributes = (paramsOperations) => {
     return selectAttributes;
 };
 
+const getAttributesByAction = (paramsOperations, action) => {
+    const attributes = [];
+    paramsOperations.forEach((po) => {
+        if (po.a.includes(action)) {
+            attributes.push(po.p);
+        }
+    });
+    return attributes;
+};
+
 module.exports = {
-    getSelectAttributes,
+    getAttributesByAction,
     getSelectByIdAttributes,
 };

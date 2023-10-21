@@ -4,59 +4,101 @@ const { concatWithSpace, generateBetweenParams } = require('./string');
 const { maxUInt64 } = require('./constants');
 const { paramToCondition } = require('./conditionGenerators');
 const {
-    getSelectAttributes,
     getSelectByIdAttributes,
+    getAttributesByAction,
 } = require('./actionGenerators');
 
 // Function to generate a SELECT query from the request query parameters
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
-    // Initialize the WHERE clause
-    let where = '';
+    const selectAttrs = getAttributesByAction(paramsOperations, 's');
+    const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
+    const whereConditions = generateWhereConditions(
+        requestQuery,
+        conditionAttrs
+    );
 
-    if (requestQuery) {
-        paramsOperations.forEach((po) => {
-            const { from, to } = generateBetweenParams(po.p);
-            if (requestQuery[po.p] || requestQuery[from] || requestQuery[to]) {
-                // Use the paramToCondition function to convert the parameter and its value into a SQL condition
-                where = concatWithSpace(
-                    where,
-                    paramToCondition(po, requestQuery)
-                );
-            }
-        });
-    }
+    const skipValue = requestQuery.skip || 0;
+    const limitValue = requestQuery.limit || maxUInt64;
 
-    // Add the LIMIT and OFFSET clauses
-    const { skip, limit } = requestQuery;
-    const skipValue = skip || 0;
-    const limitValue = limit || maxUInt64;
+    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${whereConditions} LIMIT ${limitValue} OFFSET ${skipValue}`;
 
-    // Construct the final SQL query
-    const query = `SELECT ${getSelectAttributes(
-        paramsOperations
-    )} FROM ${table} WHERE 1 = 1 ${where} LIMIT ${limitValue} OFFSET ${skipValue}`;
+    console.log(query);
 
     return query;
 };
 
-// Function to get a real estate by its sID
+// Function to generate WHERE conditions based on request query parameters and condition attributes
+const generateWhereConditions = (requestQuery, conditionAttrs) => {
+    const conditions = conditionAttrs
+        .filter((attr) => requestQuery[attr] !== undefined)
+        .map((attr) =>
+            paramToCondition(
+                paramsOperations.find((po) => po.p === attr),
+                requestQuery
+            )
+        );
+
+    return conditions.length > 0 ? `AND ${conditions.join(' ')}` : '';
+};
+
+// Function to get a real estate by its sID or other ID columns
 const getSelectByIdQuery = (requestParams, paramsOperations, table, idCol) => {
-    let { id } = requestParams;
-    id = String(id);
-    let query = '';
-    const attrs = getSelectByIdAttributes(paramsOperations);
+    const id = String(requestParams.id);
+    const selectByIdAttrs = getSelectByIdAttributes(paramsOperations);
+    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE `;
+
     if (idCol === 'sID') {
-        query = `SELECT ${attrs} FROM ${table} WHERE sID = toUUID('${id}')`;
-    } else if (idCol.startWith('i')) {
-        query = `SELECT ${attrs} FROM ${table} WHERE ${idCol} = ${id}`;
-    } else if (idCol.startWith('s')) {
-        query = `SELECT ${attrs} FROM ${table} WHERE ${idCol} = '${id}'`;
+        query += `sID = toUUID('${id}')`;
+    } else if (idCol.startsWith('i')) {
+        query += `${idCol} = ${id}`;
+    } else if (idCol.startsWith('s')) {
+        query += `${idCol} = '${id}'`;
     }
+
     console.log(query);
-    return String(query);
+    return query;
+};
+
+// Function to get post query values from the request body
+const getPostQueryValues = (requestBody, paramsOperations) => {
+    // Filter out only the attributes that are allowed to be posted (action 'p')
+    const postAttrs = getAttributesByAction(paramsOperations, 'p');
+    const filteredRequestBody = Object.keys(requestBody)
+        .filter((attr) => postAttrs.includes(attr))
+        .reduce((obj, attr) => {
+            obj[attr] = requestBody[attr];
+            return obj;
+        }, {});
+
+    // Clean and convert the filtered request body
+    const cleanedRequestBody = cleanAndConvert(filteredRequestBody);
+
+    // Set a specific value for 'dNgayTao' attribute
+    cleanedRequestBody.dNgayTao = new Date();
+
+    return cleanedRequestBody;
+};
+
+const getDeleteQuery = (requestParams, table, idCol) => {
+    const id = String(requestParams.id);
+    let query = `DELETE FROM ${table} WHERE `;
+
+    if (idCol === 'sID') {
+        query += `sID = toUUID('${id}')`;
+    } else if (idCol.startsWith('i')) {
+        query += `${idCol} = ${id}`;
+    } else if (idCol.startsWith('s')) {
+        query += `${idCol} = '${id}'`;
+    }
+
+    console.log(query);
+
+    return query;
 };
 
 module.exports = {
     getSelectQuery,
     getSelectByIdQuery,
+    getPostQueryValues,
+    getDeleteQuery,
 };

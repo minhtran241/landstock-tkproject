@@ -1,15 +1,12 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const {
-    postRealEstateCleanedData,
-    getRealEstateByIdQuery,
-    deleteRealEstateByIdQuery,
-} = require('./paramsHandler');
 const { table } = require('./constants');
 const { po_BDS } = require('../../utilities/paramsOperations');
 const {
     getSelectQuery,
     getSelectByIdQuery,
+    getPostQueryValues,
+    getDeleteQuery,
 } = require('../../utilities/queryGenerators');
 
 const getRealEstates = async (request, reply) => {
@@ -53,8 +50,8 @@ const getRealEstateById = async (request, reply) => {
 // Function to insert a new real estate
 const postRealEstate = async (request, reply) => {
     try {
-        // Remove null or undefined values from the object
-        const cleanedValues = postRealEstateCleanedData(request.body);
+        // Remove null, undefined values, or not allowed post values from the object
+        const cleanedValues = getPostQueryValues(request.body, po_BDS);
 
         // Insert the values into the ClickHouse table
         await client.insert({
@@ -72,7 +69,7 @@ const postRealEstate = async (request, reply) => {
 
 // Function to delete a real estate by its sID
 const deleteRealEstate = async (request, reply) => {
-    const query = deleteRealEstateByIdQuery(request.params);
+    const query = getDeleteQuery(request.params, table, 'sID');
     try {
         await client.query({
             query,
