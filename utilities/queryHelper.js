@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const { generateBetweenParams } = require('./string');
 
 // Define the maximum value for a 64-bit unsigned integer
 const maxUInt64 = '18446744073709551615';
@@ -8,17 +9,11 @@ const maxUInt64 = '18446744073709551615';
 // Define a function to convert a parameter and its value into a SQL condition
 const paramToCondition = (paramObject, requestValue) => {
     const { p: paramName, o: operator } = paramObject;
-    let modifiedParamName = paramName;
-
-    // If the operator is greater than or equal to or smaller than or equal to, remove 'Tu' or 'Den' prefix
-    if (['>=', '<=', 'BETWEEN'].includes(operator)) {
-        modifiedParamName = paramName.replace(/Tu|Den/, '');
-    }
 
     // Get the appropriate condition generator function or use the default
     const generateCondition =
         sqlConditionGenerators[operator] || defaultConditionGenerator;
-    return generateCondition(modifiedParamName, requestValue);
+    return generateCondition(paramName, requestValue);
 };
 
 // Default condition generator for basic conditions
@@ -114,7 +109,11 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     if (requestQuery) {
         paramsOperations.forEach((po) => {
-            const value = requestQuery[po.p];
+            let value = requestQuery[po.p];
+            if (po.o === 'BETWEEN') {
+                const { from, to } = generateBetweenParams(po.p);
+                value = `(${from} AND ${to})`;
+            }
             if (value) {
                 // Use the paramToCondition function to convert the parameter and its value into a SQL condition
                 where = concatWithSpace(where, paramToCondition(po, value));
