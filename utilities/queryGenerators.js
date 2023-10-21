@@ -70,11 +70,11 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
             return obj;
         }, {});
 
+    // Set a specific value for 'dNgayTao' attribute
+    filteredRequestBody.dNgayTao = new Date();
+
     // Clean and convert the filtered request body
     const cleanedRequestBody = cleanAndConvert(filteredRequestBody);
-
-    // Set a specific value for 'dNgayTao' attribute
-    cleanedRequestBody.dNgayTao = new Date();
 
     return cleanedRequestBody;
 };
