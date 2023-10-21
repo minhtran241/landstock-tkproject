@@ -43,7 +43,7 @@ const generateWhereConditions = (
             )
         );
 
-    return conditions.length > 0 ? `AND ${conditions.join(' ')}` : '';
+    return conditions.length > 0 ? ` ${conditions.join(' ')}` : '';
 };
 
 // Function to get a real estate by its sID or other ID columns
