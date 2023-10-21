@@ -34,6 +34,19 @@ const po_BDS = [
     { p: 'createdAt', o: '=', a: '', sbi: false }, // No specific action for createdAt
 ];
 
+const convertToType = (name, value) => {
+    if (name.startWith('i')) {
+        return Number(value);
+    } else if (name.startWith('d')) {
+        return new Date(value);
+    } else if (name.startWith('s')) {
+        return String(value);
+    } else if (name.startWith('b')) {
+        return Boolean(value);
+    }
+    return value;
+};
+
 // const po_BDS = [
 //     { p: 'iID_MaTinh', o: 'IN', a: 'spd', sbi: true },
 //     { p: 'iID_MaQuan', o: 'IN' },
@@ -59,4 +72,5 @@ const po_Tinh = [
 
 module.exports = {
     po_BDS,
+    convertToType,
 };
