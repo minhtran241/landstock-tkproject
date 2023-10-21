@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const { generateBetweenParams } = require('./string');
+const { concatWithSpace, generateBetweenParams } = require('./string');
 
 // Define the maximum value for a 64-bit unsigned integer
 const maxUInt64 = '18446744073709551615';
