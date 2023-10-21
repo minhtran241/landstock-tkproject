@@ -40,12 +40,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 };
 
 // Function to get a real estate by its sID
-const getSelectByIdQuery = async (
-    requestParams,
-    paramsOperations,
-    table,
-    idCol
-) => {
+const getSelectByIdQuery = (requestParams, paramsOperations, table, idCol) => {
     let { id } = requestParams;
     id = String(id);
     let query = '';
