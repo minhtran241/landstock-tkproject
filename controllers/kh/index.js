@@ -1,12 +1,19 @@
 'use strict';
 const client = require('../../data/clickhouse');
+const { po_KhachHang } = require('../../utilities/paramsOperations');
+const {
+    getSelectQuery,
+    getSelectByIdQuery,
+    getPostQueryValues,
+    getDeleteQuery,
+} = require('../../utilities/queryGenerators');
 const { cleanAndConvert } = require('../../utilities/queryHelper');
 const { table, replyCols } = require('./constants');
 
 // Function to get all customers
 const getCustomers = async (request, reply) => {
     try {
-        const query = `SELECT ${replyCols} FROM ${table}`;
+        const query = getSelectQuery(request.query, po_KhachHang, table);
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
@@ -21,8 +28,14 @@ const getCustomers = async (request, reply) => {
 
 // Function to get a customer by its sID
 const getCustomerById = async (request, reply) => {
-    const { sID } = request.params;
-    const query = `SELECT ${replyCols} FROM ${table} WHERE sID = toUUID({sID: String})`;
+    // const { sID } = request.params;
+    // const query = `SELECT ${replyCols} FROM ${table} WHERE sID = toUUID({sID: String})`;
+    const query = getSelectByIdQuery(
+        request.params,
+        po_KhachHang,
+        table,
+        'sID'
+    );
 
     try {
         const result = await client.query({
@@ -46,7 +59,8 @@ const getCustomerById = async (request, reply) => {
 // Function to insert a new customer
 const postCustomer = async (request, reply) => {
     try {
-        const value = cleanAndConvert(request.body);
+        // const value = cleanAndConvert(request.body);
+        const value = getPostQueryValues(request.body, po_KhachHang);
         await client.insert({
             table,
             values: [value],
@@ -61,8 +75,9 @@ const postCustomer = async (request, reply) => {
 
 // Function to delete a customer by its sID
 const deleteCustomer = async (request, reply) => {
-    const { sID } = request.params;
-    const query = `ALTER TABLE ${table} DELETE WHERE sID = toUUID({sID: String})`;
+    // const { sID } = request.params;
+    // const query = `ALTER TABLE ${table} DELETE WHERE sID = toUUID({sID: String})`;
+    const query = getDeleteQuery(request.params, table, 'sID');
     try {
         await client.query({
             query,

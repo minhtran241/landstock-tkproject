@@ -56,6 +56,7 @@ const getSelectByIdQuery = (requestParams, paramsOperations, table, idCol) => {
     }
 
     console.log(query);
+
     return query;
 };
 
@@ -79,9 +80,10 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
     return cleanedRequestBody;
 };
 
+// Function to get a delete query real estate by its sID or other ID columns
 const getDeleteQuery = (requestParams, table, idCol) => {
     const id = String(requestParams.id);
-    let query = `DELETE FROM ${table} WHERE `;
+    let query = `ALTER TABLE ${table} DELETE WHERE `;
 
     if (idCol === 'sID') {
         query += `sID = toUUID('${id}')`;
