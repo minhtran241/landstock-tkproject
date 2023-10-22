@@ -16,7 +16,7 @@ const getEntriesOpts = getSchemaGenerator(po_Quan, 's', 'array', getAllEntries);
 const getEntryByIdOpts = getSchemaGenerator(
     po_Quan,
     'i',
-    'array',
+    'object',
     getEntryById
 );
 const postEntryOpts = postSchemaGenerator(po_Quan, 'p', postEntry);

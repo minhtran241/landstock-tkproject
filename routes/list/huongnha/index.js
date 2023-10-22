@@ -21,7 +21,7 @@ const getEntriesOpts = getSchemaGenerator(
 const getEntryByIdOpts = getSchemaGenerator(
     po_HuongNha,
     'i',
-    'array',
+    'object',
     getEntryById
 );
 const postEntryOpts = postSchemaGenerator(po_HuongNha, 'p', postEntry);

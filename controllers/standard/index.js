@@ -15,7 +15,11 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         const entitySet = await resultSet.json();
-        reply.send(entitySet);
+        if (entitySet !== null) {
+            reply.code(200).send(entitySet);
+        } else {
+            reply.code(404).send({ error: 'entity not found' });
+        }
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
         reply.code(500).send({ error: 'Internal Server Error' });

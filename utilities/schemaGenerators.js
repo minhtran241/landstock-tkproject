@@ -41,8 +41,12 @@ const getSchemaGenerator = (po, action, type, requestHandler) => {
 
 const postSchemaGenerator = (po, action, requestHandler) => {
     const requestBodySchema = poToObjSchema(po, action);
+    const response201 = createMessageResponse;
+    const response500 = createMessageResponse;
+
     const responseSchema = {
-        201: createMessageResponse,
+        201: response201,
+        500: response500,
     };
 
     return {
@@ -55,8 +59,12 @@ const postSchemaGenerator = (po, action, requestHandler) => {
 };
 
 const deleteSchemaGenerator = (requestHandler) => {
+    const response200 = createMessageResponse;
+    const response500 = createMessageResponse;
+
     const responseSchema = {
-        200: createMessageResponse,
+        200: response200,
+        500: response500,
     };
 
     return {
