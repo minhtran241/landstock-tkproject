@@ -3,10 +3,19 @@
 const poToObjSchema = (po, action) => {
     return {
         type: 'object',
-        properties: po
-            .filter((po) => po.a.includes(action))
-            .map((po) => ({ [po.p]: { type: po.t } })),
+        properties: createObjectFromFilteredArray(po, action),
     };
+};
+
+const createObjectFromFilteredArray = (po, action) => {
+    const filteredArray = po.filter((poItem) => poItem.a.includes(action));
+
+    const result = filteredArray.reduce((acc, poItem) => {
+        acc[poItem.p] = { type: poItem.t };
+        return acc;
+    }, {});
+
+    return result;
 };
 
 const createMessageResponse = {
