@@ -1,16 +1,5 @@
 'use strict';
 
-// Function to get attributes by action (select by id)
-const getSelectByIdAttributes = (paramsOperations) => {
-    const selectAttributes = [];
-    paramsOperations.forEach((po) => {
-        if (po.sbi) {
-            selectAttributes.push(po.p);
-        }
-    });
-    return selectAttributes;
-};
-
 // Function to get attributes by action
 const getAttributesByAction = (paramsOperations, action) => {
     const attributes = [];
@@ -22,7 +11,13 @@ const getAttributesByAction = (paramsOperations, action) => {
     return attributes;
 };
 
+// Function to get the primary key attribute
+const getPKAttr = (paramsOperations) => {
+    const pkAttr = paramsOperations.find((po) => po.k === true);
+    return pkAttr;
+};
+
 module.exports = {
     getAttributesByAction,
-    getSelectByIdAttributes,
+    getPKAttr,
 };

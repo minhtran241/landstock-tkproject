@@ -1,55 +1,26 @@
 'use strict';
 
 const {
-    getRealEstates,
-    getRealEstateById,
-    postRealEstate,
-    deleteRealEstate,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../controllers/bds');
+const { po_BDS } = require('../../utilities/paramsOperations');
 
 // BDS schema
 const RealEstates = {
     type: 'object',
-    properties: {
-        sID: { type: 'string' },
-        sMa: { type: 'string' },
-        sNoiDung: { type: 'string' },
-        iDienTich: { type: 'number' },
-        sGiaChaoHopDong: { type: 'string' },
-        sAvatar: { type: 'string' },
-        sHotline: { type: 'string' },
-    },
+    properties: po_BDS
+        .filter((po) => po.a.includes('s'))
+        .map((po) => ({ [po.p]: { type: po.t } })),
 };
 
 const RealEstate = {
     type: 'object',
-    properties: {
-        sID: { type: 'string' },
-        sMa: { type: 'string' },
-        sNoiDung: { type: 'string' },
-        sTenTinh: { type: 'string' },
-        iID_MaTinh: { type: 'integer' },
-        sTenQuan: { type: 'string' },
-        iID_MaQuan: { type: 'integer' },
-        sTenPhuongXa: { type: 'string' },
-        iID_MaPhuongXa: { type: 'integer' },
-        sTenDuong: { type: 'string' },
-        sLoaiHang: { type: 'string' },
-        iDienTich: { type: 'number' },
-        iSoTang: { type: 'number' },
-        iMatTien: { type: 'number' },
-        iGiaChaoHopDong: { type: 'number' },
-        sGiaChaoHopDong: { type: 'string' },
-        sHuongNha: { type: 'string' },
-        iID_HuongNha: { type: 'integer' },
-        iSoPhongNgu: { type: 'number' },
-        iSoToilet: { type: 'number' },
-        sMoTa: { type: 'string' },
-        sFiles: { type: 'string' },
-        sLat: { type: 'string' },
-        sLng: { type: 'string' },
-        sHotline: { type: 'string' },
-    },
+    properties: po_BDS
+        .filter((po) => po.a.includes('i'))
+        .map((po) => ({ [po.p]: { type: po.t } })),
 };
 
 const getRealEstatesOpts = {
@@ -61,7 +32,7 @@ const getRealEstatesOpts = {
             },
         },
     },
-    handler: getRealEstates,
+    handler: getAllEntries,
 };
 
 const getRealEstateByIdOpts = {
@@ -73,7 +44,7 @@ const getRealEstateByIdOpts = {
             },
         },
     },
-    handler: getRealEstateById,
+    handler: getEntryById,
 };
 
 const postRealEstateOpts = {
@@ -107,7 +78,7 @@ const postRealEstateOpts = {
             },
         },
     },
-    handler: postRealEstate,
+    handler: postEntry,
 };
 
 const deleteRealEstateOpts = {
@@ -121,7 +92,7 @@ const deleteRealEstateOpts = {
             },
         },
     },
-    handler: deleteRealEstate,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

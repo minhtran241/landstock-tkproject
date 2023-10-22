@@ -2,34 +2,34 @@
 const { table } = require('./constants');
 const { po_BDS } = require('../../utilities/paramsOperations');
 const {
-    getAllStandard,
-    getByIdStandard,
-    postStandard,
-    deleteStandard,
+    getAllEntriesStd,
+    getEntryByIdStd,
+    postEntryStd,
+    deleteEntryStd,
 } = require('../standard');
 
-const getRealEstates = async (request, reply) => {
-    return getAllStandard(request, reply, po_BDS, table);
+const getAllEntries = async (request, reply) => {
+    return getAllEntriesStd(request, reply, po_BDS, table);
 };
 
 // Function to get a real estate by its sID
-const getRealEstateById = async (request, reply) => {
-    return getByIdStandard(request, reply, po_BDS, table, 'sID');
+const getEntryById = async (request, reply) => {
+    return getEntryByIdStd(request, reply, po_BDS, table);
 };
 
 // Function to insert a new real estate
-const postRealEstate = async (request, reply) => {
-    return postStandard(request, reply, po_BDS, table);
+const postEntry = async (request, reply) => {
+    return postEntryStd(request, reply, po_BDS, table);
 };
 
 // Function to delete a real estate by its sID
-const deleteRealEstate = async (request, reply) => {
-    return deleteStandard(request, reply, po_BDS, table, 'sID');
+const deleteEntry = async (request, reply) => {
+    return deleteEntryStd(request, reply, po_BDS, table);
 };
 
 module.exports = {
-    getRealEstates,
-    getRealEstateById,
-    postRealEstate,
-    deleteRealEstate,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 };

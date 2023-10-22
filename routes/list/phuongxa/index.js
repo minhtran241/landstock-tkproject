@@ -1,10 +1,10 @@
 'use strict';
 
 const {
-    getWards,
-    getWardById,
-    postWard,
-    deleteWard,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../../controllers/phuongxa');
 
 // ward/PhuongXa schema
@@ -26,7 +26,7 @@ const getWardsOpts = {
             },
         },
     },
-    handler: getWards,
+    handler: getAllEntries,
 };
 
 const getWardByIdOpts = {
@@ -38,7 +38,7 @@ const getWardByIdOpts = {
             },
         },
     },
-    handler: getWardById,
+    handler: getEntryById,
 };
 
 const postWardOpts = {
@@ -60,7 +60,7 @@ const postWardOpts = {
             },
         },
     },
-    handler: postWard,
+    handler: postEntry,
 };
 
 const deleteWardOpts = {
@@ -74,7 +74,7 @@ const deleteWardOpts = {
             },
         },
     },
-    handler: deleteWard,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

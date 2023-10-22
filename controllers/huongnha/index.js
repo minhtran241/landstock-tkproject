@@ -1,31 +1,32 @@
 'use strict';
 const { po_HuongNha } = require('../../utilities/paramsOperations');
 const {
-    getAllStandard,
-    getByIdStandard,
-    postStandard,
+    getAllEntriesStd,
+    getEntryByIdStd,
+    postEntryStd,
+    deleteEntryStd,
 } = require('../standard');
 const { table } = require('./constants');
 
-const getDirections = async (request, reply) => {
-    return getAllStandard(request, reply, po_HuongNha, table);
+const getAllEntries = async (request, reply) => {
+    return getAllEntriesStd(request, reply, po_HuongNha, table);
 };
 
-const getDirectionById = async (request, reply) => {
-    return getByIdStandard(request, reply, po_HuongNha, table, 'iID_HuongNha');
+const getEntryById = async (request, reply) => {
+    return getEntryByIdStd(request, reply, po_HuongNha, table);
 };
 
-const postDirection = async (request, reply) => {
-    return postStandard(request, reply, po_HuongNha, table);
+const postEntry = async (request, reply) => {
+    return postEntryStd(request, reply, po_HuongNha, table);
 };
 
-const deleteDirection = async (request, reply) => {
-    return postStandard(request, reply, po_HuongNha, table);
+const deleteEntry = async (request, reply) => {
+    return deleteEntryStd(request, reply, po_HuongNha, table);
 };
 
 module.exports = {
-    getDirections,
-    getDirectionById,
-    postDirection,
-    deleteDirection,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 };

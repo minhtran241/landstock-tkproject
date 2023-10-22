@@ -1,38 +1,32 @@
 'use strict';
 const { po_PhuongXa } = require('../../utilities/paramsOperations');
 const {
-    getAllStandard,
-    getByIdStandard,
-    postStandard,
-    deleteStandard,
+    getAllEntriesStd,
+    getEntryByIdStd,
+    postEntryStd,
+    deleteEntryStd,
 } = require('../standard');
 const { table } = require('./constants');
 
-const getWards = async (request, reply) => {
-    return getAllStandard(request, reply, po_PhuongXa, table);
+const getAllEntries = async (request, reply) => {
+    return getAllEntriesStd(request, reply, po_PhuongXa, table);
 };
 
-const getWardById = async (request, reply) => {
-    return getByIdStandard(
-        request,
-        reply,
-        po_PhuongXa,
-        table,
-        'iID_MaPhuongXa'
-    );
+const getEntryById = async (request, reply) => {
+    return getEntryByIdStd(request, reply, po_PhuongXa, table);
 };
 
-const postWard = async (request, reply) => {
-    return postStandard(request, reply, po_PhuongXa, table);
+const postEntrypostWard = async (request, reply) => {
+    return postEntryStd(request, reply, po_PhuongXa, table);
 };
 
-const deleteWard = async (request, reply) => {
-    return deleteStandard(request, reply, po_PhuongXa, table, 'iID_MaPhuongXa');
+const deleteEntry = async (request, reply) => {
+    return deleteEntryStd(request, reply, po_PhuongXa, table);
 };
 
 module.exports = {
-    getWards,
-    getWardById,
-    postWard,
-    deleteWard,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 };

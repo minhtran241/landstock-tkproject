@@ -1,10 +1,10 @@
 'use strict';
 
 const {
-    getDistricts,
-    getDistrictById,
-    postDistrict,
-    deleteDistrict,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../../controllers/quan');
 
 // district/Quan schema
@@ -26,7 +26,7 @@ const getDistrictsOpts = {
             },
         },
     },
-    handler: getDistricts,
+    handler: getAllEntries,
 };
 
 const getDistrictByIdOpts = {
@@ -38,7 +38,7 @@ const getDistrictByIdOpts = {
             },
         },
     },
-    handler: getDistrictById,
+    handler: getEntryById,
 };
 
 const postDistrictOpts = {
@@ -60,7 +60,7 @@ const postDistrictOpts = {
             },
         },
     },
-    handler: postDistrict,
+    handler: postEntry,
 };
 
 const deleteDistrictOpts = {
@@ -74,7 +74,7 @@ const deleteDistrictOpts = {
             },
         },
     },
-    handler: deleteDistrict,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

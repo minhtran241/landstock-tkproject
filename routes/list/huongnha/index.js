@@ -1,10 +1,10 @@
 'use strict';
 
 const {
-    getDirections,
-    getDirectionById,
-    postDirection,
-    deleteDirection,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../../controllers/huongnha');
 
 // direction/HuongNha schema
@@ -25,7 +25,7 @@ const getDirectionsOpts = {
             },
         },
     },
-    handler: getDirections,
+    handler: getAllEntries,
 };
 
 const getDirectionByIdOpts = {
@@ -37,7 +37,7 @@ const getDirectionByIdOpts = {
             },
         },
     },
-    handler: getDirectionById,
+    handler: getEntryById,
 };
 
 const postDirectionOpts = {
@@ -58,7 +58,7 @@ const postDirectionOpts = {
             },
         },
     },
-    handler: postDirection,
+    handler: postEntry,
 };
 
 const deleteDirectionOpts = {
@@ -72,7 +72,7 @@ const deleteDirectionOpts = {
             },
         },
     },
-    handler: deleteDirection,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

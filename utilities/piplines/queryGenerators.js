@@ -1,10 +1,7 @@
 'use strict';
 
 const { paramToCondition } = require('./conditionGenerators');
-const {
-    getSelectByIdAttributes,
-    getAttributesByAction,
-} = require('./actionGenerators');
+const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
 const { cleanAndConvert, sanitizeLimitAndOffset } = require('../queryHelper');
 
 // Function to generate a SELECT query from the request query parameters
@@ -46,17 +43,18 @@ const generateWhereConditions = (
 };
 
 // Function to get a real estate by its sID or other ID columns
-const getSelectByIdQuery = (requestParams, paramsOperations, table, idCol) => {
+const getSelectByIdQuery = (requestParams, paramsOperations, table) => {
     const id = String(requestParams.id);
-    const selectByIdAttrs = getSelectByIdAttributes(paramsOperations);
+    const selectByIdAttrs = getAttributesByAction(paramsOperations, 'i');
+    const pkAttr = getPKAttr(paramsOperations);
     let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE `;
 
-    if (idCol === 'sID') {
+    if (pkAttr.p === 'sID') {
         query += `sID = toUUID('${id}')`;
-    } else if (idCol.startsWith('i')) {
-        query += `${idCol} = ${id}`;
-    } else if (idCol.startsWith('s')) {
-        query += `${idCol} = '${id}'`;
+    } else if (pkAttr.t === 'number') {
+        query += `${pkAttr.p} = ${id}`;
+    } else if (pkAttr.t === 'string') {
+        query += `${pkAttr.p} = '${id}'`;
     }
 
     console.info(query);
@@ -87,16 +85,17 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
 };
 
 // Function to get a delete query real estate by its sID or other ID columns
-const getDeleteQuery = (requestParams, paramsOperations, table, idCol) => {
+const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const id = String(requestParams.id);
+    const pkAttr = getPKAttr(paramsOperations);
     let query = `ALTER TABLE ${table} DELETE WHERE `;
 
-    if (idCol === 'sID') {
+    if (pkAttr.p === 'sID') {
         query += `sID = toUUID('${id}')`;
     } else if (idCol.startsWith('i')) {
-        query += `${idCol} = ${id}`;
+        query += `${pkAttr.p} = ${id}`;
     } else if (idCol.startsWith('s')) {
-        query += `${idCol} = '${id}'`;
+        query += `${pkAttr.p} = '${id}'`;
     }
 
     console.info(query);

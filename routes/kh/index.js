@@ -1,10 +1,10 @@
 'use strict';
 
 const {
-    getCustomers,
-    getCustomerById,
-    postCustomer,
-    deleteCustomer,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../controllers/kh');
 
 // customer/KhachHang schema
@@ -27,7 +27,7 @@ const getCustomersOpts = {
             },
         },
     },
-    handler: getCustomers,
+    handler: getAllEntries,
 };
 
 const getCustomerByIdOpts = {
@@ -39,7 +39,7 @@ const getCustomerByIdOpts = {
             },
         },
     },
-    handler: getCustomerById,
+    handler: getEntryById,
 };
 
 const postCustomerOpts = {
@@ -62,7 +62,7 @@ const postCustomerOpts = {
             },
         },
     },
-    handler: postCustomer,
+    handler: postEntry,
 };
 
 const deleteCustomerOpts = {
@@ -76,7 +76,7 @@ const deleteCustomerOpts = {
             },
         },
     },
-    handler: deleteCustomer,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

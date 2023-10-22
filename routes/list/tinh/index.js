@@ -1,10 +1,10 @@
 'use strict';
 
 const {
-    getCities,
-    getCityById,
-    postCity,
-    deleteCity,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../../controllers/tinh');
 
 // city/Tinh schema
@@ -25,7 +25,7 @@ const getCitiesOpts = {
             },
         },
     },
-    handler: getCities,
+    handler: getAllEntries,
 };
 
 const getCityByIdOpts = {
@@ -37,7 +37,7 @@ const getCityByIdOpts = {
             },
         },
     },
-    handler: getCityById,
+    handler: getEntryById,
 };
 
 const postCityOpts = {
@@ -58,7 +58,7 @@ const postCityOpts = {
             },
         },
     },
-    handler: postCity,
+    handler: postEntry,
 };
 
 const deleteCityOpts = {
@@ -72,7 +72,7 @@ const deleteCityOpts = {
             },
         },
     },
-    handler: deleteCity,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

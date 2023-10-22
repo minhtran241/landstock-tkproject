@@ -1,10 +1,10 @@
 'use strict';
 
 const {
-    getSections,
-    getSectionByCode,
-    postSection,
-    deleteSection,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 } = require('../../../controllers/loaihang');
 
 // section/LoaiHang schema
@@ -25,7 +25,7 @@ const getSectionsOpts = {
             },
         },
     },
-    handler: getSections,
+    handler: getAllEntries,
 };
 
 const getSectionByCodeOpts = {
@@ -37,7 +37,7 @@ const getSectionByCodeOpts = {
             },
         },
     },
-    handler: getSectionByCode,
+    handler: getEntryById,
 };
 
 const postSectionOpts = {
@@ -58,7 +58,7 @@ const postSectionOpts = {
             },
         },
     },
-    handler: postSection,
+    handler: postEntry,
 };
 
 const deleteSectionOpts = {
@@ -72,7 +72,7 @@ const deleteSectionOpts = {
             },
         },
     },
-    handler: deleteSection,
+    handler: deleteEntry,
 };
 
 module.exports = async function (fastify, opts) {

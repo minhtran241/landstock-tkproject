@@ -1,35 +1,35 @@
 'use strict';
 const { po_Tinh } = require('../../utilities/paramsOperations');
 const {
-    getAllStandard,
-    getByIdStandard,
-    postStandard,
-    deleteStandard,
+    getAllEntriesStd,
+    getEntryByIdStd,
+    postEntryStd,
+    deleteEntryStd,
 } = require('../standard');
 const { table } = require('./constants');
 
 // Function to get all cities
-const getCities = async (request, reply) => {
-    return getAllStandard(request, reply, po_Tinh, table);
+const getAllEntries = async (request, reply) => {
+    return getAllEntriesStd(request, reply, po_Tinh, table);
 };
 
 // Function to get a city by its ID
-const getCityById = async (request, reply) => {
-    return getByIdStandard(request, reply, po_Tinh, table, 'iID_MaTinh');
+const getEntryById = async (request, reply) => {
+    return getEntryByIdStd(request, reply, po_Tinh, table, 'iID_MaTinh');
 };
 
 // Function to insert a new city
-const postCity = async (request, reply) => {
-    return postStandard(request, reply, po_Tinh, table);
+const postEntry = async (request, reply) => {
+    return postEntryStd(request, reply, po_Tinh, table);
 };
 // Function to delete a city by its ID
-const deleteCity = async (request, reply) => {
-    return deleteStandard(request, reply, po_Tinh, table, 'iID_MaTinh');
+const deleteEntry = async (request, reply) => {
+    return deleteEntryStd(request, reply, po_Tinh, table, 'iID_MaTinh');
 };
 
 module.exports = {
-    getCities,
-    getCityById,
-    postCity,
-    deleteCity,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 };

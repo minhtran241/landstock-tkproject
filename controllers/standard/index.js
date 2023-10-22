@@ -7,7 +7,7 @@ const {
     getDeleteQuery,
 } = require('../../utilities/piplines/queryGenerators');
 
-const getAllStandard = async (request, reply, po_Name, table) => {
+const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
         const query = getSelectQuery(request.query, po_Name, table);
         const resultSet = await client.query({
@@ -22,9 +22,9 @@ const getAllStandard = async (request, reply, po_Name, table) => {
     }
 };
 
-const getByIdStandard = async (request, reply, po_Name, table, idCol) => {
+const getEntryByIdStd = async (request, reply, po_Name, table) => {
     try {
-        const query = getSelectByIdQuery(request.params, po_Name, table, idCol);
+        const query = getSelectByIdQuery(request.params, po_Name, table);
         const result = await client.query({
             query,
             format: 'JSONEachRow',
@@ -42,7 +42,7 @@ const getByIdStandard = async (request, reply, po_Name, table, idCol) => {
     }
 };
 
-const postStandard = async (request, reply, po_Name, table) => {
+const postEntryStd = async (request, reply, po_Name, table) => {
     try {
         // Remove null, undefined values, or not allowed post values from the object
         const cleanedValues = getPostQueryValues(request.body, po_Name);
@@ -61,8 +61,8 @@ const postStandard = async (request, reply, po_Name, table) => {
     }
 };
 
-const deleteStandard = async (request, reply, po_Name, idCol) => {
-    const query = getDeleteQuery(request.params, po_Name, table, idCol);
+const deleteEntryStd = async (request, reply, po_Name) => {
+    const query = getDeleteQuery(request.params, po_Name, table);
     try {
         await client.query({
             query,
@@ -75,8 +75,8 @@ const deleteStandard = async (request, reply, po_Name, idCol) => {
 };
 
 module.exports = {
-    getAllStandard,
-    getByIdStandard,
-    postStandard,
-    deleteStandard,
+    getAllEntriesStd,
+    getEntryByIdStd,
+    postEntryStd,
+    deleteEntryStd,
 };

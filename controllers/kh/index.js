@@ -1,36 +1,36 @@
 'use strict';
 const { po_KhachHang } = require('../../utilities/paramsOperations');
 const {
-    getAllStandard,
-    getByIdStandard,
-    postStandard,
-    deleteStandard,
+    getAllEntriesStd,
+    getEntryByIdStd,
+    postEntryStd,
+    deleteEntryStd,
 } = require('../standard');
 const { table } = require('./constants');
 
 // Function to get all customers
-const getCustomers = async (request, reply) => {
-    return getAllStandard(request, reply, po_KhachHang, table);
+const getAllEntries = async (request, reply) => {
+    return getAllEntriesStd(request, reply, po_KhachHang, table);
 };
 
 // Function to get a customer by its sID
-const getCustomerById = async (request, reply) => {
-    return getByIdStandard(request, reply, po_KhachHang, table, 'sID');
+const getEntryById = async (request, reply) => {
+    return getEntryByIdStd(request, reply, po_KhachHang, table);
 };
 
 // Function to insert a new customer
-const postCustomer = async (request, reply) => {
-    return postStandard(request, reply, po_KhachHang, table);
+const postEntry = async (request, reply) => {
+    return postEntryStd(request, reply, po_KhachHang, table);
 };
 
 // Function to delete a customer by its sID
-const deleteCustomer = async (request, reply) => {
-    return deleteStandard(request, reply, po_KhachHang, 'sID');
+const deleteEntry = async (request, reply) => {
+    return deleteEntryStd(request, reply, po_KhachHang);
 };
 
 module.exports = {
-    getCustomers,
-    getCustomerById,
-    postCustomer,
-    deleteCustomer,
+    getAllEntries,
+    getEntryById,
+    postEntry,
+    deleteEntry,
 };
