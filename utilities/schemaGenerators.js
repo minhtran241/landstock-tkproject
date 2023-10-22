@@ -67,8 +67,6 @@ const deleteSchemaGenerator = (requestHandler) => {
 };
 
 module.exports = {
-    poToObjSchema,
-    createMessageResponse,
     getSchemaGenerator,
     postSchemaGenerator,
     deleteSchemaGenerator,

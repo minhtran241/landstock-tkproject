@@ -1,83 +1,30 @@
 'use strict';
-
 const {
     getAllEntries,
     getEntryById,
     postEntry,
     deleteEntry,
 } = require('../../../controllers/tinh');
+const {
+    getSchemaGenerator,
+    postSchemaGenerator,
+    deleteSchemaGenerator,
+} = require('../../utilities/schemaGenerators');
+const { po_Tinh } = require('../../../utilities/paramsOperations');
 
-// city/Tinh schema
-const City = {
-    type: 'object',
-    properties: {
-        iID_MaTinh: { type: 'number' },
-        sTenTinh: { type: 'string' },
-    },
-};
-
-const getCitiesOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                cities: City,
-            },
-        },
-    },
-    handler: getAllEntries,
-};
-
-const getCityByIdOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                cities: City,
-            },
-        },
-    },
-    handler: getEntryById,
-};
-
-const postCityOpts = {
-    schema: {
-        body: {
-            type: 'object',
-            properties: {
-                iID_MaTinh: { type: 'integer' },
-                sTenTinh: { type: 'string' },
-            },
-        },
-        response: {
-            201: {
-                type: 'object',
-                properties: {
-                    message: { type: 'string' },
-                },
-            },
-        },
-    },
-    handler: postEntry,
-};
-
-const deleteCityOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'object',
-                properties: {
-                    message: { type: 'string' },
-                },
-            },
-        },
-    },
-    handler: deleteEntry,
-};
+const getEntriesOpts = getSchemaGenerator(po_Tinh, 's', 'array', getAllEntries);
+const getEntryByIdOpts = getSchemaGenerator(
+    po_Tinh,
+    'i',
+    'array',
+    getEntryById
+);
+const postEntryOpts = postSchemaGenerator(po_Tinh, 'p', postEntry);
+const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
-    fastify.get('/', getCitiesOpts);
-    fastify.get('/:id', getCityByIdOpts);
-    fastify.post('/', postCityOpts);
-    fastify.delete('/:id', deleteCityOpts);
+    fastify.get('/', getEntriesOpts);
+    fastify.get('/:id', getEntryByIdOpts);
+    fastify.post('/', postEntryOpts);
+    fastify.delete('/:id', deleteEntryOpts);
 };

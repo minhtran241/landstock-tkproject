@@ -1,83 +1,35 @@
 'use strict';
-
 const {
     getAllEntries,
     getEntryById,
     postEntry,
     deleteEntry,
 } = require('../../../controllers/huongnha');
+const {
+    getSchemaGenerator,
+    postSchemaGenerator,
+    deleteSchemaGenerator,
+} = require('../../utilities/schemaGenerators');
+const { po_HuongNha } = require('../../../utilities/paramsOperations');
 
-// direction/HuongNha schema
-const Direction = {
-    type: 'object',
-    properties: {
-        iID_HuongNha: { type: 'integer' },
-        sHuongNha: { type: 'string' },
-    },
-};
-
-const getDirectionsOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                directions: Direction,
-            },
-        },
-    },
-    handler: getAllEntries,
-};
-
-const getDirectionByIdOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                directions: Direction,
-            },
-        },
-    },
-    handler: getEntryById,
-};
-
-const postDirectionOpts = {
-    schema: {
-        body: {
-            type: 'object',
-            properties: {
-                iID_HuongNha: { type: 'integer' },
-                sHuongNha: { type: 'string' },
-            },
-        },
-        response: {
-            201: {
-                type: 'object',
-                properties: {
-                    message: { type: 'string' },
-                },
-            },
-        },
-    },
-    handler: postEntry,
-};
-
-const deleteDirectionOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'object',
-                properties: {
-                    message: { type: 'string' },
-                },
-            },
-        },
-    },
-    handler: deleteEntry,
-};
+const getEntriesOpts = getSchemaGenerator(
+    po_HuongNha,
+    's',
+    'array',
+    getAllEntries
+);
+const getEntryByIdOpts = getSchemaGenerator(
+    po_HuongNha,
+    'i',
+    'array',
+    getEntryById
+);
+const postEntryOpts = postSchemaGenerator(po_HuongNha, 'p', postEntry);
+const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
-    fastify.get('/', getDirectionsOpts);
-    fastify.get('/:id', getDirectionByIdOpts);
-    fastify.post('/', postDirectionOpts);
-    fastify.delete('/:id', deleteDirectionOpts);
+    fastify.get('/', getEntriesOpts);
+    fastify.get('/:id', getEntryByIdOpts);
+    fastify.post('/', postEntryOpts);
+    fastify.delete('/:id', deleteEntryOpts);
 };

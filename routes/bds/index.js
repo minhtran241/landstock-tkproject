@@ -13,7 +13,12 @@ const {
 const { po_BDS } = require('../../utilities/paramsOperations');
 
 const getEntriesOpts = getSchemaGenerator(po_BDS, 's', 'array', getAllEntries);
-const getEntryByIdOpts = getSchemaGenerator(po_BDS, 'i', 'array', getEntryById);
+const getEntryByIdOpts = getSchemaGenerator(
+    po_BDS,
+    'i',
+    'object',
+    getEntryById
+);
 const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
