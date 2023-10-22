@@ -13,7 +13,6 @@ module.exports = fp(async function (fastify, opts) {
         frameguard: {
             action: 'deny', // Prevent embedding in iframes
         },
-        hidePoweredBy: { setTo: 'Fastify' }, // Change the X-Powered-By header
         hsts: { maxAge: 31536000, includeSubDomains: true }, // Enable HTTP Strict Transport Security
         ieNoOpen: true, // Force IE to load content in the best way possible
         noSniff: true, // Prevent browsers from interpreting files as something else
