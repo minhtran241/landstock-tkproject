@@ -9,13 +9,11 @@ const poToObjSchema = (po, action) => {
     };
 };
 
-const createMessageResponse = () => {
-    return {
-        type: 'object',
-        properties: {
-            message: { type: 'string' },
-        },
-    };
+const createMessageResponse = {
+    type: 'object',
+    properties: {
+        message: { type: 'string' },
+    },
 };
 
 const getSchemaGenerator = (po, action, responseType, requestHandler) => {
@@ -34,7 +32,7 @@ const getSchemaGenerator = (po, action, responseType, requestHandler) => {
 const postSchemaGenerator = (po, action, requestHandler) => {
     const requestBodySchema = poToObjSchema(po, action);
     const responseSchema = {
-        201: createMessageResponse(),
+        201: createMessageResponse,
     };
 
     return {
@@ -48,7 +46,7 @@ const postSchemaGenerator = (po, action, requestHandler) => {
 
 const deleteSchemaGenerator = (requestHandler) => {
     const responseSchema = {
-        200: createMessageResponse(),
+        200: createMessageResponse,
     };
 
     return {
