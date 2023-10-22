@@ -1,8 +1,8 @@
 'use strict';
 
-const poToObjSchema = (po, action) => {
+const poToObjSchema = (po, action, type = 'object') => {
     return {
-        type: 'object',
+        type,
         properties: createObjectFromFilteredArray(po, action),
     };
 };
@@ -25,8 +25,8 @@ const createMessageResponse = {
     },
 };
 
-const getSchemaGenerator = (po, action, responseType, requestHandler) => {
-    const responseObjSchema = poToObjSchema(po, action);
+const getSchemaGenerator = (po, action, type, requestHandler) => {
+    const responseObjSchema = poToObjSchema(po, action, type);
     const response200 = responseObjSchema;
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;
