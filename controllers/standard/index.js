@@ -18,30 +18,26 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         reply.send(entitySet);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
+        reply.code(500).send({ error: 'Internal Server Error' });
     }
 };
 
 const getEntryByIdStd = async (request, reply, po_Name, table) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
-        const entity = await client
-            .query({
-                query,
-                format: 'JSONEachRow',
-            })
-            .toPromise();
-        // const entity = await result.toPromise();
-        console.info(entity);
-        if (entity === null) {
-            // Handle the case where no data was found for the given sID
-            reply.status(404).send({ error: 'entity not found' });
-            return;
+        const result = await client.query({
+            query,
+            format: 'JSONEachRow',
+        });
+        const entity = await result.json();
+        if (entity !== null) {
+            reply.code(200).send(entity[0]);
+        } else {
+            reply.code(404).send({ error: 'entity not found' });
         }
-        reply.send(entity);
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        throw error;
+        reply.code(500).send({ error: 'Internal Server Error' });
     }
 };
 
@@ -60,7 +56,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
         reply.code(201).send({ message: 'entity inserted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'Insertion failed' });
+        reply.code(500).send({ error: 'Internal Server Error' });
     }
 };
 
@@ -73,7 +69,7 @@ const deleteEntryStd = async (request, reply, po_Name) => {
         reply.send({ message: 'entity deleted successfully' });
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
-        reply.status(500).send({ error: 'query failed' });
+        reply.code(500).send({ error: 'Internal Server Error' });
     }
 };
 
