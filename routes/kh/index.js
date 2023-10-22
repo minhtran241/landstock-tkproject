@@ -24,10 +24,7 @@ const getEntryByIdOpts = getSchemaGenerator(
     'array',
     getEntryById
 );
-const postEntryOpts = postSchemaGenerator(
-    poToSchemaProperties(po_BDS, 'p'),
-    postEntry
-);
+const postEntryOpts = postSchemaGenerator(po_KhachHang, 'p', postEntry);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {

@@ -14,10 +14,7 @@ const { po_BDS } = require('../../utilities/paramsOperations');
 
 const getEntriesOpts = getSchemaGenerator(po_BDS, 's', 'array', getAllEntries);
 const getEntryByIdOpts = getSchemaGenerator(po_BDS, 'i', 'array', getEntryById);
-const postEntryOpts = postSchemaGenerator(
-    poToSchemaProperties(po_BDS, 'p'),
-    postEntry
-);
+const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
