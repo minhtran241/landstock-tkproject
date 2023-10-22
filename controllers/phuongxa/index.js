@@ -16,7 +16,7 @@ const getEntryById = async (request, reply) => {
     return getEntryByIdStd(request, reply, po_PhuongXa, table);
 };
 
-const postEntrypostWard = async (request, reply) => {
+const postEntry = async (request, reply) => {
     return postEntryStd(request, reply, po_PhuongXa, table);
 };
 
