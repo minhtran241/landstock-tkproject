@@ -29,7 +29,7 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             query,
             format: 'JSONEachRow',
         });
-        const entity = await result.json();
+        const entity = await result.toPromise();
         if (entity === null) {
             // Handle the case where no data was found for the given sID
             reply.status(404).send({ error: 'entity not found' });
