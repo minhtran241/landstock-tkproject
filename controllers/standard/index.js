@@ -25,11 +25,13 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
 const getEntryByIdStd = async (request, reply, po_Name, table) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
-        const result = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
-        const entity = await result.toPromise();
+        const entity = await client
+            .query({
+                query,
+                format: 'JSONEachRow',
+            })
+            .toPromise();
+        // const entity = await result.toPromise();
         console.info(entity);
         if (entity === null) {
             // Handle the case where no data was found for the given sID
