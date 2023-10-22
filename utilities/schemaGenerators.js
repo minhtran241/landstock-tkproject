@@ -29,11 +29,15 @@ const getSchemaGenerator = (po, action, responseType, requestHandler) => {
     const responseObjSchema = poToObjSchema(po, action);
     const response200 = {
         type: responseType,
-        obj: responseObjSchema,
+        properties: responseObjSchema,
     };
+    const response404 = createMessageResponse;
+    const response500 = createMessageResponse;
 
     return {
-        schema: { response: { 200: response200 } },
+        schema: {
+            response: { 200: response200, 404: response404, 500: response500 },
+        },
         handler: requestHandler,
     };
 };
