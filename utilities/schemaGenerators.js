@@ -27,10 +27,7 @@ const createMessageResponse = {
 
 const getSchemaGenerator = (po, action, responseType, requestHandler) => {
     const responseObjSchema = poToObjSchema(po, action);
-    const response200 = {
-        type: responseType,
-        properties: responseObjSchema,
-    };
+    const response200 = responseObjSchema;
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;
 
