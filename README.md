@@ -170,6 +170,42 @@ This route handles interactions related to customer properties.
 
 ---
 
+## Plugin Dependencies
+
+The following npm packages and Fastify plugins are used in this project to enhance the functionality and security of the API:
+
+- **[@clickhouse/client](https://www.npmjs.com/package/@clickhouse/client)**: A ClickHouse client for connecting and querying a ClickHouse database.
+
+- **[@fastify/autoload](https://www.npmjs.com/package/@fastify/autoload)**: A Fastify plugin for auto-loading routes, schemas, and plugins.
+
+- **[@fastify/cors](https://www.npmjs.com/package/@fastify/cors)**: A Fastify plugin for handling Cross-Origin Resource Sharing (CORS) to allow or restrict cross-origin requests.
+
+- **[@fastify/env](https://www.npmjs.com/package/@fastify/env)**: A Fastify plugin for managing environment variables.
+
+- **[@fastify/helmet](https://www.npmjs.com/package/@fastify/helmet)**: A Fastify plugin for securing your application by setting various HTTP headers.
+
+- **[@fastify/rate-limit](https://www.npmjs.com/package/@fastify/rate-limit)**: A Fastify plugin for implementing rate limiting to control the number of requests from clients.
+
+- **[@fastify/sensible](https://www.npmjs.com/package/@fastify/sensible)**: A Fastify plugin that provides a set of common utility functions and decorators.
+
+- **[@fastify/swagger](https://www.npmjs.com/package/@fastify/swagger)**: A Fastify plugin that generates OpenAPI documentation for your API.
+
+- **[@fastify/swagger-ui](https://www.npmjs.com/package/@fastify/swagger-ui)**: A Fastify plugin that serves the Swagger UI for viewing and interacting with your API's documentation.
+
+- **[fastify](https://www.npmjs.com/package/fastify)**: The core Fastify framework, used for building web applications.
+
+- **[fastify-cli](https://www.npmjs.com/package/fastify-cli)**: A Fastify command-line tool for generating project templates and scaffolding.
+
+- **[fastify-healthcheck](https://www.npmjs.com/package/fastify-healthcheck)**: A Fastify plugin for adding health check endpoints to your API.
+
+- **[fastify-plugin](https://www.npmjs.com/package/fastify-plugin)**: A utility for creating Fastify plugins with ease.
+
+- **[moment](https://www.npmjs.com/package/moment)**: A popular library for parsing, validating, manipulating, and formatting dates and times in JavaScript.
+
+Make sure to install these dependencies using npm or yarn before running your Fastify application. You can find more details on how to use these plugins in the project's documentation or by referring to their respective npm package pages.
+
+---
+
 ## Getting Started
 
 ***Dependencies***
