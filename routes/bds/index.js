@@ -1,103 +1,28 @@
 'use strict';
-
 const {
     getAllEntries,
     getEntryById,
     postEntry,
     deleteEntry,
 } = require('../../controllers/bds');
+const {
+    getSchemaGenerator,
+    postSchemaGenerator,
+    deleteSchemaGenerator,
+} = require('../../utilities/schemaGenerators');
 const { po_BDS } = require('../../utilities/paramsOperations');
 
-// BDS schema
-const RealEstates = {
-    type: 'object',
-    properties: po_BDS
-        .filter((po) => po.a.includes('s'))
-        .map((po) => ({ [po.p]: { type: po.t } })),
-};
-
-const RealEstate = {
-    type: 'object',
-    properties: po_BDS
-        .filter((po) => po.a.includes('i'))
-        .map((po) => ({ [po.p]: { type: po.t } })),
-};
-
-const getRealEstatesOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                realEstates: RealEstates,
-            },
-        },
-    },
-    handler: getAllEntries,
-};
-
-const getRealEstateByIdOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                realEstates: RealEstate,
-            },
-        },
-    },
-    handler: getEntryById,
-};
-
-const postRealEstateOpts = {
-    schema: {
-        body: {
-            type: 'object',
-            properties: {
-                iID_MaTinh: { type: 'integer' },
-                iID_MaQuan: { type: 'integer' },
-                sLoaiHang: { type: 'string' },
-                iTuDienTich: { type: 'number' },
-                iDenDienTich: { type: 'number' },
-                iTuTang: { type: 'number' },
-                iDenTang: { type: 'number' },
-                iTuMatTien: { type: 'number' },
-                iDenMatTien: { type: 'number' },
-                iTuGia: { type: 'number' },
-                iDenGia: { type: 'number' },
-                iID_HuongNha: { type: 'integer' },
-                iSoPhongNgu: { type: 'number' },
-                iSoToilet: { type: 'number' },
-                sMa: { type: 'string' },
-            },
-        },
-        response: {
-            201: {
-                type: 'object',
-                properties: {
-                    message: { type: 'string' },
-                },
-            },
-        },
-    },
-    handler: postEntry,
-};
-
-const deleteRealEstateOpts = {
-    schema: {
-        response: {
-            200: {
-                type: 'object',
-                properties: {
-                    message: { type: 'string' },
-                },
-            },
-        },
-    },
-    handler: deleteEntry,
-};
+const getEntriesOpts = getSchemaGenerator(po_BDS, 's', 'array', getAllEntries);
+const getEntryByIdOpts = getSchemaGenerator(po_BDS, 'i', 'array', getEntryById);
+const postEntryOpts = postSchemaGenerator(
+    poToSchemaProperties(po_BDS, 'p'),
+    postEntry
+);
+const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
-    fastify.get('/', getRealEstatesOpts);
-    fastify.get('/:id', getRealEstateByIdOpts);
-    fastify.post('/', postRealEstateOpts);
-    fastify.delete('/:id', deleteRealEstateOpts);
+    fastify.get('/', getEntriesOpts);
+    fastify.get('/:id', getEntryByIdOpts);
+    fastify.post('/', postEntryOpts);
+    fastify.delete('/:id', deleteEntryOpts);
 };

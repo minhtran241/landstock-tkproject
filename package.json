@@ -1,7 +1,7 @@
 {
   "name": "landstock-tkproject",
   "version": "1.0.0",
-  "description": "This project was bootstrapped with Fastify-CLI.",
+  "description": "This is a project for Landstock API",
   "main": "app.js",
   "directories": {
     "test": "test"
