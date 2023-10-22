@@ -22,6 +22,8 @@
 - [Overview](#-overview)
 - [API Documentation](#-api-documentation)
 - [API Routes](#api-routes)
+- [API Models](#-api-models)
+- [Plugins](#-plugins)
 - [Getting Started](#-getting-started)
 - [Installation](#-installation)
 - [Running landstock-tkproject](#-running-landstock-tkproject)
@@ -170,7 +172,7 @@ This route handles interactions related to customer properties.
 
 ---
 
-## Plugin Dependencies
+## Plugins
 
 The following npm packages and Fastify plugins are used in this project to enhance the functionality and security of the API:
 
