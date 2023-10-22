@@ -12,7 +12,7 @@ module.exports = fp(async function (fastify, opts) {
         swagger: {
             info: {
                 title: 'Landstock-TKProject API Documentation',
-                description: 'My FirstApp Backend Documentation description',
+                description: 'Landstock-TKProject API Documentation',
                 version: '0.1.0',
                 termsOfService:
                     'https://github.com/minhtran241/landstock-tkproject/tree/main',
