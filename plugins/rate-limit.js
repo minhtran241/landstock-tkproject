@@ -8,7 +8,7 @@ const rateLimit = require('@fastify/rate-limit');
 
 module.exports = fp(async function (fastify, opts) {
     fastify.register(rateLimit, {
-        max: 100,
+        max: 1000,
         timeWindow: '1 minute',
         cache: 10000, // Number of items to store in the cache
     });
