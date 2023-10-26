@@ -49,6 +49,7 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         });
         let data = await result.json();
         // data = convertToType(po_Name, data);
+        console.log(data);
         data.map((entity) => {
             const mapping = po_Name.find((p) => p.p in entity);
             if (mapping) {
