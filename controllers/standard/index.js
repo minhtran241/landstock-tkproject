@@ -41,12 +41,12 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await result.json();
-        data = convertToType(po_Name, data)[0];
-        let count = 1;
-        let limit,
-            skip = 0;
+        data = convertToType(po_Name, data);
+        const count = 1;
+        const limit = 1;
+        const skip = 0;
         if (data !== null) {
-            reply.code(200).send({ data, count, limit, skip });
+            reply.code(200).send({ data: data[0], count, limit, skip });
         } else {
             reply.code(404).send({ error: 'data not found' });
         }
