@@ -35,7 +35,8 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             query,
             format: 'JSONEachRow',
         });
-        const entity = await result.json();
+        let entity = await result.json();
+        entity = convertToType(po_Name, entity);
         if (entity !== null) {
             reply.code(200).send(entity[0]);
         } else {
