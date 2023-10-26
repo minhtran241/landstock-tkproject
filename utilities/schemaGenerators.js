@@ -29,10 +29,7 @@ const getSchemaGenerator = (po, action, type, requestHandler) => {
     const responseObjSchema = {
         type: 'object',
         properties: {
-            data: {
-                type: type,
-                items: poToObjSchema(po, action),
-            },
+            data: poToObjSchema(po, action, type),
             count: { type: 'number' },
             limit: { type: 'number' },
             skip: { type: 'number' },
