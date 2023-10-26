@@ -15,6 +15,8 @@ const createObjectFromFilteredArray = (po, action) => {
         return acc;
     }, {});
 
+    console.info('result: ', result);
+
     return result;
 };
 
