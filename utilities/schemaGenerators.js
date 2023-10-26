@@ -27,11 +27,11 @@ const createMessageResponse = {
 
 const getSchemaGenerator = (po, action, type, requestHandler) => {
     const responseObjSchema = {
-        type,
+        type: 'object',
         properties: {
             data: {
-                type: 'array',
-                items: poToObjSchema(po, action, 'object'),
+                type: type,
+                items: poToObjSchema(po, action),
             },
             count: { type: 'number' },
             limit: { type: 'number' },

@@ -12,7 +12,7 @@ const {
 } = require('../../utilities/schemaGenerators');
 const { po_BDS } = require('../../utilities/paramsOperations');
 
-const getEntriesOpts = getSchemaGenerator(po_BDS, 's', 'object', getAllEntries);
+const getEntriesOpts = getSchemaGenerator(po_BDS, 's', 'array', getAllEntries);
 const getEntryByIdOpts = getSchemaGenerator(
     po_BDS,
     'i',
