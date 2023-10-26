@@ -21,7 +21,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         });
         let data = await resultSet.json();
         data = convertToType(po_Name, data);
-        const count = entitySet.length || 0;
+        const count = data.length || 0;
         if (data !== null) {
             reply.code(200).send({ data, count, limit, skip });
         } else {
