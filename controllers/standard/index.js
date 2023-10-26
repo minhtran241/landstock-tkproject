@@ -15,6 +15,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         const entitySet = await resultSet.json();
+        console.log(entitySet);
         if (entitySet !== null) {
             reply.code(200).send(entitySet);
         } else {
