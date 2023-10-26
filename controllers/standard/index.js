@@ -20,7 +20,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await resultSet.json();
-        data = convertToType(po_Name, data);
+        convertToType(po_Name, data);
         const count = data.length || 0;
         const replyOption = request.query.f;
         if (data !== null) {
@@ -48,7 +48,10 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await result.json();
-        data = convertToType(po_Name, data);
+        convertToType(po_Name, data);
+        for (let key in data[0]) {
+            console.log(key, data[0][key], typeof data[0][key]);
+        }
         if (data !== null) {
             reply.code(200).send(data[0]);
         } else {
