@@ -7,7 +7,7 @@ const convertToType = (po, dataToConvert) => {
             const { p, t } = mapping;
             if (t === 'number') {
                 entity[p] = Number(entity[p]);
-                console.log(`${entity[p]}: ${typeof entity[p]}`);
+                console.info(`${entity[p]}: ${typeof entity[p]}`);
             } else if (t === 'date') {
                 entity[p] = new Date(entity[p]);
             }
