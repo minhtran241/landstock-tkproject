@@ -49,6 +49,7 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         });
         let data = await result.json();
         data = convertToType(po_Name, data);
+        console.log(data[0]);
         if (data !== null) {
             reply.code(200).send(data[0]);
         } else {
