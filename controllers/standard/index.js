@@ -10,17 +10,22 @@ const { convertToType } = require('../../utilities/piplines/sanitization');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
-        const query = getSelectQuery(request.query, po_Name, table);
+        const { query, limit, skip } = getSelectQuery(
+            request.query,
+            po_Name,
+            table
+        );
         const resultSet = await client.query({
             query,
             format: 'JSONEachRow',
         });
-        let entitySet = await resultSet.json();
-        entitySet = convertToType(po_Name, entitySet);
-        if (entitySet !== null) {
-            reply.code(200).send(entitySet);
+        let data = await resultSet.json();
+        data = convertToType(po_Name, data);
+        const count = entitySet.length || 0;
+        if (data !== null) {
+            reply.code(200).send({ data, count, limit, skip });
         } else {
-            reply.code(404).send({ error: 'entity not found' });
+            reply.code(404).send({ error: 'data not found' });
         }
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
@@ -35,12 +40,12 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             query,
             format: 'JSONEachRow',
         });
-        let entity = await result.json();
-        entity = convertToType(po_Name, entity);
-        if (entity !== null) {
+        let data = await result.json();
+        data = convertToType(po_Name, data);
+        if (data !== null) {
             reply.code(200).send(entity[0]);
         } else {
-            reply.code(404).send({ error: 'entity not found' });
+            reply.code(404).send({ error: 'data not found' });
         }
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);

@@ -26,7 +26,18 @@ const createMessageResponse = {
 };
 
 const getSchemaGenerator = (po, action, type, requestHandler) => {
-    const responseObjSchema = poToObjSchema(po, action, type);
+    const responseObjSchema = {
+        type,
+        properties: {
+            entitySet: {
+                type: 'array',
+                items: poToObjSchema(po, action, 'object'),
+            },
+            count: { type: 'number' },
+            limit: { type: 'number' },
+            skip: { type: 'number' },
+        },
+    };
     const response200 = responseObjSchema;
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;

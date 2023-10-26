@@ -21,7 +21,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     console.info(query);
 
-    return query;
+    return { query, limit, skip };
 };
 
 // Function to generate WHERE conditions based on request query parameters and condition attributes
