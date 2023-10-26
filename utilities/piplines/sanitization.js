@@ -1,19 +1,21 @@
 'use strict';
 
 const convertToType = (po, dataToConvert) => {
-    return dataToConvert.map((entity) => {
-        const mapping = po.find((p) => p.p in entity);
-        if (mapping) {
-            const { p, t } = mapping;
-            if (t === 'number') {
-                entity[p] = Number(entity[p]);
-                console.info(`${entity[p]}: ${typeof entity[p]}`);
-            } else if (t === 'date') {
-                entity[p] = new Date(entity[p]);
+    const data = dataToConvert.map((item) => {
+        const result = Object.entries(item).reduce((acc, [key, value]) => {
+            const poItem = po.find((poItem) => poItem.p === key);
+            if (poItem.t === 'number') {
+                acc[key] = Number(value);
+            } else if (poItem.t === 'boolean') {
+                acc[key] = value === 'true';
+            } else {
+                acc[key] = value;
             }
-        }
-        return entity;
+            return acc;
+        }, {});
+        return result;
     });
+    return data;
 };
 
 module.exports = {
