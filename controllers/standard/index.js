@@ -22,8 +22,15 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         let data = await resultSet.json();
         data = convertToType(po_Name, data);
         const count = data.length || 0;
+        const replyOption = request.query.f;
         if (data !== null) {
-            reply.code(200).send({ data, count, limit, skip });
+            reply
+                .code(200)
+                .send(
+                    replyOption === 'count'
+                        ? { data, count, limit, skip }
+                        : data
+                );
         } else {
             reply.code(404).send({ error: 'data not found' });
         }
@@ -42,11 +49,8 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         });
         let data = await result.json();
         data = convertToType(po_Name, data);
-        const count = 1;
-        const limit = 1;
-        const skip = 0;
         if (data !== null) {
-            reply.code(200).send({ data: data[0], count, limit, skip });
+            reply.code(200).send(data[0]);
         } else {
             reply.code(404).send({ error: 'data not found' });
         }

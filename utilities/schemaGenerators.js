@@ -26,15 +26,18 @@ const createMessageResponse = {
 };
 
 const getSchemaGenerator = (po, action, type, requestHandler) => {
-    const responseObjSchema = {
-        type: 'object',
-        properties: {
-            data: poToObjSchema(po, action, type),
-            count: { type: 'number' },
-            limit: { type: 'number' },
-            skip: { type: 'number' },
-        },
-    };
+    let responseObjSchema = poToObjSchema(po, action, type);
+    if (type === 'array') {
+        responseObjSchema = {
+            type: 'object',
+            properties: {
+                data: responseObjSchema,
+                count: { type: 'number' },
+                limit: { type: 'number' },
+                skip: { type: 'number' },
+            },
+        };
+    }
     const response200 = responseObjSchema;
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;
