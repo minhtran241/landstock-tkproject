@@ -6,6 +6,7 @@ const {
     getPostQueryValues,
     getDeleteQuery,
 } = require('../../utilities/piplines/queryGenerators');
+const { convertToType } = require('../../utilities/piplines/sanitization');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
@@ -14,8 +15,8 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             query,
             format: 'JSONEachRow',
         });
-        const entitySet = await resultSet.json();
-        console.log(entitySet);
+        let entitySet = await resultSet.json();
+        entitySet = convertToType(po_Name, entitySet);
         if (entitySet !== null) {
             reply.code(200).send(entitySet);
         } else {
