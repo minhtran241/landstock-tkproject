@@ -29,7 +29,7 @@ const getSchemaGenerator = (po, action, type, requestHandler) => {
     const responseObjSchema = {
         type,
         properties: {
-            entitySet: {
+            data: {
                 type: 'array',
                 items: poToObjSchema(po, action, 'object'),
             },
