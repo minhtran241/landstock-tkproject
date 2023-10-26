@@ -48,10 +48,19 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await result.json();
-        data = convertToType(po_Name, data);
-        for (const key in data[0]) {
-            console.log(`${key}: ${typeof data[0][key]}`);
-        }
+        // data = convertToType(po_Name, data);
+        data.map((entity) => {
+            const mapping = po_Name.find((p) => p.p in entity);
+            if (mapping) {
+                const { p, t } = mapping;
+                if (t === 'number') {
+                    entity[p] = Number(entity[p]);
+                    console.info(`${entity[p]}: ${typeof entity[p]}`);
+                } else if (t === 'date') {
+                    entity[p] = new Date(entity[p]);
+                }
+            }
+        });
         if (data !== null) {
             reply.code(200).send(data[0]);
         } else {
