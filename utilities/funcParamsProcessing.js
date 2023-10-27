@@ -25,8 +25,8 @@ const arrayStats = {
 const extractQueryParameters = (query) => {
     const { f, a } = query;
     return {
-        f: f ? f.split(',') : [],
-        a: a || 'defaultAttribute', // Provide a default attribute name
+        funcs: f ? f.split(',') : [],
+        attr: a || 'defaultAttribute', // Provide a default attribute name
     };
 };
 

@@ -34,6 +34,9 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
 
 const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
     try {
+        if (!request.query.f) {
+            throw new Error('No functions provided');
+        }
         const { query, limit, skip } = getSelectQuery(
             request.query,
             po_Name,
@@ -46,15 +49,21 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
         let data = await resultSet.json();
         convertToType(po_Name, data);
         if (data !== null) {
-            const { f, a } = extractQueryParameters(request.query);
-            const funcResults = calculateResults(f, data, a);
+            const { funcs, attr } = extractQueryParameters(request.query);
+            const funcResults = calculateResults(funcs, data, attr);
             const result = { data, ...funcResults, limit, skip };
             reply.code(200).send(result);
         } else {
             reply.code(404).send({ error: 'Data not found' });
         }
     } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
+        if (error.name === 'ClickHouseSyntaxError') {
+            console.error('ClickHouse Syntax error:', error);
+        } else if (error.name === 'ClickHouseNetworkError') {
+            console.error('ClickHouse Network error:', error);
+        } else {
+            console.error('Error:', error);
+        }
         reply.code(500).send({ error: 'Internal Server Error' });
     }
 };
