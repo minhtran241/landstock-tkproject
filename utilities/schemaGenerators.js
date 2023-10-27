@@ -1,4 +1,5 @@
 'use strict';
+const fastJson = require('fast-json-stringify');
 
 const poToObjSchema = (po, action, type = 'object') => {
     return {
