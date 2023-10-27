@@ -130,7 +130,7 @@ function handleError(error, reply) {
         errorMessage = 'Bad request';
     }
 
-    console.error(`${error.name}: ${error}`);
+    console.error(errorMessage + ':', error);
     reply.code(errorCode).send({ error: errorMessage });
 }
 
