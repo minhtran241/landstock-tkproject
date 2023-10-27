@@ -27,20 +27,28 @@ const createMessageResponse = {
 
 const getSchemaGenerator = (po, action, type, requestHandler) => {
     const responseObjSchema = poToObjSchema(po, action, type);
-    const responseObjSchemaWithCount = {
-        type: 'object',
-        properties: {
-            data: responseObjSchema,
-            count: { type: 'number' },
-            limit: { type: 'number' },
-            skip: { type: 'number' },
-        },
-    };
+    // const responseObjSchemaWithCount = {
+    //     type: 'object',
+    //     properties: {
+    //         data: responseObjSchema,
+    //         count: { type: 'number' },
+    //         limit: { type: 'number' },
+    //         skip: { type: 'number' },
+    //     },
+    // };
     const response200 = {
         type: 'object',
         properties: {
             response: {
-                oneOf: [responseObjSchema, responseObjSchemaWithCount],
+                oneOf: [
+                    {
+                        data: responseObjSchema,
+                        count: { type: 'number' },
+                        limit: { type: 'number' },
+                        skip: { type: 'number' },
+                    },
+                    createObjectFromFilteredArray(po, action),
+                ],
             },
         },
     };
