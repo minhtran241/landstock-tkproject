@@ -23,7 +23,7 @@ const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
-    fastify.get('/', opt, getAllEntries);
+    fastify.get('/', opts, getAllEntries);
     fastify.get('/:id', getEntryByIdOpts);
     fastify.post('/', postEntryOpts);
     fastify.delete('/:id', deleteEntryOpts);
