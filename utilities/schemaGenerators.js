@@ -37,12 +37,7 @@ const getSchemaGenerator = (po, action, type, requestHandler) => {
         },
     };
     const response200 = {
-        type: 'object',
-        properties: {
-            response: {
-                anyOf: [responseObjSchema, responseObjSchemaWithCount],
-            },
-        },
+        anyOf: [responseObjSchema, responseObjSchemaWithCount],
     };
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;
