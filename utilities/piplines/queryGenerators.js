@@ -64,24 +64,36 @@ const getSelectByIdQuery = (requestParams, paramsOperations, table) => {
 
 // Function to get post query values from the request body
 const getPostQueryValues = (requestBody, paramsOperations) => {
-    // Filter out only the attributes that are allowed to be posted (action 'p')
-    const postAttrs = getAttributesByAction(paramsOperations, 'p');
-    const filteredRequestBody = Object.keys(requestBody)
-        .filter((attr) => postAttrs.includes(attr))
-        .reduce((obj, attr) => {
-            obj[attr] = requestBody[attr];
-            return obj;
-        }, {});
-
-    // Set a specific value for 'dNgayTao' attribute
-    if (paramsOperations.find((po) => po.p === 'dNgayTao') !== undefined) {
-        filteredRequestBody.dNgayTao = new Date();
+    // Ensure requestBody is an array
+    if (!Array.isArray(requestBody)) {
+        requestBody = [requestBody];
     }
 
-    // Clean and convert the filtered request body
-    const cleanedRequestBody = cleanAndConvert(filteredRequestBody);
+    // Initialize an array to store cleaned and processed objects
+    const cleanedObjects = [];
+    // Filter out only the attributes that are allowed to be posted (action 'p')
+    const postAttrs = getAttributesByAction(paramsOperations, 'p');
 
-    return cleanedRequestBody;
+    requestBody.forEach((object) => {
+        const filteredObject = Object.keys(object)
+            .filter((attr) => postAttrs.includes(attr))
+            .reduce((obj, attr) => {
+                obj[attr] = object[attr];
+                return obj;
+            }, {});
+
+        // Set a specific value for 'dNgayTao' attribute
+        if (paramsOperations.find((po) => po.p === 'dNgayTao') !== undefined) {
+            filteredObject.dNgayTao = new Date();
+        }
+
+        // Clean and convert the filtered object
+        const cleanedObject = cleanAndConvert(filteredObject);
+
+        cleanedObjects.push(cleanedObject);
+    });
+
+    return cleanedObjects;
 };
 
 // Function to get a delete query real estate by its sID or other ID columns

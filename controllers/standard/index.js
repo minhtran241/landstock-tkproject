@@ -64,7 +64,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
         // Insert the values into the ClickHouse table
         await client.insert({
             table,
-            values: [cleanedValues],
+            values: cleanedValues,
             format: 'JSONEachRow',
         });
 
