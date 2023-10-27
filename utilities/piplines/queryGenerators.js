@@ -2,7 +2,8 @@
 
 const { paramToCondition } = require('./conditionGenerators');
 const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
-const { cleanAndConvert, sanitizeLimitAndOffset } = require('../queryHelper');
+const { cleanAndConvert } = require('../queryHelper');
+const { sanitizeLimitAndOffset } = require('./sanitization');
 
 // Function to generate a SELECT query from the request query parameters
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
@@ -115,9 +116,29 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
     return query;
 };
 
+const getCountQuery = (requestQuery, paramsOperations, table) => {
+    const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
+    const whereConditions = generateWhereConditions(
+        requestQuery,
+        paramsOperations,
+        conditionAttrs
+    );
+
+    const query = `SELECT count(*) FROM ${table} WHERE 1 = 1 ${whereConditions}`;
+
+    console.info(query);
+
+    return query;
+};
+
+const getStatsQuery = {
+    count: getCountQuery,
+};
+
 module.exports = {
     getSelectQuery,
     getSelectByIdQuery,
     getPostQueryValues,
     getDeleteQuery,
+    getStatsQuery,
 };

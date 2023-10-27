@@ -3,6 +3,8 @@ const client = require('../../data/clickhouse');
 const {
     extractQueryParameters,
     calculateResults,
+    funcParamsToQueries,
+    queriesToResults,
 } = require('../../utilities/funcParamsProcessing');
 const {
     getSelectQuery,
@@ -49,8 +51,14 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
         let data = await resultSet.json();
         convertToType(po_Name, data);
         if (data !== null) {
-            const { funcs, attr } = extractQueryParameters(request.query);
-            const funcResults = calculateResults(funcs, data, attr);
+            const funcs = request.query.f.split(',') || [];
+            const funcQueries = funcParamsToQueries(
+                funcs,
+                request.query,
+                po_Name,
+                table
+            );
+            const funcResults = await queriesToResults(client, funcQueries);
             const result = { data, ...funcResults, limit, skip };
             reply.code(200).send(result);
         } else {

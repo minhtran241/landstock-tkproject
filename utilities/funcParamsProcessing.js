@@ -1,26 +1,6 @@
 'use strict';
 
-const arrayStats = {
-    count: (data, field = '') => {
-        if (Array.isArray(data)) {
-            return data.length;
-        }
-        throw new Error('Data is not an array');
-    },
-    sum: (data, field) => {
-        if (Array.isArray(data)) {
-            return data.reduce((sum, item) => sum + item[field], 0);
-        }
-        throw new Error('Data is not an array');
-    },
-    average: (data, field) => {
-        if (Array.isArray(data)) {
-            const total = data.reduce((sum, item) => sum + item[field], 0);
-            return total / data.length;
-        }
-        throw new Error('Data is not an array');
-    },
-};
+const { getStatsQuery } = require('./piplines/queryGenerators');
 
 const extractQueryParameters = (query) => {
     const { f, a } = query;
@@ -30,21 +10,39 @@ const extractQueryParameters = (query) => {
     };
 };
 
-const calculateResults = (funcs, data, attr) => {
-    const results = {};
+const funcParamsToQueries = (funcs, requestQuery, paramsOperations, table) => {
+    const queries = {};
 
     funcs.forEach((f) => {
-        if (arrayStats[f]) {
-            results[f] = arrayStats[f](data, attr);
+        if (getStatsQuery[f]) {
+            queries[f] = getStatsQuery[f](
+                requestQuery,
+                paramsOperations,
+                table
+            );
         } else {
             throw new Error(`Invalid function: ${f}`);
         }
     });
 
+    return queries;
+};
+
+const queriesToResults = async (db_client, queries) => {
+    const results = {};
+    for (const key in queries) {
+        const resultSet = await db_client.query({
+            query: queries[key],
+            format: 'JSONEachRow',
+        });
+        const data = await resultSet.json();
+        results[key] = data;
+    }
     return results;
 };
 
 module.exports = {
     extractQueryParameters,
-    calculateResults,
+    funcParamsToQueries,
+    queriesToResults,
 };

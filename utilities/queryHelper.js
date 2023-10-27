@@ -54,15 +54,7 @@ function removeNullValues(obj) {
     return obj;
 }
 
-const sanitizeLimitAndOffset = (requestQuery) => {
-    const limit = Math.min(Number(requestQuery.limit), MAX_LIMIT) || MAX_LIMIT;
-    const skip = Math.min(Number(requestQuery.skip), MAX_OFFSET) || 0;
-
-    return { limit, skip };
-};
-
 module.exports = {
     cleanAndConvert,
     removeNullValues,
-    sanitizeLimitAndOffset,
 };
