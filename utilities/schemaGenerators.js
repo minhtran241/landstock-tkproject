@@ -27,16 +27,18 @@ const createMessageResponse = {
 
 const getSchemaGenerator = (po, action, type, requestHandler) => {
     const responseObjSchema = poToObjSchema(po, action, type);
-    // const responseObjSchemaWithCount = {
-    //     type: 'object',
-    //     properties: {
-    //         data: responseObjSchema,
-    //         count: { type: 'number' },
-    //         limit: { type: 'number' },
-    //         skip: { type: 'number' },
-    //     },
-    // };
-    const response200 = responseObjSchema;
+    const responseObjSchemaWithCount = {
+        type: 'object',
+        properties: {
+            data: responseObjSchema,
+            count: { type: 'number' },
+            limit: { type: 'number' },
+            skip: { type: 'number' },
+        },
+    };
+    const response200 = fastJson({
+        anyOf: [responseObjSchema, responseObjSchemaWithCount],
+    });
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;
 
