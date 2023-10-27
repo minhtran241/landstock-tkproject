@@ -1,5 +1,4 @@
 'use strict';
-const fastJson = require('fast-json-stringify');
 
 const poToObjSchema = (po, action, type = 'object') => {
     return {
@@ -37,9 +36,14 @@ const getSchemaGenerator = (po, action, type, requestHandler) => {
             skip: { type: 'number' },
         },
     };
-    const response200 = fastJson({
-        anyOf: [responseObjSchema, responseObjSchemaWithCount],
-    });
+    const response200 = {
+        type: 'object',
+        properties: {
+            response: {
+                oneOf: [responseObjSchema, responseObjSchemaWithCount],
+            },
+        },
+    };
     const response404 = createMessageResponse;
     const response500 = createMessageResponse;
 
