@@ -1,5 +1,7 @@
 'use strict';
 
+const { MAX_LIMIT, MAX_OFFSET } = require('../constants');
+
 const convertToType = (po, dataToConvert) => {
     dataToConvert.forEach((data) => {
         Object.entries(data).forEach(([key, value]) => {
