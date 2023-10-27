@@ -6,6 +6,7 @@ const {
     funcParamsToQueries,
     queriesToResults,
 } = require('../../utilities/funcParamsProcessing');
+const { po_Func } = require('../../utilities/paramsOperations');
 const {
     getSelectQuery,
     getSelectByIdQuery,
@@ -59,6 +60,7 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
                 table
             );
             const funcResults = await queriesToResults(client, funcQueries);
+            convertToType(po_Func, funcResults);
             const result = { data, ...funcResults, limit, skip };
             reply.code(200).send(result);
         } else {
