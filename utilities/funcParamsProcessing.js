@@ -23,10 +23,10 @@ const arrayStats = {
 };
 
 const extractQueryParameters = (query) => {
-    const { func, attr } = query;
+    const { f, a } = query;
     return {
-        funcs: func ? func.split(',') : [],
-        attr: attr || 'defaultAttribute', // Provide a default attribute name
+        f: f ? f.split(',') : [],
+        a: a || 'defaultAttribute', // Provide a default attribute name
     };
 };
 

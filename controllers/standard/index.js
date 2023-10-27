@@ -46,9 +46,9 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
         let data = await resultSet.json();
         convertToType(po_Name, data);
         if (data !== null) {
-            const { funcs, attr } = extractQueryParameters(request.query);
-            const results = calculateResults(funcs, data, attr);
-            result = { data, ...results, limit, skip };
+            const { f, a } = extractQueryParameters(request.query);
+            const funcResults = calculateResults(f, data, a);
+            const result = { data, ...funcResults, limit, skip };
             reply.code(200).send(result);
         } else {
             reply.code(404).send({ error: 'Data not found' });
