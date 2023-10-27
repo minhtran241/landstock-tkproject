@@ -40,7 +40,7 @@ const getSchemaGenerator = (po, action, type, requestHandler) => {
 };
 
 const postSchemaGenerator = (po, action, requestHandler) => {
-    const requestBodySchema = poToObjSchema(po, action);
+    const requestBodySchema = poToObjSchema(po, action, 'array');
     const response201 = createMessageResponse;
     const response500 = createMessageResponse;
 
