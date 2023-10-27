@@ -21,16 +21,12 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         });
         let data = await resultSet.json();
         convertToType(po_Name, data);
-        const count = data.length || 0;
-        const replyOption = request.query.f;
         if (data !== null) {
+            const replyCount = request.query.f === 'count';
+            const count = data.length || 0;
             reply
                 .code(200)
-                .send(
-                    replyOption === 'count'
-                        ? { data, count, limit, skip }
-                        : data
-                );
+                .send(replyCount ? { data, count, limit, skip } : data);
         } else {
             reply.code(404).send({ error: 'data not found' });
         }
