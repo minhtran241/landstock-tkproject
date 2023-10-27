@@ -119,17 +119,19 @@ const deleteEntryStd = async (request, reply, po_Name) => {
 };
 
 function handleError(error, reply) {
-    let errorMessage = 'Error';
-    if (error.name === 'ClickHouseSyntaxError') {
-        errorMessage = 'ClickHouse Syntax error';
-    } else if (error.name === 'ClickHouseNetworkError') {
-        errorMessage = 'ClickHouse Network error';
+    let errorCode = 500;
+    let errorMessage = 'Internal server error';
+    const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
+    if (dbErrors.includes(error.name)) {
+        errorCode = 500;
+        errorMessage = 'Internal server error';
+    } else {
+        errorCode = 400;
+        errorMessage = 'Bad request';
     }
 
-    console.error(errorMessage + ':', error);
-    reply
-        .code(500)
-        .send({ error: 'Internal Server Error', message: error.message });
+    console.error(`${error.name}: ${error}`);
+    reply.code(errorCode).send({ error: errorMessage });
 }
 
 module.exports = {
