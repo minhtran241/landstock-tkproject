@@ -4,7 +4,6 @@ const {
     getEntryById,
     postEntry,
     deleteEntry,
-    getAllEntriesWithFunc,
 } = require('../../controllers/bds');
 const {
     getSchemaGenerator,
@@ -28,5 +27,4 @@ module.exports = async function (fastify, opts) {
     fastify.get('/:id', getEntryByIdOpts);
     fastify.post('/', postEntryOpts);
     fastify.delete('/:id', deleteEntryOpts);
-    fastify.get('/func', opts, getAllEntriesWithFunc);
 };
