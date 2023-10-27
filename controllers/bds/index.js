@@ -6,6 +6,7 @@ const {
     getEntryByIdStd,
     postEntryStd,
     deleteEntryStd,
+    getAllEntriesWithFuncStd,
 } = require('../standard');
 
 const getAllEntries = async (request, reply) => {
@@ -27,9 +28,14 @@ const deleteEntry = async (request, reply) => {
     return deleteEntryStd(request, reply, po_BDS, table);
 };
 
+const getAllEntriesWithFunc = async (request, reply) => {
+    return getAllEntriesWithFuncStd(request, reply, po_BDS, table);
+};
+
 module.exports = {
     getAllEntries,
     getEntryById,
     postEntry,
     deleteEntry,
+    getAllEntriesWithFunc,
 };

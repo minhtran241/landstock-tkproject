@@ -1,6 +1,10 @@
 'use strict';
 const client = require('../../data/clickhouse');
 const {
+    extractQueryParameters,
+    calculateResults,
+} = require('../../utilities/funcParamsProcessing');
+const {
     getSelectQuery,
     getSelectByIdQuery,
     getPostQueryValues,
@@ -9,6 +13,26 @@ const {
 const { convertToType } = require('../../utilities/piplines/sanitization');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
+    try {
+        const { query } = getSelectQuery(request.query, po_Name, table);
+        const resultSet = await client.query({
+            query,
+            format: 'JSONEachRow',
+        });
+        let data = await resultSet.json();
+        convertToType(po_Name, data);
+        if (data !== null) {
+            reply.code(200).send(data);
+        } else {
+            reply.code(404).send({ error: 'data not found' });
+        }
+    } catch (error) {
+        console.error('Error executing ClickHouse query:', error);
+        reply.code(500).send({ error: 'Internal Server Error' });
+    }
+};
+
+const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
     try {
         const { query, limit, skip } = getSelectQuery(
             request.query,
@@ -22,13 +46,12 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         let data = await resultSet.json();
         convertToType(po_Name, data);
         if (data !== null) {
-            const replyCount = request.query.f === 'count';
-            const count = data.length || 0;
-            reply
-                .code(200)
-                .send(replyCount ? { data, count, limit, skip } : data);
+            const { funcs, attr } = extractQueryParameters(request.query);
+            const results = calculateResults(funcs, data, attr);
+            result = { data, ...results, limit, skip };
+            reply.code(200).send(result);
         } else {
-            reply.code(404).send({ error: 'data not found' });
+            reply.code(404).send({ error: 'Data not found' });
         }
     } catch (error) {
         console.error('Error executing ClickHouse query:', error);
@@ -93,4 +116,5 @@ module.exports = {
     getEntryByIdStd,
     postEntryStd,
     deleteEntryStd,
+    getAllEntriesWithFuncStd,
 };
