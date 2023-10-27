@@ -36,7 +36,7 @@ const queriesToResults = async (db_client, queries) => {
             format: 'JSONEachRow',
         });
         const data = await resultSet.json();
-        results[key] = data;
+        results[key] = data[0]['count()'];
     }
     return results;
 };
