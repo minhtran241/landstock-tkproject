@@ -24,7 +24,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         if (data !== null) {
             reply.code(200).send(data);
         } else {
-            reply.code(404).send({ error: 'data not found' });
+            reply.code(404).send({ error: 'Data not found' });
         }
     } catch (error) {
         handleError(error, reply);
@@ -33,8 +33,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
 
 const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
     if (!request.query.f) {
-        reply.code(400).send({ error: 'No functions provided' });
-        return;
+        throw new Error('No function specified');
     }
 
     try {
@@ -81,7 +80,7 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         if (data !== null) {
             reply.code(200).send(data[0]);
         } else {
-            reply.code(404).send({ error: 'data not found' });
+            reply.code(404).send({ error: 'Data not found' });
         }
     } catch (error) {
         handleError(error, reply);
@@ -100,7 +99,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
 
-        reply.code(201).send({ message: 'entity inserted successfully' });
+        reply.code(201).send({ message: 'Data inserted successfully' });
     } catch (error) {
         handleError(error, reply);
     }
@@ -112,7 +111,7 @@ const deleteEntryStd = async (request, reply, po_Name) => {
         await client.query({
             query,
         });
-        reply.send({ message: 'entity deleted successfully' });
+        reply.send({ message: 'Data deleted successfully' });
     } catch (error) {
         handleError(error, reply);
     }

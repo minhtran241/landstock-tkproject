@@ -2,14 +2,6 @@
 
 const { getStatsQuery } = require('./piplines/queryGenerators');
 
-const extractQueryParameters = (query) => {
-    const { f, a } = query;
-    return {
-        funcs: f ? f.split(',') : [],
-        attr: a || 'defaultAttribute', // Provide a default attribute name
-    };
-};
-
 const funcParamsToQueries = (funcs, requestQuery, paramsOperations, table) => {
     const queries = {};
 
@@ -42,7 +34,6 @@ const queriesToResults = async (db_client, queries) => {
 };
 
 module.exports = {
-    extractQueryParameters,
     funcParamsToQueries,
     queriesToResults,
 };
