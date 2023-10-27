@@ -1,12 +1,9 @@
 'use strict';
 const client = require('../../data/clickhouse');
 const {
-    extractQueryParameters,
-    calculateResults,
     funcParamsToQueries,
     queriesToResults,
 } = require('../../utilities/funcParamsProcessing');
-const { po_Func } = require('../../utilities/paramsOperations');
 const {
     getSelectQuery,
     getSelectByIdQuery,
@@ -30,16 +27,17 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             reply.code(404).send({ error: 'data not found' });
         }
     } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.code(500).send({ error: 'Internal Server Error' });
+        handleError(error, reply);
     }
 };
 
 const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
+    if (!request.query.f) {
+        reply.code(400).send({ error: 'No functions provided' });
+        return;
+    }
+
     try {
-        if (!request.query.f) {
-            throw new Error('No functions provided');
-        }
         const { query, limit, skip } = getSelectQuery(
             request.query,
             po_Name,
@@ -51,6 +49,7 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
         });
         let data = await resultSet.json();
         convertToType(po_Name, data);
+
         if (data !== null) {
             const funcs = request.query.f.split(',') || [];
             const funcQueries = funcParamsToQueries(
@@ -66,14 +65,7 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
             reply.code(404).send({ error: 'Data not found' });
         }
     } catch (error) {
-        if (error.name === 'ClickHouseSyntaxError') {
-            console.error('ClickHouse Syntax error:', error);
-        } else if (error.name === 'ClickHouseNetworkError') {
-            console.error('ClickHouse Network error:', error);
-        } else {
-            console.error('Error:', error);
-        }
-        reply.code(500).send({ error: 'Internal Server Error' });
+        handleError(error, reply);
     }
 };
 
@@ -92,8 +84,7 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             reply.code(404).send({ error: 'data not found' });
         }
     } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.code(500).send({ error: 'Internal Server Error' });
+        handleError(error, reply);
     }
 };
 
@@ -111,8 +102,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
 
         reply.code(201).send({ message: 'entity inserted successfully' });
     } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.code(500).send({ error: 'Internal Server Error' });
+        handleError(error, reply);
     }
 };
 
@@ -124,10 +114,23 @@ const deleteEntryStd = async (request, reply, po_Name) => {
         });
         reply.send({ message: 'entity deleted successfully' });
     } catch (error) {
-        console.error('Error executing ClickHouse query:', error);
-        reply.code(500).send({ error: 'Internal Server Error' });
+        handleError(error, reply);
     }
 };
+
+function handleError(error, reply) {
+    let errorMessage = 'Error';
+    if (error.name === 'ClickHouseSyntaxError') {
+        errorMessage = 'ClickHouse Syntax error';
+    } else if (error.name === 'ClickHouseNetworkError') {
+        errorMessage = 'ClickHouse Network error';
+    }
+
+    console.error(errorMessage + ':', error);
+    reply
+        .code(500)
+        .send({ error: 'Internal Server Error', message: error.message });
+}
 
 module.exports = {
     getAllEntriesStd,

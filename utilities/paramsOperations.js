@@ -81,13 +81,13 @@ const po_LoaiHang = [
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 
-const po_Func = [
-    { p: 'count', t: 'number' },
-    { p: 'sum', t: 'number' },
-    { p: 'avg', t: 'number' },
-    { p: 'min', t: 'number' },
-    { p: 'max', t: 'number' },
-];
+// const po_Func = [
+//     { p: 'count', t: 'number' },
+//     { p: 'sum', t: 'number' },
+//     { p: 'avg', t: 'number' },
+//     { p: 'min', t: 'number' },
+//     { p: 'max', t: 'number' },
+// ];
 
 module.exports = {
     po_BDS,
@@ -97,5 +97,5 @@ module.exports = {
     po_PhuongXa,
     po_HuongNha,
     po_LoaiHang,
-    po_Func,
+    // po_Func,
 };
