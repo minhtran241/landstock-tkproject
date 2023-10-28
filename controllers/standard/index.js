@@ -1,13 +1,16 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const { funcParamToQuery } = require('../../utilities/funcParamsProcessing');
 const {
     getSelectQuery,
     getSelectByIdQuery,
     getPostQueryValues,
     getDeleteQuery,
+    funcParamToQuery,
 } = require('../../utilities/piplines/queryGenerators');
-const { convertToType } = require('../../utilities/piplines/sanitization');
+const {
+    convertToType,
+    sanitizeGetFuncResponse,
+} = require('../../utilities/piplines/sanitization');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
@@ -41,8 +44,8 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         const data = await resultSet.json();
-        console.log(data);
-        reply.code(200).send(funcResults);
+        const sanitizedData = sanitizeGetFuncResponse(data, func);
+        reply.code(200).send(sanitizedData);
     } catch (error) {
         handleError(error, reply);
     }

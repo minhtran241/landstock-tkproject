@@ -24,7 +24,18 @@ const sanitizeLimitAndOffset = (requestQuery) => {
     return { limit, skip };
 };
 
+const sanitizeGetFuncResponse = (data, func) => {
+    if (data !== null && func !== null) {
+        return {
+            value: data[0][`${func}()`],
+        };
+    } else {
+        throw new Error('Data not found');
+    }
+};
+
 module.exports = {
     convertToType,
     sanitizeLimitAndOffset,
+    sanitizeGetFuncResponse,
 };

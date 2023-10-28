@@ -134,10 +134,24 @@ const getStatsQuery = {
     count: getCountQuery,
 };
 
+const funcParamToQuery = (func, requestQuery, paramsOperations, table) => {
+    if (getStatsQuery[func]) {
+        const query = getStatsQuery[func](
+            requestQuery,
+            paramsOperations,
+            table
+        );
+        return query;
+    } else {
+        throw new Error(`Invalid function: ${f}`);
+    }
+};
+
 module.exports = {
     getSelectQuery,
     getSelectByIdQuery,
     getPostQueryValues,
     getDeleteQuery,
     getStatsQuery,
+    funcParamToQuery,
 };
