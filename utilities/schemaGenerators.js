@@ -21,7 +21,7 @@ const createObjectFromFilteredArray = (po, action) => {
 const createMessageResponse = {
     type: 'object',
     properties: {
-        message: { type: 'string' },
+        error: { type: 'string' },
     },
 };
 
@@ -75,8 +75,27 @@ const deleteSchemaGenerator = (requestHandler) => {
     };
 };
 
+const getFuncSchemaGenerator = (requestHandler) => {
+    const response200 = {
+        type: 'object',
+        properties: {
+            value: { type: 'number' },
+        },
+    };
+    const response404 = createMessageResponse;
+    const response500 = createMessageResponse;
+
+    return {
+        schema: {
+            response: { 200: response200, 404: response404, 500: response500 },
+        },
+        handler: requestHandler,
+    };
+};
+
 module.exports = {
     getSchemaGenerator,
     postSchemaGenerator,
     deleteSchemaGenerator,
+    getFuncSchemaGenerator,
 };

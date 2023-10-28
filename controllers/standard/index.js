@@ -31,12 +31,11 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
     }
 };
 
-const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
-    if (!request.query.f) {
-        throw new Error('No function specified');
-    }
-
+const getFuncValueStd = async (request, reply, po_Name, table) => {
     try {
+        if (!request.query.f) {
+            throw new Error('No function specified');
+        }
         const func = request.query.f.split(',')[0];
         const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
         const resultSet = await client.query({
@@ -121,5 +120,5 @@ module.exports = {
     getEntryByIdStd,
     postEntryStd,
     deleteEntryStd,
-    getAllEntriesWithFuncStd,
+    getFuncValueStd,
 };
