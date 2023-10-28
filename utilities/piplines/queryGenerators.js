@@ -31,7 +31,16 @@ const generateWhereConditions = (
     conditionAttrs
 ) => {
     const conditions = conditionAttrs
-        .filter((attr) => requestQuery[attr] !== undefined)
+        .filter((attr) => {
+            if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
+                return (
+                    requestQuery[attr[0] + 'Tu' + attr.slice(1)] !==
+                        undefined ||
+                    requestQuery[attr[0] + 'Den' + attr.slice(1)] !== undefined
+                );
+            }
+            return requestQuery[attr] !== undefined;
+        })
         .map((attr) =>
             paramToCondition(
                 paramsOperations.find((po) => po.p === attr),
