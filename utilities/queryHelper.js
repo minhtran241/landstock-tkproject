@@ -53,7 +53,15 @@ function removeNullValues(obj) {
     return obj;
 }
 
+function hasBetweenAttribute(requestQuery, attr) {
+    const attributeWithTu = requestQuery[attr[0] + 'Tu' + attr.slice(1)];
+    const attributeWithDen = requestQuery[attr[0] + 'Den' + attr.slice(1)];
+
+    return attributeWithTu !== undefined || attributeWithDen !== undefined;
+}
+
 module.exports = {
     cleanAndConvert,
     removeNullValues,
+    hasBetweenAttribute,
 };

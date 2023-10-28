@@ -1,7 +1,7 @@
 'use strict';
 const { paramToCondition } = require('./conditionGenerators');
 const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
-const { cleanAndConvert } = require('../queryHelper');
+const { cleanAndConvert, hasBetweenAttribute } = require('../queryHelper');
 const { sanitizeLimitAndOffset } = require('./sanitization');
 
 // Function to generate a SELECT query from the request query parameters
@@ -33,11 +33,7 @@ const generateWhereConditions = (
     const conditions = conditionAttrs
         .filter((attr) => {
             if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
-                return (
-                    requestQuery[attr[0] + 'Tu' + attr.slice(1)] !==
-                        undefined ||
-                    requestQuery[attr[0] + 'Den' + attr.slice(1)] !== undefined
-                );
+                return hasBetweenAttribute(requestQuery, attr);
             }
             return requestQuery[attr] !== undefined;
         })
