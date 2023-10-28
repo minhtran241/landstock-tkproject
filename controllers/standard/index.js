@@ -1,8 +1,8 @@
 'use strict';
 const client = require('../../data/clickhouse');
 const {
-    funcParamsToQueries,
     queriesToResults,
+    funcParamToQuery,
 } = require('../../utilities/funcParamsProcessing');
 const {
     getSelectQuery,
@@ -37,32 +37,15 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
     }
 
     try {
-        const { query, limit, skip } = getSelectQuery(
-            request.query,
-            po_Name,
-            table
-        );
-        const resultSet = await client.query({
-            query,
+        const func = request.query.f.split(',')[0];
+        const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
+        const resultSet = await db_client.query({
+            query: funcQuery,
             format: 'JSONEachRow',
         });
-        let data = await resultSet.json();
-        convertToType(po_Name, data);
-
-        if (data !== null) {
-            const funcs = request.query.f.split(',') || [];
-            const funcQueries = funcParamsToQueries(
-                funcs,
-                request.query,
-                po_Name,
-                table
-            );
-            const funcResults = await queriesToResults(client, funcQueries);
-            const result = { data, ...funcResults, limit, skip };
-            reply.code(200).send(result);
-        } else {
-            reply.code(404).send({ error: 'Data not found' });
-        }
+        const data = await resultSet.json();
+        console.log(data);
+        reply.code(200).send(funcResults);
     } catch (error) {
         handleError(error, reply);
     }

@@ -1,5 +1,4 @@
 'use strict';
-
 const { paramToCondition } = require('./conditionGenerators');
 const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
 const { cleanAndConvert } = require('../queryHelper');
