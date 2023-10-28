@@ -69,7 +69,7 @@ This route handles health checks for the API.
 **Description:**
 This route handles interactions related to real estate properties.
 
-- **Get all the real estates:**  
+- **Get all the real estates (condition support):**  
   Endpoint: `http://b.thienkhoi.com/bds`  
   Method: `GET`  
   Returns a list of all available real estate properties.
@@ -91,6 +91,20 @@ This route handles interactions related to real estate properties.
   Deletes a real estate property that match the provided *sID*.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/index.js)
+
+</details>
+
+<details closed><summary>Func</summary>
+
+**Description:**
+This route handles interactions related to the functions of the API.
+
+- **Get the quantity of the real estates (condition support):**  
+  Endpoint: `http://b.thienkhoi.com/bds/func?f=count`  
+  Method: `GET`  
+  Returns the quantity of the real estates.
+
+[More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/func/index.js)
 
 </details>
 
