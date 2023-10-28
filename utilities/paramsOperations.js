@@ -4,8 +4,8 @@
 // Action involves the following: k = primary key, s = select, p = post, d = delete, c: in condition (where clause)
 
 const po_BDS = [
-    { p: 'sID', t: 'string', o: '=', a: 'si', k: true },
-    { p: 'sMa', t: 'string', o: '=', a: 'sdci' },
+    { p: 'sID', t: 'string', o: '=', a: 'si' },
+    { p: 'sMa', t: 'string', o: '=', a: 'sdci', k: true },
     { p: 'sNoiDung', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sTenTinh', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'pdci' },
@@ -35,12 +35,12 @@ const po_BDS = [
 ];
 
 const po_KhachHang = [
-    { p: 'sID', t: 'string', o: '=', a: 'si', k: true },
+    { p: 'sID', t: 'string', o: '=', a: 'si' },
     { p: 'sTen', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sDienThoai', t: 'string', o: '=', a: 'spdci' },
     { p: 'sEmail', t: 'string', o: 'LIKE', a: 'spdci' },
     { p: 'iTrangThai', t: 'number', o: 'IN', a: 'spdci' },
-    { p: 'sMa', t: 'string', o: 'LIKE', a: 'spdci' },
+    { p: 'sMa', t: 'string', o: 'LIKE', a: 'spdci', k: true },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 

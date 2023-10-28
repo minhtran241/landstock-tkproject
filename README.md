@@ -58,7 +58,7 @@
 This route handles health checks for the API.
 
 - **Get the health of the API:**  
-  Endpoint: `http://b.thienkhoi.com/health`  
+  Endpoint: `https://b.thienkhoi.com/health`  
   Method: `GET`  
   Returns the health of the API.
 
@@ -70,23 +70,23 @@ This route handles health checks for the API.
 This route handles interactions related to real estate properties.
 
 - **Get all the real estates (condition support):**  
-  Endpoint: `http://b.thienkhoi.com/bds`  
+  Endpoint: `https://b.thienkhoi.com/bds`  
   Method: `GET`  
   Returns a list of all available real estate properties.
 
 - **Get a real estates by *sID*:**  
-  Endpoint: `http://b.thienkhoi.com/bds/sID`  
+  Endpoint: `httpss://b.thienkhoi.com/bds/sID`  
   Method: `GET`
   Query: `sID`
   Returns a real estate properties that match the provided *sID*.
 
 - **Create a new real estates:**  
-  Endpoint: `http://b.thienkhoi.com/bds`  
+  Endpoint: `https://b.thienkhoi.com/bds`  
   Method: `POST`
   Creates a new real estate property.
 
 - **Delete a real estates by *sID*:**
-  Endpoint: `http://b.thienkhoi.com/bds/sID`  
+  Endpoint: `https://b.thienkhoi.com/bds/sID`  
   Method: `DELETE`
   Deletes a real estate property that match the provided *sID*.
 
@@ -100,7 +100,7 @@ This route handles interactions related to real estate properties.
 This route handles interactions related to the functions of the API.
 
 - **Get the quantity of the real estates (condition support):**  
-  Endpoint: `http://b.thienkhoi.com/bds/func?f=count`  
+  Endpoint: `https://b.thienkhoi.com/bds/func?f=count`  
   Method: `GET`  
   Returns the quantity of the real estates.
 
@@ -114,27 +114,27 @@ This route handles interactions related to the functions of the API.
 This route contains sub-routes that list all properties of a certain type.
 
 - **Get all the cities:**  
-  Endpoint: `http://b.thienkhoi.com/list/tinh`  
+  Endpoint: `https://b.thienkhoi.com/list/tinh`  
   Method: `GET`  
   Returns a list of all available cities.
 
 - **Get all the districts:**  
-  Endpoint: `http://b.thienkhoi.com/list/quan`  
+  Endpoint: `https://b.thienkhoi.com/list/quan`  
   Method: `GET`  
   Returns a list of all available districts.
 
 - **Get all the wards:**  
-  Endpoint: `http://b.thienkhoi.com/list/phuongxa`  
+  Endpoint: `https://b.thienkhoi.com/list/phuongxa`  
   Method: `GET`  
   Returns a list of all available wards.
 
 - **Get all the directions:**  
-  Endpoint: `http://b.thienkhoi.com/list/huongnha`  
+  Endpoint: `https://b.thienkhoi.com/list/huongnha`  
   Method: `GET`  
   Returns a list of all available directions.
 
 - **Get all the sections:**  
-  Endpoint: `http://b.thienkhoi.com/list/loaihang`  
+  Endpoint: `https://b.thienkhoi.com/list/loaihang`  
   Method: `GET`  
   Returns a list of all available sections.
 
@@ -148,23 +148,23 @@ This route contains sub-routes that list all properties of a certain type.
 This route handles interactions related to customer properties.
 
 - **Get all the customers:**  
-  Endpoint: `http://b.thienkhoi.com/kh`  
+  Endpoint: `https://b.thienkhoi.com/kh`  
   Method: `GET`  
   Returns a list of all available customers.
 
 - **Get a customer by *sID*:**
-  Endpoint: `http://b.thienkhoi.com/kh/sID`  
+  Endpoint: `https://b.thienkhoi.com/kh/sID`  
   Method: `GET`
   Query: `sID`
   Returns a customer that match the provided *sID*.
 
 - **Create a new customer:**
-  Endpoint: `http://b.thienkhoi.com/kh`  
+  Endpoint: `https://b.thienkhoi.com/kh`  
   Method: `POST`
   Creates a new customer.
 
 - **Delete a customer by *sID*:**
-  Endpoint: `http://b.thienkhoi.com/kh/sID`  
+  Endpoint: `https://b.thienkhoi.com/kh/sID`  
   Method: `DELETE`
   Deletes a customer that match the provided *sID*.
 
