@@ -1,9 +1,6 @@
 'use strict';
 const client = require('../../data/clickhouse');
-const {
-    queriesToResults,
-    funcParamToQuery,
-} = require('../../utilities/funcParamsProcessing');
+const { funcParamToQuery } = require('../../utilities/funcParamsProcessing');
 const {
     getSelectQuery,
     getSelectByIdQuery,
@@ -39,7 +36,7 @@ const getAllEntriesWithFuncStd = async (request, reply, po_Name, table) => {
     try {
         const func = request.query.f.split(',')[0];
         const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
-        const resultSet = await db_client.query({
+        const resultSet = await client.query({
             query: funcQuery,
             format: 'JSONEachRow',
         });
