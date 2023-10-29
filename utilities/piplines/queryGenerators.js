@@ -3,6 +3,7 @@ const { paramToCondition } = require('./conditionGenerators');
 const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
 const { cleanAndConvert, hasBetweenAttribute } = require('../queryHelper');
 const { sanitizeLimitAndOffset } = require('./sanitization');
+const { concatWithSpace } = require('../stringHelper');
 
 // Function to generate a SELECT query from the request query parameters
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
@@ -61,6 +62,8 @@ const getSelectByIdQuery = (requestParams, paramsOperations, table) => {
     } else if (pkAttr.t === 'string') {
         query += `${pkAttr.p} = '${id}'`;
     }
+
+    query = concatWithSpace(query, 'LIMIT 1');
 
     console.info(query);
 
