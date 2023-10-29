@@ -40,13 +40,13 @@
 
 - **Database:** We use the powerful [ClickHouse](https://clickhouse.tech/) database to efficiently store and manage real estate data.
 
-- **Domain:** Visit our domain at [https://b.thienkhoi.com](https://b.thienkhoi.com) to access the API's endpoints and explore the wealth of information available.
+- **Domain:** Visit our domain at [https://b.thienkhoi.com/mbls](https://b.thienkhoi.com/mbls) to access the API's endpoints and explore the wealth of information available.
 
 ---
 
 ## API Documentation
 
-- Explore the API's endpoints and discover how to use it by checking out our detailed [Swagger documentation](https://b.thienkhoi.com/docs).
+- Explore the API's endpoints and discover how to use it by checking out our detailed [Swagger documentation](https://b.thienkhoi.com/mbls/docs).
 
 ---
 
@@ -58,7 +58,7 @@
 This route handles health checks for the API.
 
 - **Get the health of the API:**  
-  Endpoint: `https://b.thienkhoi.com/health`  
+  Endpoint: `https://b.thienkhoi.com/mbls/health`  
   Method: `GET`  
   Returns the health of the API.
 
@@ -70,23 +70,23 @@ This route handles health checks for the API.
 This route handles interactions related to real estate properties.
 
 - **Get all the real estates (condition support):**  
-  Endpoint: `https://b.thienkhoi.com/bds`  
+  Endpoint: `https://b.thienkhoi.com/mbls/bds`  
   Method: `GET`  
   Returns a list of all available real estate properties.
 
 - **Get a real estates by *sID*:**  
-  Endpoint: `httpss://b.thienkhoi.com/bds/sID`  
+  Endpoint: `https://b.thienkhoi.com/mbls/bds/sID`  
   Method: `GET`
   Query: `sID`
   Returns a real estate properties that match the provided *sID*.
 
 - **Create a new real estates:**  
-  Endpoint: `https://b.thienkhoi.com/bds`  
+  Endpoint: `https://b.thienkhoi.com/mbls/bds`  
   Method: `POST`
   Creates a new real estate property.
 
 - **Delete a real estates by *sID*:**
-  Endpoint: `https://b.thienkhoi.com/bds/sID`  
+  Endpoint: `https://b.thienkhoi.com/mbls/bds/sID`  
   Method: `DELETE`
   Deletes a real estate property that match the provided *sID*.
 
@@ -100,7 +100,7 @@ This route handles interactions related to real estate properties.
 This route handles interactions related to the functions of the API.
 
 - **Get the quantity of the real estates (condition support):**  
-  Endpoint: `https://b.thienkhoi.com/bds/func?f=count`  
+  Endpoint: `https://b.thienkhoi.com/mbls/bds/func?f=count`  
   Method: `GET`  
   Returns the quantity of the real estates.
 
@@ -114,27 +114,27 @@ This route handles interactions related to the functions of the API.
 This route contains sub-routes that list all properties of a certain type.
 
 - **Get all the cities:**  
-  Endpoint: `https://b.thienkhoi.com/list/tinh`  
+  Endpoint: `https://b.thienkhoi.com/mbls/list/tinh`  
   Method: `GET`  
   Returns a list of all available cities.
 
 - **Get all the districts:**  
-  Endpoint: `https://b.thienkhoi.com/list/quan`  
+  Endpoint: `https://b.thienkhoi.com/mbls/list/quan`  
   Method: `GET`  
   Returns a list of all available districts.
 
 - **Get all the wards:**  
-  Endpoint: `https://b.thienkhoi.com/list/phuongxa`  
+  Endpoint: `https://b.thienkhoi.com/mbls/list/phuongxa`  
   Method: `GET`  
   Returns a list of all available wards.
 
 - **Get all the directions:**  
-  Endpoint: `https://b.thienkhoi.com/list/huongnha`  
+  Endpoint: `https://b.thienkhoi.com/mbls/list/huongnha`  
   Method: `GET`  
   Returns a list of all available directions.
 
 - **Get all the sections:**  
-  Endpoint: `https://b.thienkhoi.com/list/loaihang`  
+  Endpoint: `https://b.thienkhoi.com/mbls/list/loaihang`  
   Method: `GET`  
   Returns a list of all available sections.
 
@@ -148,23 +148,23 @@ This route contains sub-routes that list all properties of a certain type.
 This route handles interactions related to customer properties.
 
 - **Get all the customers:**  
-  Endpoint: `https://b.thienkhoi.com/kh`  
+  Endpoint: `https://b.thienkhoi.com/mbls/kh`  
   Method: `GET`  
   Returns a list of all available customers.
 
 - **Get a customer by *sID*:**
-  Endpoint: `https://b.thienkhoi.com/kh/sID`  
+  Endpoint: `https://b.thienkhoi.com/mbls/kh/sID`  
   Method: `GET`
   Query: `sID`
   Returns a customer that match the provided *sID*.
 
 - **Create a new customer:**
-  Endpoint: `https://b.thienkhoi.com/kh`  
+  Endpoint: `https://b.thienkhoi.com/mbls/kh`  
   Method: `POST`
   Creates a new customer.
 
 - **Delete a customer by *sID*:**
-  Endpoint: `https://b.thienkhoi.com/kh/sID`  
+  Endpoint: `https://b.thienkhoi.com/mbls/kh/sID`  
   Method: `DELETE`
   Deletes a customer that match the provided *sID*.
 
