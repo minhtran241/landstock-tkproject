@@ -9,7 +9,7 @@ const {
     getSchemaGenerator,
     postSchemaGenerator,
     deleteSchemaGenerator,
-} = require('../../../utilities/schemaGenerators');
+} = require('../../../utilities/routes/schemaGenerators');
 const { po_Quan } = require('../../../utilities/paramsOperations');
 
 const getEntriesOpts = getSchemaGenerator(po_Quan, 's', 'array', getAllEntries);

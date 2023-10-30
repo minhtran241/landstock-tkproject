@@ -9,7 +9,7 @@ const {
     getSchemaGenerator,
     postSchemaGenerator,
     deleteSchemaGenerator,
-} = require('../../../utilities/schemaGenerators');
+} = require('../../../utilities/routes/schemaGenerators');
 const { po_LoaiHang } = require('../../../utilities/paramsOperations');
 
 const getEntriesOpts = getSchemaGenerator(

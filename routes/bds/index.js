@@ -5,12 +5,13 @@ const {
     postEntry,
     deleteEntry,
 } = require('../../controllers/bds');
+
+const { po_BDS } = require('../../utilities/paramsOperations');
 const {
     getSchemaGenerator,
     postSchemaGenerator,
     deleteSchemaGenerator,
-} = require('../../utilities/schemaGenerators');
-const { po_BDS } = require('../../utilities/paramsOperations');
+} = require('../../utilities/routes/schemaGenerators');
 
 const getEntriesOpts = getSchemaGenerator(po_BDS, 's', 'array', getAllEntries);
 const getEntryByIdOpts = getSchemaGenerator(

@@ -1,4 +1,5 @@
 'use strict';
+
 const client = require('../../data/clickhouse');
 const {
     getSelectQuery,
@@ -6,20 +7,21 @@ const {
     getPostQueryValues,
     getDeleteQuery,
     funcParamToQuery,
-} = require('../../utilities/piplines/queryGenerators');
+} = require('../../utilities/controllers/queryGenerators');
 const {
     convertToType,
     sanitizeGetFuncResponse,
-} = require('../../utilities/piplines/sanitization');
+} = require('../../utilities/controllers/sanitization');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
         const { query } = getSelectQuery(request.query, po_Name, table);
-        const resultSet = await client.query({
+        const rows = await client.query({
             query,
             format: 'JSONEachRow',
         });
-        let data = await resultSet.json();
+        let data = await rows.json();
+        console.log(data);
         convertToType(po_Name, data);
         if (data !== null) {
             reply.code(200).send(data);
@@ -38,11 +40,11 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
         }
         const func = request.query.f.split(',')[0];
         const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
-        const resultSet = await client.query({
+        const rows = await client.query({
             query: funcQuery,
             format: 'JSONEachRow',
         });
-        const data = await resultSet.json();
+        const data = await rows.json();
         const sanitizedData = sanitizeGetFuncResponse(data, func);
         reply.code(200).send(sanitizedData);
     } catch (error) {
@@ -53,11 +55,11 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
 const getEntryByIdStd = async (request, reply, po_Name, table) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
-        const result = await client.query({
+        const rows = await client.query({
             query,
             format: 'JSONEachRow',
         });
-        let data = await result.json();
+        let data = await rows.json();
         convertToType(po_Name, data);
         if (data !== null) {
             reply.code(200).send(data[0]);
@@ -87,7 +89,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
     }
 };
 
-const deleteEntryStd = async (request, reply, po_Name) => {
+const deleteEntryStd = async (request, reply, po_Name, table) => {
     const query = getDeleteQuery(request.params, po_Name, table);
     try {
         await client.query({

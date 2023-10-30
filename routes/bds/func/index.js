@@ -3,7 +3,7 @@
 const { getFuncValue } = require('../../../controllers/bds');
 const {
     getFuncSchemaGenerator,
-} = require('../../../utilities/schemaGenerators');
+} = require('../../../utilities/routes/schemaGenerators');
 
 const getFuncOpts = getFuncSchemaGenerator(getFuncValue);
 
