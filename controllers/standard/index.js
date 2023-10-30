@@ -21,7 +21,6 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await rows.json();
-        console.log(data);
         convertToType(po_Name, data);
         if (data !== null) {
             reply.code(200).send(data);
@@ -60,6 +59,7 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await rows.json();
+        console.log(data);
         convertToType(po_Name, data);
         if (data !== null) {
             reply.code(200).send(data[0]);
