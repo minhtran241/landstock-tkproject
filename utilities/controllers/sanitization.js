@@ -30,10 +30,8 @@ const sanitizeLimitAndOffset = (requestQuery, table) => {
             BDS_MAX_LIMIT;
         skip = Math.min(Number(requestQuery.skip), BDS_MAX_OFFSET) || 0;
     } else {
-        limit =
-            Math.min(Number(requestQuery.limit), ALL_MAX_LIMIT) ||
-            ALL_MAX_LIMIT;
-        skip = Math.min(Number(requestQuery.skip), ALL_MAX_OFFSET) || 0;
+        limit = Number(requestQuery.limit) || null;
+        skip = Number(requestQuery.skip) || null;
     }
     return { limit, skip };
 };
