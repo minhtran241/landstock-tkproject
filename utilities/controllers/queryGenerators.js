@@ -16,7 +16,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
     );
 
     // Sanitize limit and offset values
-    const { limit, skip } = sanitizeLimitAndOffset(requestQuery);
+    const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
 
     const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${whereConditions} LIMIT ${limit} OFFSET ${skip}`;
 
