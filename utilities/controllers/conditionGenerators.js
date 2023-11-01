@@ -50,10 +50,6 @@ const sqlConditionGenerators = {
 };
 
 function generateRangeOperation(value, rangeString) {
-    if (isNaN(value) || !rangeString) {
-        return null; // Invalid value or range
-    }
-
     const equalRegex = /^=(\d+)$/;
     if (rangeString.match(equalRegex)) {
         const number = rangeString.substring(1); // Remove the "="
