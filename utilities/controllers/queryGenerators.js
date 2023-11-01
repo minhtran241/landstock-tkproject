@@ -110,13 +110,13 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const id = String(requestParams.id);
     const pkAttr = getPKAttr(paramsOperations);
     let query = `ALTER TABLE ${table} DELETE WHERE `;
-
-    if (pkAttr.p === 'sID') {
+    const idCol = pkAttr.p;
+    if (idCol === 'sID') {
         query += `sID = toUUID('${id}')`;
     } else if (idCol.startsWith('i')) {
-        query += `${pkAttr.p} = ${id}`;
+        query += `${idCol} = ${id}`;
     } else if (idCol.startsWith('s')) {
-        query += `${pkAttr.p} = '${id}'`;
+        query += `${idCol} = '${id}'`;
     }
 
     console.info(query);

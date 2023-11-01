@@ -74,21 +74,21 @@ This route handles interactions related to real estate properties.
   Method: `GET`  
   Returns a list of all available real estate properties.
 
-- **Get a real estates by *sID*:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/bds/sID`  
+- **Get a real estates by *sMa*:**  
+  Endpoint: `https://b.thienkhoi.com/mbls/bds/sMa`  
   Method: `GET`
-  Query: `sID`
-  Returns a real estate properties that match the provided *sID*.
+  Query: `sMa`
+  Returns a real estate properties that match the provided *sMa*.
 
 - **Create a new real estates:**  
   Endpoint: `https://b.thienkhoi.com/mbls/bds`  
   Method: `POST`
   Creates a new real estate property.
 
-- **Delete a real estates by *sID*:**
-  Endpoint: `https://b.thienkhoi.com/mbls/bds/sID`  
+- **Delete a real estates by *sMa*:**
+  Endpoint: `https://b.thienkhoi.com/mbls/bds/sMa`  
   Method: `DELETE`
-  Deletes a real estate property that match the provided *sID*.
+  Deletes a real estate property that match the provided *sMa*.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/index.js)
 
@@ -152,21 +152,21 @@ This route handles interactions related to customer properties.
   Method: `GET`  
   Returns a list of all available customers.
 
-- **Get a customer by *sID*:**
-  Endpoint: `https://b.thienkhoi.com/mbls/kh/sID`  
+- **Get a customer by *sMa*:**
+  Endpoint: `https://b.thienkhoi.com/mbls/kh/sMa`  
   Method: `GET`
-  Query: `sID`
-  Returns a customer that match the provided *sID*.
+  Query: `sMa`
+  Returns a customer that match the provided *sMa*.
 
 - **Create a new customer:**
   Endpoint: `https://b.thienkhoi.com/mbls/kh`  
   Method: `POST`
   Creates a new customer.
 
-- **Delete a customer by *sID*:**
-  Endpoint: `https://b.thienkhoi.com/mbls/kh/sID`  
+- **Delete a customer by *sMa*:**
+  Endpoint: `https://b.thienkhoi.com/mbls/kh/sMa`  
   Method: `DELETE`
-  Deletes a customer that match the provided *sID*.
+  Deletes a customer that match the provided *sMa*.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)
 
