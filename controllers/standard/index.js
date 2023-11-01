@@ -74,6 +74,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
     try {
         // Remove null, undefined values, or not allowed post values from the object
         const cleanedValues = getPostQueryValues(request.body, po_Name);
+        console.log(cleanedValues);
         // Insert the values into the ClickHouse table
         await client.insert({
             table,

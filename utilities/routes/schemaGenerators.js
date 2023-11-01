@@ -21,7 +21,7 @@ const createObjectFromFilteredArray = (po, action) => {
 const createMessageResponse = {
     type: 'object',
     properties: {
-        error: { type: 'string' },
+        message: { type: 'string' },
     },
 };
 
