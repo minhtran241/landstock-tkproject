@@ -19,6 +19,7 @@ function cleanAndConvert(values) {
                 // Convert string array attributes to string arrays. Example: sFiles
                 cleanedValues[key] = values[key].split(',');
             } else if (key.startsWith('s')) {
+                console.log({ key, value: values[key] });
                 // Convert string attributes to strings
                 cleanedValues[key] = String(values[key]);
             } else if (key.startsWith('b')) {
