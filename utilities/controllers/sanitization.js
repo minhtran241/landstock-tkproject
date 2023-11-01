@@ -1,10 +1,11 @@
 'use strict';
 
 const {
-    BDS_MAX_LIMIT,
-    BDS_MAX_OFFSET,
-    ALL_MAX_LIMIT,
-    ALL_MAX_OFFSET,
+    SMALL_LIMIT_TABLES,
+    SMALL_MAX_LIMIT,
+    SMALL_MAX_OFFSET,
+    BIG_MAX_LIMIT,
+    BIG_MAX_OFFSET,
 } = require('../constants');
 
 const convertToType = (po, dataToConvert) => {
@@ -23,16 +24,16 @@ const convertToType = (po, dataToConvert) => {
 };
 
 const sanitizeLimitAndOffset = (requestQuery, table) => {
-    let limit, skip;
-    if (table === 'tb_BDS') {
-        limit =
-            Math.min(Number(requestQuery.limit), BDS_MAX_LIMIT) ||
-            BDS_MAX_LIMIT;
-        skip = Math.min(Number(requestQuery.skip), BDS_MAX_OFFSET) || 0;
-    } else {
-        limit = Number(requestQuery.limit) || null;
-        skip = Number(requestQuery.skip) || null;
-    }
+    const maxLimit = SMALL_LIMIT_TABLES.includes(table)
+        ? SMALL_MAX_LIMIT
+        : BIG_MAX_LIMIT;
+    const maxOffset = SMALL_LIMIT_TABLES.includes(table)
+        ? SMALL_MAX_OFFSET
+        : BIG_MAX_OFFSET;
+
+    const limit = Math.min(Number(requestQuery.limit) || maxLimit, maxLimit);
+    const skip = Math.min(Number(requestQuery.skip) || 0, maxOffset);
+
     return { limit, skip };
 };
 
