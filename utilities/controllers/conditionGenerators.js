@@ -43,7 +43,7 @@ const LIKEANDCondition = (attr, values) => {
 // Function generate a range operation string of a attribute from a range string
 const BETWEENCondition = (attr, rangeString) => {
     // Check if the range is a single number
-    const equalRegex = /^\d+(\.\d+)?$/;
+    const equalRegex = /^\d+(\.\d+)?$|^\.\d+$/;
     let match = rangeString.match(equalRegex);
     if (match) {
         const number = parseFloat(match[0]);
