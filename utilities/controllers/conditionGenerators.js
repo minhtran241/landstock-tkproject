@@ -34,16 +34,62 @@ const sqlConditionGenerators = {
         return `AND ${likeConditions}`;
     },
     BETWEEN: (po, values) => {
-        const { from, to } = generateBetweenParams(po.p);
-        if (values[from] && values[to]) {
-            return `AND (${po.p} BETWEEN ${values[from]} AND ${values[to]})`;
-        } else if (values[from]) {
-            return `AND (${po.p} >= ${values[from]})`;
-        } else if (values[to]) {
-            return `AND (${po.p} <= ${values[to]})`;
+        // const { from, to } = generateBetweenParams(po.p);
+        // if (values[from] && values[to]) {
+        //     return `AND (${po.p} BETWEEN ${values[from]} AND ${values[to]})`;
+        // } else if (values[from]) {
+        //     return `AND (${po.p} >= ${values[from]})`;
+        // } else if (values[to]) {
+        //     return `AND (${po.p} <= ${values[to]})`;
+        // }
+        if (!isNaN(values[po.p])) {
+            return `AND ${po.p} = ${values[po.p]}`;
         }
+        return generateRangeOperation(po.p, values[po.p]);
     },
 };
+
+function generateRangeOperation(value, rangeString) {
+    if (isNaN(value) || !rangeString) {
+        return null; // Invalid value or range
+    }
+
+    const equalRegex = /^=(\d+)$/;
+    if (rangeString.match(equalRegex)) {
+        const number = rangeString.substring(1); // Remove the "="
+        return `${value} = ${number}`;
+    }
+
+    const minMaxRegex = /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/;
+    const match = rangeString.match(minMaxRegex);
+
+    if (!match) {
+        return null; // Invalid range format
+    }
+
+    const min = match[2].trim();
+    const max = match[3].trim();
+
+    if (!isNaN(min) || min === '') {
+        const minOperator = match[1] === '(' || match[1] === ')' ? '>' : '>=';
+        const maxOperator = match[4] === '(' || match[4] === ')' ? '<' : '<=';
+
+        if (!isNaN(max) || max === '') {
+            const minCondition =
+                min === '' ? '' : `${value} ${minOperator} ${min}`;
+            const maxCondition =
+                max === '' ? '' : `${value} ${maxOperator} ${max}`;
+
+            if (minCondition && maxCondition) {
+                return `AND ${minCondition} AND ${maxCondition}`;
+            } else {
+                return 'AND' + minCondition + maxCondition;
+            }
+        }
+    }
+
+    return null; // Invalid min or max values
+}
 
 const convertValueBasedOnType = (po, val) => {
     if (po.t === 'string') {

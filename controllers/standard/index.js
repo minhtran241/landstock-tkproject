@@ -9,7 +9,7 @@ const {
     funcParamToQuery,
 } = require('../../utilities/controllers/queryGenerators');
 const {
-    convertToType,
+    // convertToType,
     sanitizeGetFuncResponse,
 } = require('../../utilities/controllers/sanitization');
 
@@ -74,7 +74,6 @@ const postEntryStd = async (request, reply, po_Name, table) => {
     try {
         // Remove null, undefined values, or not allowed post values from the object
         const cleanedValues = getPostQueryValues(request.body, po_Name);
-
         // Insert the values into the ClickHouse table
         await client.insert({
             table,

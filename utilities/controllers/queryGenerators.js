@@ -34,9 +34,9 @@ const generateWhereConditions = (
 ) => {
     const conditions = conditionAttrs
         .filter((attr) => {
-            if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
-                return hasBetweenAttribute(requestQuery, attr);
-            }
+            // if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
+            //     return hasBetweenAttribute(requestQuery, attr);
+            // }
             return requestQuery[attr] !== undefined;
         })
         .map((attr) =>
@@ -132,7 +132,7 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
         conditionAttrs
     );
 
-    const query = `SELECT count(*) FROM ${table} WHERE 1 = 1 ${whereConditions}`;
+    const query = `SELECT COUNT(*) FROM ${table} WHERE 1 = 1 ${whereConditions}`;
 
     console.info(query);
 
