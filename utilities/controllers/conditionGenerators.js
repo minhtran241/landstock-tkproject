@@ -42,14 +42,16 @@ const LIKEANDCondition = (attr, values) => {
 
 // Function generate a range operation string of a attribute from a range string
 const BETWEENCondition = (attr, rangeString) => {
-    const equalRegex = /^=(\d+)$/;
-    if (rangeString.match(equalRegex)) {
-        const number = rangeString.substring(1); // Remove the "="
+    // Check if the range is a single number
+    const equalRegex = /^\d+(\.\d+)?$/;
+    let match = rangeString.match(equalRegex);
+    if (match) {
+        const number = parseFloat(match[0]);
         return `${attr} = ${number}`;
     }
 
     const minMaxRegex = /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/;
-    const match = rangeString.match(minMaxRegex);
+    match = rangeString.match(minMaxRegex);
 
     if (!match) {
         return null; // Invalid range format
