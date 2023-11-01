@@ -79,7 +79,7 @@ function generateRangeOperation(value, rangeString) {
             if (minCondition && maxCondition) {
                 return `AND ${minCondition} AND ${maxCondition}`;
             } else {
-                return 'AND' + minCondition + maxCondition;
+                return `AND ${minCondition}${maxCondition}`;
             }
         }
     }
