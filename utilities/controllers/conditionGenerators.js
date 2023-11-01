@@ -1,6 +1,6 @@
 'use strict';
 
-const { generateBetweenParams } = require('../stringHelper');
+// const { generateBetweenParams } = require('../stringHelper');
 
 // Define a function to convert a parameter and its value into a SQL condition
 const paramToCondition = (po, values) => {
@@ -12,48 +12,52 @@ const paramToCondition = (po, values) => {
 
 // Default condition generator for basic conditions
 const defaultConditionGenerator = (po, values) => {
-    return `AND ${po.p} ${po.o} ${convertValueBasedOnType(po, values[po.p])}`;
+    return `AND ${po.p} ${po.o} ${convertValueBasedOnType(po, values)}`;
 };
 
 // Condition generators for special conditions
 const sqlConditionGenerators = {
     // EQUAL: (po, values) =>
-    //     `AND ${po.p} = ${convertValueBasedOnType(po, values[po.p])}`,
-    IN: (po, values) => {
-        const vps = values[po.p]
-            .split(',')
-            .map((val) => convertValueBasedOnType(po, val))
-            .join(',');
-        return `AND ${po.p} IN (${vps})`;
-    },
-    LIKEAND: (po, values) => {
-        const likeConditions = values[po.p]
-            .split(',')
-            .map((val) => `${po.p} LIKE '%${val}%'`)
-            .join(' AND ');
-        return `AND ${likeConditions}`;
-    },
-    BETWEEN: (po, values) => {
-        // const { from, to } = generateBetweenParams(po.p);
-        // if (values[from] && values[to]) {
-        //     return `AND (${po.p} BETWEEN ${values[from]} AND ${values[to]})`;
-        // } else if (values[from]) {
-        //     return `AND (${po.p} >= ${values[from]})`;
-        // } else if (values[to]) {
-        //     return `AND (${po.p} <= ${values[to]})`;
-        // }
-        if (!isNaN(values[po.p])) {
-            return `AND ${po.p} = ${values[po.p]}`;
-        }
-        return generateRangeOperation(po.p, values[po.p]);
-    },
+    //     `AND ${po.p} = ${convertValueBasedOnType(po, values)}`,
+    IN: (po, values) => INCondition(po, values),
+    LIKEAND: (po, values) => LIKEANDCondition(po.p, values),
+    BETWEEN: (po, values) => BETWEENCondition(po.p, values),
+    // {
+    //     const { from, to } = generateBetweenParams(po.p);
+    //     if (values[from] && values[to]) {
+    //         return `AND (${po.p} BETWEEN ${values[from]} AND ${values[to]})`;
+    //     } else if (values[from]) {
+    //         return `AND (${po.p} >= ${values[from]})`;
+    //     } else if (values[to]) {
+    //         return `AND (${po.p} <= ${values[to]})`;
+    //     }
+    // },
 };
 
-function generateRangeOperation(value, rangeString) {
+// Function generate a IN operation string of a attribute from a string
+const INCondition = (pattr, values) => {
+    const vps = values
+        .split(',')
+        .map((val) => convertValueBasedOnType(pattr, val))
+        .join(',');
+    return `AND ${pattr.p} IN (${vps})`;
+};
+
+// Function generate a LIKE AND operation string of a attribute from a string
+const LIKEANDCondition = (attr, values) => {
+    const likeConditions = values
+        .split(',')
+        .map((val) => `${attr} LIKE '%${val}%'`)
+        .join(' AND ');
+    return `AND ${likeConditions}`;
+};
+
+// Function generate a range operation string of a attribute from a range string
+const BETWEENCondition = (attr, rangeString) => {
     const equalRegex = /^=(\d+)$/;
     if (rangeString.match(equalRegex)) {
         const number = rangeString.substring(1); // Remove the "="
-        return `${value} = ${number}`;
+        return `${attr} = ${number}`;
     }
 
     const minMaxRegex = /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/;
@@ -72,9 +76,9 @@ function generateRangeOperation(value, rangeString) {
 
         if (!isNaN(max) || max === '') {
             const minCondition =
-                min === '' ? '' : `${value} ${minOperator} ${min}`;
+                min === '' ? '' : `${attr} ${minOperator} ${min}`;
             const maxCondition =
-                max === '' ? '' : `${value} ${maxOperator} ${max}`;
+                max === '' ? '' : `${attr} ${maxOperator} ${max}`;
 
             if (minCondition && maxCondition) {
                 return `AND ${minCondition} AND ${maxCondition}`;
@@ -85,7 +89,7 @@ function generateRangeOperation(value, rangeString) {
     }
 
     return null; // Invalid min or max values
-}
+};
 
 const convertValueBasedOnType = (po, val) => {
     if (po.t === 'string') {

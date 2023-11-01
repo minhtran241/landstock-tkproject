@@ -42,7 +42,7 @@ const generateWhereConditions = (
         .map((attr) =>
             paramToCondition(
                 paramsOperations.find((po) => po.p === attr),
-                requestQuery
+                requestQuery[attr]
             )
         );
 
