@@ -46,8 +46,8 @@ const BETWEENCondition = (attr, rangeString) => {
     const equalRegex = /^\d+(\.\d+)?$|^\.\d+$/;
     let match = rangeString.match(equalRegex);
     if (match) {
-        const number = match[0];
-        return `${attr} = ${number}`;
+        const number = parseFloat(match[0]);
+        return `AND ${attr} = ${number}`;
     }
 
     const minMaxRegex = /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/;
