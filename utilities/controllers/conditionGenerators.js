@@ -17,21 +17,9 @@ const defaultConditionGenerator = (po, values) => {
 
 // Condition generators for special conditions
 const sqlConditionGenerators = {
-    // EQUAL: (po, values) =>
-    //     `AND ${po.p} = ${convertValueBasedOnType(po, values)}`,
     IN: (po, values) => INCondition(po, values),
     LIKEAND: (po, values) => LIKEANDCondition(po.p, values),
     BETWEEN: (po, values) => BETWEENCondition(po.p, values),
-    // {
-    //     const { from, to } = generateBetweenParams(po.p);
-    //     if (values[from] && values[to]) {
-    //         return `AND (${po.p} BETWEEN ${values[from]} AND ${values[to]})`;
-    //     } else if (values[from]) {
-    //         return `AND (${po.p} >= ${values[from]})`;
-    //     } else if (values[to]) {
-    //         return `AND (${po.p} <= ${values[to]})`;
-    //     }
-    // },
 };
 
 // Function generate a IN operation string of a attribute from a string
@@ -89,6 +77,18 @@ const BETWEENCondition = (attr, rangeString) => {
     }
 
     return null; // Invalid min or max values
+
+    // old code
+    // {
+    //     const { from, to } = generateBetweenParams(attr);
+    //     if (values[from] && values[to]) {
+    //         return `AND (${attr} BETWEEN ${values[from]} AND ${values[to]})`;
+    //     } else if (values[from]) {
+    //         return `AND (${attr} >= ${values[from]})`;
+    //     } else if (values[to]) {
+    //         return `AND (${attr} <= ${values[to]})`;
+    //     }
+    // },
 };
 
 const convertValueBasedOnType = (po, val) => {
