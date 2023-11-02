@@ -5,6 +5,7 @@
 // Define a function to convert a parameter and its value into a SQL condition
 const paramToCondition = (po, values) => {
     // Get the appropriate condition generator function or use the default
+    console.log(values);
     const generateCondition =
         sqlConditionGenerators[po.o] || defaultConditionGenerator;
     return generateCondition(po, values);
