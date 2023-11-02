@@ -32,6 +32,7 @@ const generateWhereConditions = (
     paramsOperations,
     conditionAttrs
 ) => {
+    console.log(conditionAttrs);
     console.log(
         conditionAttrs.filter((attr) => {
             // if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
