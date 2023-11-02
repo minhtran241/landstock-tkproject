@@ -45,6 +45,7 @@ const BETWEENCondition = (attr, rangeString) => {
     // Check if the range is a single number
     const equalRegex = /^\d+(\.\d+)?$|^\.\d+$/;
     let match = rangeString.match(equalRegex);
+    console.log(rangeString);
     if (match) {
         const number = parseFloat(match[0]);
         console.log(`AND ${attr} = ${number}`);
