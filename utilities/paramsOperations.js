@@ -16,7 +16,7 @@ const po_BDS = [
     { p: 'sTenDuong', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sLoaiHang', t: 'string', o: 'LIKEAND', a: 'pdci' },
     { p: 'iDienTich', t: 'number', o: 'BETWEEN', a: 'spdci' },
-    { p: 'iSoTang', t: 'number', o: 'BETWEEN', a: 'psi' },
+    { p: 'iSoTang', t: 'number', o: 'BETWEEN', a: 'spci' },
     { p: 'iMatTien', t: 'number', o: 'BETWEEN', a: 'pdci' },
     { p: 'iGiaChaoHopDong', t: 'number', o: 'BETWEEN', a: 'pdci' },
     { p: 'sGiaChaoHopDong', t: 'string', o: 'LIKE', a: 'spi' },
