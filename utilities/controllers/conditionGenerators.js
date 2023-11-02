@@ -47,6 +47,7 @@ const BETWEENCondition = (attr, rangeString) => {
     let match = rangeString.match(equalRegex);
     if (match) {
         const number = parseFloat(match[0]);
+        console.log(`AND ${attr} = ${number}`);
         return `AND ${attr} = ${number}`;
     }
 
