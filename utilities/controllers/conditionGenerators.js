@@ -5,7 +5,6 @@
 // Define a function to convert a parameter and its value into a SQL condition
 const paramToCondition = (po, values) => {
     // Get the appropriate condition generator function or use the default
-    console.log(values);
     const generateCondition =
         sqlConditionGenerators[po.o] || defaultConditionGenerator;
     return generateCondition(po, values);
@@ -46,7 +45,6 @@ const BETWEENCondition = (attr, rangeString) => {
     // Check if the range is a single number
     const equalRegex = /^\d+(\.\d+)?$|^\.\d+$/;
     let match = rangeString.match(equalRegex);
-    console.log(rangeString);
     if (match) {
         const number = parseFloat(match[0]);
         console.log(`AND ${attr} = ${number}`);

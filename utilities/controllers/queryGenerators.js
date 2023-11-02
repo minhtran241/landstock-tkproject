@@ -32,19 +32,6 @@ const generateWhereConditions = (
     paramsOperations,
     conditionAttrs
 ) => {
-    console.log(conditionAttrs);
-    console.log(
-        conditionAttrs.filter((attr) => {
-            // if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
-            //     return hasBetweenAttribute(requestQuery, attr);
-            // }
-            return requestQuery[attr] !== undefined;
-        })
-    );
-    // .map((attr) => {
-    //     console.log(paramsOperations.find((po) => po.p === attr));
-    //     console.log(requestQuery[attr]);
-    // });
     const conditions = conditionAttrs
         .filter((attr) => {
             // if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
