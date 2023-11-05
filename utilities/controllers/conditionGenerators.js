@@ -47,11 +47,11 @@ const BETWEENCondition = (attr, rangeString) => {
         mm: /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/,
     };
     const fu = {
-        eq: () => {
+        eq: (match) => {
             const number = parseFloat(match[0]);
             return `AND ${attr} = ${number}`;
         },
-        mm: () => {
+        mm: (match) => {
             const min = match[2].trim();
             const max = match[3].trim();
             const minOperator =
@@ -73,7 +73,7 @@ const BETWEENCondition = (attr, rangeString) => {
     for (const key in re) {
         const match = rangeString.match(re[key]);
         if (match) {
-            return fu[key]();
+            return fu[key](match);
         }
     }
     return null;
