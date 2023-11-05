@@ -42,79 +42,38 @@ const LIKEANDCondition = (attr, values) => {
 
 // Function generate a range operation string of a attribute from a range string
 const BETWEENCondition = (attr, rangeString) => {
-    const re = {
-        eq: /^\d+(\.\d+)?$|^\.\d+$/,
-        mm: /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/,
-    };
-    const fu = {
-        eq: (match) => {
-            const number = parseFloat(match[0]);
-            return `AND ${attr} = ${number}`;
+    const rangeOperations = {
+        eq: {
+            // equal (Ex: ?iSoTang=1)
+            regex: /^\d+(\.\d+)?$|^\.\d+$/,
+            fn: (match) => `AND ${attr} = ${parseFloat(match[0])}`,
         },
-        mm: (match) => {
-            const min = match[2].trim();
-            const max = match[3].trim();
-            const minOperator =
-                match[1] === '(' || match[1] === ')' ? '>' : '>=';
-            const maxOperator =
-                match[4] === '(' || match[4] === ')' ? '<' : '<=';
-            const minCondition =
-                min === '' ? '' : `${attr} ${minOperator} ${min}`;
-            const maxCondition =
-                max === '' ? '' : `${attr} ${maxOperator} ${max}`;
-            if (minCondition && maxCondition) {
-                return `AND ${minCondition} AND ${maxCondition}`;
-            } else {
-                return `AND ${minCondition}${maxCondition}`;
-            }
+        mm: {
+            // min max (Ex: ?iSoTang=[1,2], ?iSoTang=(1,2], ?iSoTang=[1,2), ?iSoTang=(1,2))
+            regex: /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/,
+            fn: (match) => {
+                const [min, max] = [match[2].trim(), match[3].trim()];
+                const [minOp, maxOp] = [
+                    match[1] === '(' || match[1] === ')' ? '>' : '>=',
+                    match[4] === '(' || match[4] === ')' ? '<' : '<=',
+                ];
+                const minCond = min ? `${attr} ${minOp} ${min}` : '';
+                const maxCond = max ? `${attr} ${maxOp} ${max}` : '';
+                return `AND ${minCond}${
+                    minCond && maxCond ? ' AND ' : ''
+                }${maxCond}`;
+            },
         },
     };
 
-    for (const key in re) {
-        const match = rangeString.match(re[key]);
+    for (const key in rangeOperations) {
+        const { regex, fn } = rangeOperations[key];
+        const match = rangeString.match(regex);
         if (match) {
-            return fu[key](match);
+            return fn(match);
         }
     }
     return null;
-
-    // Check if the range is a single number
-    // const equalRegex = /^\d+(\.\d+)?$|^\.\d+$/;
-    // let match = rangeString.match(equalRegex);
-    // if (match) {
-    //     const number = parseFloat(match[0]);
-    //     return `AND ${attr} = ${number}`;
-    // }
-
-    // const minMaxRegex = /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/;
-    // match = rangeString.match(minMaxRegex);
-
-    // if (!match) {
-    //     return null; // Invalid range format
-    // }
-
-    // const min = match[2].trim();
-    // const max = match[3].trim();
-
-    // if (!isNaN(min) || min === '') {
-    //     const minOperator = match[1] === '(' || match[1] === ')' ? '>' : '>=';
-    //     const maxOperator = match[4] === '(' || match[4] === ')' ? '<' : '<=';
-
-    //     if (!isNaN(max) || max === '') {
-    //         const minCondition =
-    //             min === '' ? '' : `${attr} ${minOperator} ${min}`;
-    //         const maxCondition =
-    //             max === '' ? '' : `${attr} ${maxOperator} ${max}`;
-
-    //         if (minCondition && maxCondition) {
-    //             return `AND ${minCondition} AND ${maxCondition}`;
-    //         } else {
-    //             return `AND ${minCondition}${maxCondition}`;
-    //         }
-    //     }
-    // }
-
-    // return null; // Invalid min or max values
 
     // old code
     // {
