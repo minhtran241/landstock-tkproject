@@ -32,6 +32,6 @@ module.exports = async function (fastify, opts) {
 
     fastify.get('/', getEntriesOpts);
     fastify.get('/:id', getEntryByIdOpts);
-    fastify.post('/', jwtVerifyHook, postEntryOpts);
-    fastify.delete('/:id', jwtVerifyHook, deleteEntryOpts);
+    fastify.post('/', { ...postEntryOpts, ...jwtVerifyHook });
+    fastify.delete('/:id', deleteEntryOpts);
 };
