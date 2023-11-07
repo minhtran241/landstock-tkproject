@@ -58,9 +58,9 @@
 This route handles health checks for the API.
 
 - **Get the health of the API:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/health`  
-  Method: `GET`  
-  Returns the health of the API.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/health`
+  - **Method:** `GET`
+  - **Description:** Returns the health of the API.
 
 </details>
 
