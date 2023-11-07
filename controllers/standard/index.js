@@ -12,6 +12,7 @@ const {
     // convertToType,
     sanitizeGetFuncResponse,
 } = require('../../utilities/controllers/sanitization');
+const responseMessage = require('./responseMessage');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
@@ -25,7 +26,9 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         if (data !== null) {
             reply.code(200).send(data);
         } else {
-            reply.code(404).send({ error: 'Data not found' });
+            reply
+                .code(responseMessage.NOT_FOUND.statusCode)
+                .send(responseMessage.NOT_FOUND);
         }
     } catch (error) {
         handleError(error, reply);
@@ -63,7 +66,9 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         if (data !== null) {
             reply.code(200).send(data[0]);
         } else {
-            reply.code(404).send({ error: 'Data not found' });
+            reply
+                .code(responseMessage.NOT_FOUND.statusCode)
+                .send(responseMessage.NOT_FOUND);
         }
     } catch (error) {
         handleError(error, reply);
@@ -82,7 +87,10 @@ const postEntryStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
 
-        reply.code(201).send({ message: 'Data inserted successfully' });
+        // reply.code(201).send({ message: 'Data inserted successfully' });
+        reply
+            .code(responseMessage.CREATED.statusCode)
+            .send(responseMessage.CREATED);
     } catch (error) {
         handleError(error, reply);
     }
@@ -94,26 +102,23 @@ const deleteEntryStd = async (request, reply, po_Name, table) => {
         await client.query({
             query,
         });
-        reply.send({ message: 'Data deleted successfully' });
+        // reply.code(200).send({ message: 'Data deleted successfully' });
+        reply.code(responseMessage.OK.statusCode).send(responseMessage.OK);
     } catch (error) {
         handleError(error, reply);
     }
 };
 
 function handleError(error, reply) {
-    let errorCode = 500;
-    let errorMessage = 'Internal server error';
+    let errorRes;
     const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
     if (dbErrors.includes(error.name)) {
-        errorCode = 500;
-        errorMessage = 'Internal server error';
+        errorRes = responseMessage.INTERNAL_SERVER_ERROR;
     } else {
-        errorCode = 400;
-        errorMessage = 'Bad request';
+        errorRes = responseMessage.BAD_REQUEST;
     }
-
-    console.error(errorMessage + ':', error);
-    reply.code(errorCode).send({ error: errorMessage });
+    console.error(error);
+    reply.code(statusCode).send(errorRes);
 }
 
 module.exports = {
