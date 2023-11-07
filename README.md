@@ -70,25 +70,26 @@ This route handles health checks for the API.
 This route handles interactions related to real estate properties.
 
 - **Get all the real estates (condition support):**  
-  Endpoint: `https://b.thienkhoi.com/mbls/bds`  
-  Method: `GET`  
-  Returns a list of all available real estate properties.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/bds`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available real estate properties.
+  - **Authentication:** JWT is required to access this endpoint.
 
-- **Get a real estates by *sMa*:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/bds/sMa`  
-  Method: `GET`
-  Query: `sMa`
-  Returns a real estate properties that match the provided *sMa*.
+- **Get a real estate by sMa:**  
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/bds/sMa`  
+  - **Method:** `GET`  
+  - **Query Parameter:** `sMa`  
+  - **Description:** Returns a real estate property that matches the provided sMa.
 
-- **Create a new real estates:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/bds`  
-  Method: `POST`
-  Creates a new real estate property.
+- **Create a new real estate:**  
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/bds`  
+  - **Method:** `POST`  
+  - **Description:** Creates a new real estate property.
 
-- **Delete a real estates by *sMa*:**
-  Endpoint: `https://b.thienkhoi.com/mbls/bds/sMa`  
-  Method: `DELETE`
-  Deletes a real estate property that match the provided *sMa*.
+- **Delete a real estate by sMa:**
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/bds/sMa`  
+  - **Method:** `DELETE`  
+  - **Description:** Deletes a real estate property that matches the provided sMa.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/index.js)
 
@@ -99,10 +100,11 @@ This route handles interactions related to real estate properties.
 **Description:**
 This route handles interactions related to the functions of the API.
 
-- **Get the quantity of the real estates (condition support):**  
-  Endpoint: `https://b.thienkhoi.com/mbls/bds/func?f=count`  
-  Method: `GET`  
-  Returns the quantity of the real estates.
+- **Get the results of the real estates after applying aggregate functions (condition support):**  
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/func/bds`
+  - **Method:** `GET`
+  - **Description:** Returns the results of the real estates after applying aggregate functions.
+  - **Authentication:** JWT is required to access this endpoint.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/bds/func/index.js)
 
@@ -114,29 +116,34 @@ This route handles interactions related to the functions of the API.
 This route contains sub-routes that list all properties of a certain type.
 
 - **Get all the cities:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/list/tinh`  
-  Method: `GET`  
-  Returns a list of all available cities.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/list/tinh`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available cities.
+  - **Authentication:** JWT is required to access this endpoint.
 
 - **Get all the districts:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/list/quan`  
-  Method: `GET`  
-  Returns a list of all available districts.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/list/quan`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available districts.
+  - **Authentication:** JWT is required to access this endpoint.
 
 - **Get all the wards:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/list/phuongxa`  
-  Method: `GET`  
-  Returns a list of all available wards.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/list/phuongxa`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available wards.
+  - **Authentication:** JWT is required to access this endpoint.
 
 - **Get all the directions:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/list/huongnha`  
-  Method: `GET`  
-  Returns a list of all available directions.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/list/huongnha`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available directions.
+  - **Authentication:** JWT is required to access this endpoint.
 
 - **Get all the sections:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/list/loaihang`  
-  Method: `GET`  
-  Returns a list of all available sections.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/list/loaihang`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available sections.
+  - **Authentication:** JWT is required to access this endpoint.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/list)
 
@@ -148,25 +155,28 @@ This route contains sub-routes that list all properties of a certain type.
 This route handles interactions related to customer properties.
 
 - **Get all the customers:**  
-  Endpoint: `https://b.thienkhoi.com/mbls/kh`  
-  Method: `GET`  
-  Returns a list of all available customers.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/kh`  
+  - **Method:** `GET`  
+  - **Description:** Returns a list of all available customers.
+  - **Authentication:** JWT is required to access this endpoint.
 
-- **Get a customer by *sMa*:**
-  Endpoint: `https://b.thienkhoi.com/mbls/kh/sMa`  
-  Method: `GET`
-  Query: `sMa`
-  Returns a customer that match the provided *sMa*.
+- **Get a customer by sMa:**
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/kh/sMa`  
+  - **Method:** `GET`
+  - **Query Parameter:** `sMa`
+  - **Description:** Returns a customer that matches the provided sMa.
+  - **Authentication:** JWT is required to access this endpoint.
 
 - **Create a new customer:**
-  Endpoint: `https://b.thienkhoi.com/mbls/kh`  
-  Method: `POST`
-  Creates a new customer.
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/kh`  
+  - **Method:** `POST`
+  - **Description:** Creates a new customer.
+  - **Authentication:** JWT is required to access this endpoint.
 
-- **Delete a customer by *sMa*:**
-  Endpoint: `https://b.thienkhoi.com/mbls/kh/sMa`  
-  Method: `DELETE`
-  Deletes a customer that match the provided *sMa*.
+- **Delete a customer by sMa:**
+  - **Endpoint:** `https://b.thienkhoi.com/mbls/kh/sMa`  
+  - **Method:** `DELETE`
+  - **Description:** Deletes a customer that matches the provided sMa.
 
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)
 
@@ -207,6 +217,8 @@ The following npm packages and Fastify plugins are used in this project to enhan
 - **[@fastify/swagger](https://www.npmjs.com/package/@fastify/swagger)**: A Fastify plugin that generates OpenAPI documentation for your API.
 
 - **[@fastify/swagger-ui](https://www.npmjs.com/package/@fastify/swagger-ui)**: A Fastify plugin that serves the Swagger UI for viewing and interacting with your API's documentation.
+
+- **[@fastify/jwt](https://www.npmjs.com/package/fastify-jwt)**: A Fastify plugin for implementing JSON Web Tokens (JWT) for authentication and authorization.
 
 - **[fastify](https://www.npmjs.com/package/fastify)**: The core Fastify framework, used for building web applications.
 

@@ -62,7 +62,7 @@ module.exports = fp(async function (fastify, opts) {
 
     // Define a global onRequest hook for JWT verification
     fastify.addHook('onRequest', async (request, reply) => {
-        if (request.method === 'GET') {
+        if (request.method === 'GET' && request.url !== '/health') {
             // Verify and decode the JWT
             const { sub, name, iat } = await request.jwtVerify();
             if (

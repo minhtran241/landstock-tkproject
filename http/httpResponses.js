@@ -1,5 +1,6 @@
 'use strict';
 
+// HTTP response format objects
 const httpResponses = {
     OK: {
         statusCode: 200,
