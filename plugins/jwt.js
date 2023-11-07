@@ -6,13 +6,13 @@ module.exports = fp(async function (fastify, opts) {
     fastify.register(require('@fastify/jwt'), {
         secret: process.env.JWT_SECRET,
         sign: {
-            expiresIn: '1h',
+            // expiresIn: 0,
             algorithm: 'HS256', // Specify the signing algorithm (default is 'HS256')
             issuer: process.env.JWT_ISSUER, // Specify the issuer of the JWT
             audience: process.env.JWT_AUDIENCE, // Specify the audience for the JWT
         },
         verify: {
-            maxAge: '1h',
+            // maxAge: null,
             algorithms: ['HS256'], // Specify the allowed verification algorithms
             issuer: process.env.JWT_ISSUER, // Validate the issuer
             audience: process.env.JWT_AUDIENCE, // Validate the audience
