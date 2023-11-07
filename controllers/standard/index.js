@@ -1,6 +1,7 @@
 'use strict';
 
 const client = require('../../data/clickhouse');
+const httpResponses = require('../../http/httpResponses');
 const {
     getSelectQuery,
     getSelectByIdQuery,
@@ -12,7 +13,6 @@ const {
     // convertToType,
     sanitizeGetFuncResponse,
 } = require('../../utilities/controllers/sanitization');
-const httpResponses = require('./httpResponses');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
