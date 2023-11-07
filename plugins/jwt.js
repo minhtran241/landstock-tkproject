@@ -42,7 +42,14 @@ module.exports = fp(async function (fastify, opts) {
     // Define a custom decorator for JWT verification
     fastify.decorate('verifyJWT', async function (request, reply) {
         try {
-            await request.jwtVerify();
+            // Verify and decode the JWT
+            const { sub, name, iat } = await request.jwtVerify();
+            if (
+                sub !== process.env.JWT_SUBJECT ||
+                name !== process.env.JWT_NAME
+            ) {
+                throw new Error('Invalid JWT subject or name');
+            }
         } catch (err) {
             reply.send(err);
         }
@@ -51,7 +58,14 @@ module.exports = fp(async function (fastify, opts) {
     // Define a global onRequest hook for JWT verification
     fastify.addHook('onRequest', async (request, reply) => {
         if (request.method === 'GET') {
-            fastify.verifyJWT(request, reply);
+            // Verify and decode the JWT
+            const { sub, name, iat } = await request.jwtVerify();
+            if (
+                sub !== process.env.JWT_SUBJECT ||
+                name !== process.env.JWT_NAME
+            ) {
+                throw new Error('Invalid JWT subject or name');
+            }
         }
     });
 });
