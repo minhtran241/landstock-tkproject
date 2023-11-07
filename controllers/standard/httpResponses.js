@@ -1,6 +1,6 @@
 'use strict';
 
-const response = {
+const httpResponses = {
     OK: {
         statusCode: 200,
         code: 'OK',
@@ -39,4 +39,4 @@ const response = {
     },
 };
 
-module.exports = responseMessage;
+module.exports = httpResponses;

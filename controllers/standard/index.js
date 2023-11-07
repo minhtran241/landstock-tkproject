@@ -12,7 +12,7 @@ const {
     // convertToType,
     sanitizeGetFuncResponse,
 } = require('../../utilities/controllers/sanitization');
-const response = require('./response');
+const httpResponses = require('./httpResponses');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
@@ -26,7 +26,9 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         if (data !== null && data.length > 0) {
             reply.code(200).send(data);
         } else {
-            reply.code(response.NOT_FOUND.statusCode).send(response.NOT_FOUND);
+            reply
+                .code(httpResponses.NOT_FOUND.statusCode)
+                .send(httpResponses.NOT_FOUND);
         }
     } catch (error) {
         handleError(error, reply);
@@ -64,7 +66,9 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         if (data !== null && data.length > 0) {
             reply.code(200).send(data[0]);
         } else {
-            reply.code(response.NOT_FOUND.statusCode).send(response.NOT_FOUND);
+            reply
+                .code(httpResponses.NOT_FOUND.statusCode)
+                .send(httpResponses.NOT_FOUND);
         }
     } catch (error) {
         handleError(error, reply);
@@ -84,7 +88,9 @@ const postEntryStd = async (request, reply, po_Name, table) => {
         });
 
         // reply.code(201).send({ message: 'Data inserted successfully' });
-        reply.code(response.CREATED.statusCode).send(response.CREATED);
+        reply
+            .code(httpResponses.CREATED.statusCode)
+            .send(httpResponses.CREATED);
     } catch (error) {
         handleError(error, reply);
     }
@@ -97,7 +103,7 @@ const deleteEntryStd = async (request, reply, po_Name, table) => {
             query,
         });
         // reply.code(200).send({ message: 'Data deleted successfully' });
-        reply.code(response.OK.statusCode).send(response.OK);
+        reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
     } catch (error) {
         handleError(error, reply);
     }
@@ -107,9 +113,9 @@ function handleError(error, reply) {
     let errorRes;
     const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
     if (dbErrors.includes(error.name)) {
-        errorRes = response.INTERNAL_SERVER_ERROR;
+        errorRes = httpResponses.INTERNAL_SERVER_ERROR;
     } else {
-        errorRes = response.BAD_REQUEST;
+        errorRes = httpResponses.BAD_REQUEST;
     }
     console.error(error);
     reply.code(statusCode).send(errorRes);
