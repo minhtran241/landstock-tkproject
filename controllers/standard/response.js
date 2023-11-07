@@ -1,6 +1,6 @@
 'use strict';
 
-const responseMessage = {
+const response = {
     OK: {
         statusCode: 200,
         code: 'OK',

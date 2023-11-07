@@ -12,7 +12,7 @@ const {
     // convertToType,
     sanitizeGetFuncResponse,
 } = require('../../utilities/controllers/sanitization');
-const responseMessage = require('./responseMessage');
+const response = require('./response');
 
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
@@ -23,12 +23,10 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         });
         let data = await rows.json();
         // convertToType(po_Name, data);
-        if (data !== null) {
+        if (data !== null && data.length > 0) {
             reply.code(200).send(data);
         } else {
-            reply
-                .code(responseMessage.NOT_FOUND.statusCode)
-                .send(responseMessage.NOT_FOUND);
+            reply.code(response.NOT_FOUND.statusCode).send(response.NOT_FOUND);
         }
     } catch (error) {
         handleError(error, reply);
@@ -63,12 +61,10 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
         });
         let data = await rows.json();
         // convertToType(po_Name, data);
-        if (data !== null) {
+        if (data !== null && data.length > 0) {
             reply.code(200).send(data[0]);
         } else {
-            reply
-                .code(responseMessage.NOT_FOUND.statusCode)
-                .send(responseMessage.NOT_FOUND);
+            reply.code(response.NOT_FOUND.statusCode).send(response.NOT_FOUND);
         }
     } catch (error) {
         handleError(error, reply);
@@ -88,9 +84,7 @@ const postEntryStd = async (request, reply, po_Name, table) => {
         });
 
         // reply.code(201).send({ message: 'Data inserted successfully' });
-        reply
-            .code(responseMessage.CREATED.statusCode)
-            .send(responseMessage.CREATED);
+        reply.code(response.CREATED.statusCode).send(response.CREATED);
     } catch (error) {
         handleError(error, reply);
     }
@@ -103,7 +97,7 @@ const deleteEntryStd = async (request, reply, po_Name, table) => {
             query,
         });
         // reply.code(200).send({ message: 'Data deleted successfully' });
-        reply.code(responseMessage.OK.statusCode).send(responseMessage.OK);
+        reply.code(response.OK.statusCode).send(response.OK);
     } catch (error) {
         handleError(error, reply);
     }
@@ -113,9 +107,9 @@ function handleError(error, reply) {
     let errorRes;
     const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
     if (dbErrors.includes(error.name)) {
-        errorRes = responseMessage.INTERNAL_SERVER_ERROR;
+        errorRes = response.INTERNAL_SERVER_ERROR;
     } else {
-        errorRes = responseMessage.BAD_REQUEST;
+        errorRes = response.BAD_REQUEST;
     }
     console.error(error);
     reply.code(statusCode).send(errorRes);
