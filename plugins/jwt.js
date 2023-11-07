@@ -48,7 +48,12 @@ module.exports = fp(async function (fastify, opts) {
                 sub !== process.env.JWT_SUBJECT ||
                 name !== process.env.JWT_NAME
             ) {
-                throw new Error('Invalid JWT subject or name');
+                console.error('Invalid JWT subject or name:', {
+                    sub,
+                    name,
+                    iat,
+                });
+                throw new Error('Invalid token');
             }
         } catch (err) {
             reply.send(err);
@@ -64,7 +69,12 @@ module.exports = fp(async function (fastify, opts) {
                 sub !== process.env.JWT_SUBJECT ||
                 name !== process.env.JWT_NAME
             ) {
-                throw new Error('Invalid JWT subject or name');
+                console.error('Invalid JWT subject or name:', {
+                    sub,
+                    name,
+                    iat,
+                });
+                throw new Error('Invalid token');
             }
         }
     });
