@@ -45,8 +45,8 @@ module.exports = fp(async function (fastify, opts) {
             // Verify and decode the JWT
             const { sub, name, iat } = await request.jwtVerify();
             if (
-                sub !== process.env.JWT_SUBJECT ||
-                name !== process.env.JWT_NAME
+                sub !== process.env.JWT_PAYLOAD_SUBJECT ||
+                name !== process.env.JWT_PAYLOAD_NAME
             ) {
                 console.error('Invalid JWT subject or name:', {
                     sub,
@@ -66,8 +66,8 @@ module.exports = fp(async function (fastify, opts) {
             // Verify and decode the JWT
             const { sub, name, iat } = await request.jwtVerify();
             if (
-                sub !== process.env.JWT_SUBJECT ||
-                name !== process.env.JWT_NAME
+                sub !== process.env.JWT_PAYLOAD_SUBJECT ||
+                name !== process.env.JWT_PAYLOAD_NAME
             ) {
                 console.error('Invalid JWT subject or name:', {
                     sub,
