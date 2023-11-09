@@ -28,10 +28,8 @@ const postEntryOpts = postSchemaGenerator(po_KhachHang, 'p', postEntry);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
-    const jwtVerifyHook = { onRequest: [fastify.verifyJWT] };
-
     fastify.get('/', getEntriesOpts);
     fastify.get('/:id', getEntryByIdOpts);
-    fastify.post('/', { ...postEntryOpts, ...jwtVerifyHook });
+    fastify.post('/', postEntryOpts);
     fastify.delete('/:id', deleteEntryOpts);
 };
