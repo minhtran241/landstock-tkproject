@@ -56,10 +56,6 @@
 
 **Description:**
 This route handles health checks for the API.
-> **Note:**
->
-> - All GET routes in this API require JWT authentication.
-> - For POST routes, ensure the request body is formatted as an array of JSON objects.
 
 - **Get the health of the API:**  
   - **Endpoint:** `https://b.thienkhoi.com/mbls/health`
@@ -185,6 +181,10 @@ This route handles interactions related to customer properties.
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)
 
 </details>
+
+> All GET routes and POST requests to `https://b.thienkhoi.com/mbls/kh` in this API require JWT authentication.
+
+> For POST routes, ensure the request body is formatted as an array of JSON objects.
 
 ---
 
