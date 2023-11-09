@@ -56,6 +56,10 @@
 
 **Description:**
 This route handles health checks for the API.
+> **Note:**
+>
+> - All GET routes in this API require JWT authentication.
+> - For POST routes, ensure the request body is formatted as an array of JSON objects.
 
 - **Get the health of the API:**  
   - **Endpoint:** `https://b.thienkhoi.com/mbls/health`
