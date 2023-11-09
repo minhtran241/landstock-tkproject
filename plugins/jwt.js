@@ -16,6 +16,7 @@ module.exports = fp(async function (fastify, opts) {
             algorithms: ['HS256'], // Specify the allowed verification algorithms
             issuer: process.env.JWT_ISSUER, // Validate the issuer
             audience: process.env.JWT_AUDIENCE, // Validate the audience
+            subject: process.env.JWT_PAYLOAD_SUBJECT, // Validate the subject
         },
         cookie: {
             // Add cookies for storing JWT tokens
@@ -61,20 +62,14 @@ module.exports = fp(async function (fastify, opts) {
     });
 
     // Define a global onRequest hook for JWT verification
-    fastify.addHook('onRequest', async (request, reply) => {
-        if (request.method === 'GET' && request.url !== '/health') {
+    fastify.addHook('onRequest', async ({ method, url, jwtVerify }, reply) => {
+        if (method === 'GET' && url !== '/health') {
             // Verify and decode the JWT
-            const { sub, name, iat } = await request.jwtVerify();
-            if (
-                sub !== process.env.JWT_PAYLOAD_SUBJECT ||
-                name !== process.env.JWT_PAYLOAD_NAME
-            ) {
-                console.error('Invalid JWT subject or name:', {
-                    sub,
-                    name,
-                    iat,
-                });
-                throw new Error('Invalid token');
+            try {
+                await jwtVerify();
+            } catch (err) {
+                console.error('Invalid JWT:', err);
+                reply.send(new Error('Invalid token'));
             }
         }
     });
