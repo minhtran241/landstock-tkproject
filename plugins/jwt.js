@@ -66,7 +66,7 @@ module.exports = fp(async function (fastify, opts) {
         if (request.method === 'GET' && request.url !== '/health') {
             // Verify and decode the JWT
             try {
-                await request.verifyJWT();
+                await request.jwtVerify();
             } catch (err) {
                 console.error('Invalid JWT:', err);
                 reply.send(new Error('Invalid token'));
