@@ -62,11 +62,11 @@ module.exports = fp(async function (fastify, opts) {
     });
 
     // Define a global onRequest hook for JWT verification
-    fastify.addHook('onRequest', async ({ method, url, jwtVerify }, reply) => {
-        if (method === 'GET' && url !== '/health') {
+    fastify.addHook('onRequest', async (request, reply) => {
+        if (request.method === 'GET' && request.url !== '/health') {
             // Verify and decode the JWT
             try {
-                await jwtVerify();
+                await request.verifyJWT();
             } catch (err) {
                 console.error('Invalid JWT:', err);
                 reply.send(new Error('Invalid token'));
