@@ -73,11 +73,6 @@ const getSelectByIdQuery = (requestParams, paramsOperations, table) => {
 
 // Function to get post query values from the request body
 const getPostQueryValues = (requestBody, paramsOperations) => {
-    // Ensure requestBody is an array
-    if (!Array.isArray(requestBody)) {
-        requestBody = [requestBody];
-    }
-
     // Initialize an array to store cleaned and processed objects
     const cleanedObjects = [];
     // Filter out only the attributes that are allowed to be posted (action 'p')
