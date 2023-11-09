@@ -12,11 +12,11 @@ module.exports = fp(async function (fastify, opts) {
             audience: process.env.JWT_AUDIENCE, // Specify the audience for the JWT
         },
         verify: {
-            // maxAge: null,
             algorithms: ['HS256'], // Specify the allowed verification algorithms
-            allowedIss: [process.env.JWT_ISSUER], // Validate the issuer
-            allowedAud: [process.env.JWT_AUDIENCE], // Validate the audience
-            allowedSub: [process.env.JWT_PAYLOAD_SUBJECT], // Validate the subject
+            allowedIss: process.env.JWT_ISSUER, // Validate the issuer
+            allowedAud: process.env.JWT_AUDIENCE, // Validate the audience
+            allowedSub: process.env.JWT_PAYLOAD_SUBJECT, // Validate the subject
+            ignoreExpiration: true, // Do not reject expired tokens
         },
         cookie: {
             // Add cookies for storing JWT tokens
