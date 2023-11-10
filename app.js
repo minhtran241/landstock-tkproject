@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 const path = require('path');
-const AutoLoad = require('fastify-autoload');
+const AutoLoad = require('@fastify/autoload');
 
 // Pass --options via CLI arguments in command to enable these options.
 const options = {
