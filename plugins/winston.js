@@ -19,13 +19,21 @@ module.exports = fp(async function (fastify, opts) {
         ),
         transports: [
             new winston.transports.Console(), // Log to console for both levels
-            new winston.transports.File({
-                filename: '/root/info.log',
-                level: 'info', // Log info messages to info.log
+            new winston.transports.DailyRotateFile({
+                filename: '/root/landstock-dev/logs/info-%DATE%.log',
+                level: 'info', // Log info messages to info-<DATE>.log
+                datePattern: 'YYYY-MM-DD',
+                zippedArchive: true,
+                maxSize: '20m', // optional: rotate log files after 20 megabytes
+                maxFiles: '14d', // optional: keep logs for 14 days
             }),
-            new winston.transports.File({
-                filename: '/root/error.log',
-                level: 'error', // Log error messages to error.log
+            new winston.transports.DailyRotateFile({
+                filename: '/root/landstock-dev/logs/error-%DATE%.log',
+                level: 'error', // Log error messages to error-<DATE>.log
+                datePattern: 'YYYY-MM-DD',
+                zippedArchive: true,
+                maxSize: '20m',
+                maxFiles: '14d',
             }),
         ],
     });
