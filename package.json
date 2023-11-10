@@ -30,7 +30,8 @@
     "fastify-healthcheck": "^4.4.0",
     "fastify-plugin": "^4.5.1",
     "moment": "^2.29.4",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "tap": "^16.1.0"
