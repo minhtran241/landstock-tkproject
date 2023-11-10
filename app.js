@@ -29,17 +29,6 @@ fastify.register(AutoLoad, {
     options: Object.assign({}, options),
 });
 
-// After registering routes, print the registered routes
-fastify.ready((err) => {
-    if (err) throw err;
-
-    // Print registered routes
-    fastify.printRoutes();
-
-    // Start the server
-    start();
-});
-
 // Start the server
 const start = async () => {
     try {
