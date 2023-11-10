@@ -23,10 +23,11 @@ fastify.register(AutoLoad, {
     options: Object.assign({}, options),
 });
 
-// Load routes defined in routes directory
+// This loads all plugins defined in routes
+// define your routes in one of these
 fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
-    options: Object.assign({}, options),
+    options: Object.assign({}, opts),
 });
 
 // Start the server
