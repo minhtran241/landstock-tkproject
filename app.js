@@ -4,7 +4,11 @@ const path = require('path');
 const AutoLoad = require('@fastify/autoload');
 
 // Pass --options via CLI arguments in command to enable these options.
-module.exports.options = {};
+module.exports.options = {
+    logger: {
+        level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    },
+};
 
 module.exports = async function (fastify, opts) {
     // This loads healthcheck plugin for the server

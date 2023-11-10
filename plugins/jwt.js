@@ -15,7 +15,7 @@ module.exports = fp(async function (fastify, opts) {
             algorithms: ['HS256'], // Specify the allowed verification algorithms
             allowedIss: process.env.JWT_ISSUER, // Validate the issuer
             allowedAud: process.env.JWT_AUDIENCE, // Validate the audience
-            allowedSub: process.env.JWT_PAYLOAD_SUBJECT, // Validate the subject
+            allowedSub: process.env.JWT_SUBJECT, // Validate the subject
             ignoreExpiration: true, // Do not reject expired tokens
             cache: true, // Enable caching of the key lookup
         },
