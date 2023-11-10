@@ -49,4 +49,25 @@ module.exports = fp(async function (fastify, opts) {
         fastify.log.info({ request: requestInfo });
         done();
     });
+
+    // Log errors
+    fastify.addHook('onError', (request, reply, error, done) => {
+        const errorInfo = {
+            method: request.method,
+            url: request.url,
+            ip: request.ip,
+            userAgent: request.headers['user-agent'],
+            params: request.params,
+            query: request.query,
+            body: request.body,
+            headers: request.headers,
+            error: {
+                message: error.message,
+                stack: error.stack,
+            },
+        };
+
+        fastify.log.error({ error: errorInfo });
+        done();
+    });
 });
