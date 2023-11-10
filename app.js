@@ -23,6 +23,12 @@ fastify.register(AutoLoad, {
     options: Object.assign({}, options),
 });
 
+// Load routes defined in routes directory
+fastify.register(AutoLoad, {
+    dir: path.join(__dirname, 'routes'),
+    options: Object.assign({}, options),
+});
+
 // Start the server
 const start = async () => {
     try {
