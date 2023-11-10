@@ -2,8 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'landstock-api.main.mbls',
-            script: 'npm',
-            args: 'start',
+            script: 'app.js',
             instances: 2, // Set the number of instances (nodes)
             exec_mode: 'cluster', // Enable cluster mode
             autorestart: true,
