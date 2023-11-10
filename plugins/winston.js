@@ -58,8 +58,8 @@ module.exports = fp(async function (fastify, opts) {
             };
 
             fastify.log.info({ request: requestInfo });
-            done();
         }
+        done();
     });
 
     // Log errors
