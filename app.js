@@ -25,10 +25,7 @@ fastify.register(AutoLoad, {
 
 // This loads all plugins defined in routes
 // define your routes in one of these
-fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'routes'),
-    routeParams: true,
-});
+fastify.register(require('./routes'));
 
 // Start the server
 const start = async () => {
