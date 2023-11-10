@@ -36,6 +36,7 @@ const start = async () => {
         fastify.log.info(
             `Server listening on ${fastify.server.address().port}`
         );
+        fastify.printPlugins();
         fastify.printRoutes();
     } catch (err) {
         fastify.log.error(err);
