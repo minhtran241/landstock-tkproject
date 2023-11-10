@@ -1,47 +1,31 @@
 'use strict';
 
-require('dotenv').config();
 const path = require('path');
 const AutoLoad = require('@fastify/autoload');
 
 // Pass --options via CLI arguments in command to enable these options.
-const options = {
+module.exports.options = {
     logger: {
         level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     },
 };
 
-// Create a Fastify instance
-const fastify = require('fastify')(options);
+module.exports = async function (fastify, opts) {
+    // This loads healthcheck plugin for the server
+    fastify.register(require('fastify-healthcheck'));
 
-// Register the healthcheck plugin
-fastify.register(require('fastify-healthcheck'));
+    // This loads all plugins defined in plugins
+    // those should be support plugins that are reused
+    // through your application
+    fastify.register(AutoLoad, {
+        dir: path.join(__dirname, 'plugins'),
+        options: Object.assign({}, opts),
+    });
 
-// Load plugins defined in plugins directory
-fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'plugins'),
-    options: Object.assign({}, options),
-});
-
-// Load routes defined in routes directory
-fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'routes'),
-    options: Object.assign({}, options),
-});
-
-// Start the server
-const start = async () => {
-    try {
-        await fastify.listen({ port: process.env.FASTIFY_PORT || 3000 });
-        fastify.log.info(
-            `Server listening on ${fastify.server.address().port}`
-        );
-        fastify.printPlugins();
-        fastify.printRoutes();
-    } catch (err) {
-        fastify.log.error(err);
-        process.exit(1);
-    }
+    // This loads all plugins defined in routes
+    // define your routes in one of these
+    fastify.register(AutoLoad, {
+        dir: path.join(__dirname, 'routes'),
+        options: Object.assign({}, opts),
+    });
 };
-
-start();
