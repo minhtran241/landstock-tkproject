@@ -4,7 +4,6 @@ module.exports = {
             name: 'landstock-api.main.mbls',
             script: 'npm',
             args: 'start',
-            cwd: '/root/landstock-mbls/landstock-tkproject',
             instances: 2, // Set the number of instances (nodes)
             exec_mode: 'cluster', // Enable cluster mode
             autorestart: true,
@@ -18,16 +17,6 @@ module.exports = {
             log_rotate_date: true, // Enable log rotation based on date
             max_size: '10M', // Optional: Rotate logs when the total size exceeds 10 megabytes
             keep_logs: 14, // Optional: Keep logs for the last 14 days
-        },
-        {
-            name: 'landstock-api.main.dev',
-            script: 'npm',
-            args: 'start',
-            cwd: '/root/landstock-dev/landstock-tkproject',
-            instances: 1, // Set the number of instances (nodes)
-            autorestart: true,
-            watch: true,
-            max_memory_restart: '1G',
         },
     ],
 };
