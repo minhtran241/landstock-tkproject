@@ -23,9 +23,11 @@ fastify.register(AutoLoad, {
     options: Object.assign({}, options),
 });
 
-// This loads all plugins defined in routes
-// define your routes in one of these
-fastify.register(require(path.join(__dirname, 'routes')));
+// Load routes defined in routes directory
+fastify.register(AutoLoad, {
+    dir: path.join(__dirname, 'routes'),
+    options: Object.assign({}, options),
+});
 
 // Start the server
 const start = async () => {
@@ -40,4 +42,13 @@ const start = async () => {
     }
 };
 
-start();
+// After registering routes, print the registered routes
+fastify.ready((err) => {
+    if (err) throw err;
+
+    // Print registered routes
+    fastify.printRoutes();
+
+    // Start the server
+    start();
+});
