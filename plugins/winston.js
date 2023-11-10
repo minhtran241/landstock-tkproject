@@ -32,4 +32,21 @@ module.exports = fp(async function (fastify, opts) {
 
     // Set the Fastify logger to the configured Winston logger
     fastify.log = logger;
+
+    // Log every incoming request with additional details
+    fastify.addHook('onRequest', (request, reply, done) => {
+        const requestInfo = {
+            method: request.method,
+            url: request.url,
+            ip: request.ip,
+            userAgent: request.headers['user-agent'],
+            params: request.params,
+            query: request.query,
+            body: request.body,
+            headers: request.headers,
+        };
+
+        fastify.log.info({ request: requestInfo });
+        done();
+    });
 });
