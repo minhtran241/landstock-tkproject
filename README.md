@@ -182,11 +182,11 @@ This route handles interactions related to customer properties.
 
 </details>
 
-> :warning: **Notice:**
->
-> All GET routes and POST requests to `https://b.thienkhoi.com/mbls/kh` in this API require JWT authentication.
->
-> For POST routes, ensure the request body is formatted as an array of JSON objects.
+:warning: **Notice:**
+
+- All GET routes and POST requests to `https://b.thienkhoi.com/mbls/kh` in this API require JWT authentication.
+
+- For POST routes, ensure the request body is formatted as an array of JSON objects.
 
 ---
 
