@@ -27,7 +27,7 @@ fastify.register(AutoLoad, {
 // define your routes in one of these
 fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
-    options: Object.assign({}, options),
+    routeParams: true,
 });
 
 // Start the server
