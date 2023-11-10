@@ -36,19 +36,11 @@ const start = async () => {
         fastify.log.info(
             `Server listening on ${fastify.server.address().port}`
         );
+        fastify.printRoutes();
     } catch (err) {
         fastify.log.error(err);
         process.exit(1);
     }
 };
 
-// After registering routes, print the registered routes
-fastify.ready((err) => {
-    if (err) throw err;
-
-    // Print registered routes
-    fastify.printRoutes();
-
-    // Start the server
-    start();
-});
+start();
