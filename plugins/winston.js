@@ -1,6 +1,6 @@
 'use strict';
 
-// const fp = require('fastify-plugin');
+const fp = require('fastify-plugin');
 // const winston = require('winston');
 // const DailyRotateFile = require('winston-daily-rotate-file');
 
