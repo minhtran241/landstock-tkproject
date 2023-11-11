@@ -118,7 +118,7 @@ function handleError(error, reply) {
         errorRes = httpResponses.BAD_REQUEST;
     }
     console.error(error);
-    reply.code(statusCode).send(errorRes);
+    reply.code(errorRes.statusCode).send(errorRes);
 }
 
 module.exports = {
