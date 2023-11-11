@@ -9,9 +9,9 @@ module.exports = {
             watch: true,
             max_memory_restart: '1G',
             log_date_format: 'YYYY-MM-DD HH:mm Z',
-            error_file: '/root/landstock-dev/logs/error.log',
-            out_file: '/root/landstock-dev/logs/out.log',
-            log_file: '/root/landstock-dev/logs/combined.log',
+            error_file: '/root/landstock-prod/logs/error.log',
+            out_file: '/root/landstock-prod/logs/out.log',
+            log_file: '/root/landstock-prod/logs/combined.log',
             merge_logs: true,
             log_rotate_date: true, // Enable log rotation based on date
             max_size: '10M', // Optional: Rotate logs when the total size exceeds 10 megabytes

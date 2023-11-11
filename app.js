@@ -29,6 +29,16 @@ fastify.register(AutoLoad, {
     options: Object.assign({}, options),
 });
 
+// This loads cors plugin
+fastify.register(require('@fastify/cors'), {
+    origin: [
+        `http://localhost:${fastify.config.FASTIFY_PORT}`,
+        `http://${fastify.config.FASTIFY_ADDRESS}:${fastify.config.FASTIFY_PORT}`,
+        'http://localhost:3000',
+    ],
+    methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
+});
+
 // Start the server
 const start = async () => {
     try {
