@@ -26,7 +26,7 @@ module.exports = fp(async function (fastify, opts) {
         if (
             (request.method === 'GET' ||
                 (request.method === 'POST' && request.url === '/kh')) &&
-            request.url !== '/health'
+            request.url !== '/'
         ) {
             // Verify and decode the JWT
             try {
