@@ -14,9 +14,6 @@ const options = {
 // Create a Fastify instance
 const fastify = require('fastify')(options);
 
-// Register the healthcheck plugin
-fastify.register(require('fastify-healthcheck'));
-
 // Load plugins defined in plugins directory
 fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'plugins'),
@@ -27,16 +24,6 @@ fastify.register(AutoLoad, {
 fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
     options: Object.assign({}, options),
-});
-
-// This loads cors plugin
-fastify.register(require('@fastify/cors'), {
-    origin: [
-        `http://localhost:${process.env.FASTIFY_PORT}`,
-        `http://${process.env.FASTIFY_ADDRESS}:${process.env.FASTIFY_PORT}`,
-        'http://localhost:3000',
-    ],
-    methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
 });
 
 // Start the server
