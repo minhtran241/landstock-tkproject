@@ -58,7 +58,7 @@
 This route handles health checks for the API.
 
 - **Get the health of the API:**  
-  - **Endpoint:** `https://b.thienkhoi.com/mbls/health`
+  - **Endpoint:** `https://b.thienkhoi.com/mbls`
   - **Method:** `GET`
   - **Description:** Returns the health of the API.
 
@@ -212,8 +212,6 @@ The following npm packages and Fastify plugins are used in this project to enhan
 
 - **[@fastify/cors](https://www.npmjs.com/package/@fastify/cors)**: A Fastify plugin for handling Cross-Origin Resource Sharing (CORS) to allow or restrict cross-origin requests.
 
-- **[@fastify/env](https://www.npmjs.com/package/@fastify/env)**: A Fastify plugin for managing environment variables.
-
 - **[@fastify/helmet](https://www.npmjs.com/package/@fastify/helmet)**: A Fastify plugin for securing your application by setting various HTTP headers.
 
 - **[@fastify/rate-limit](https://www.npmjs.com/package/@fastify/rate-limit)**: A Fastify plugin for implementing rate limiting to control the number of requests from clients.
@@ -229,8 +227,6 @@ The following npm packages and Fastify plugins are used in this project to enhan
 - **[fastify](https://www.npmjs.com/package/fastify)**: The core Fastify framework, used for building web applications.
 
 - **[fastify-cli](https://www.npmjs.com/package/fastify-cli)**: A Fastify command-line tool for generating project templates and scaffolding.
-
-- **[fastify-healthcheck](https://www.npmjs.com/package/fastify-healthcheck)**: A Fastify plugin for adding health check endpoints to your API.
 
 - **[fastify-plugin](https://www.npmjs.com/package/fastify-plugin)**: A utility for creating Fastify plugins with ease.
 
