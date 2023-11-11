@@ -32,8 +32,8 @@ fastify.register(AutoLoad, {
 // This loads cors plugin
 fastify.register(require('@fastify/cors'), {
     origin: [
-        `http://localhost:${fastify.config.FASTIFY_PORT}`,
-        `http://${fastify.config.FASTIFY_ADDRESS}:${fastify.config.FASTIFY_PORT}`,
+        `http://localhost:${process.env.FASTIFY_PORT}`,
+        `http://${process.env.FASTIFY_ADDRESS}:${process.env.FASTIFY_PORT}`,
         'http://localhost:3000',
     ],
     methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -42,7 +42,10 @@ fastify.register(require('@fastify/cors'), {
 // Start the server
 const start = async () => {
     try {
-        await fastify.listen({ port: process.env.FASTIFY_PORT || 3000 });
+        await fastify.listen({
+            host: process.env.FASTIFY_ADDRESS || '127.0.0.1',
+            port: process.env.FASTIFY_PORT || 3000,
+        });
         fastify.log.info(
             `Server listening on ${fastify.server.address().port}`
         );
