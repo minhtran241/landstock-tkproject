@@ -208,7 +208,7 @@ const funcParamToQuery = (func, requestQuery, paramsOperations, table) => {
         );
         return query;
     } else {
-        throw new Error(`Invalid function: ${f}`);
+        throw new Error(`Invalid function: ${func}`);
     }
 };
 

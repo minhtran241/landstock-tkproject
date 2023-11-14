@@ -70,7 +70,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
  */
 const getFuncValueStd = async (request, reply, po_Name, table) => {
     try {
-        if (!request.query.f) {
+        if (!request.query.f || request.query.f === '') {
             reply
                 .code(httpResponses.BAD_REQUEST.statusCode)
                 .send(httpResponses.BAD_REQUEST);
