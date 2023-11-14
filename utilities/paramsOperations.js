@@ -26,7 +26,7 @@ const po_BDS = [
     { p: 'iSoToilet', t: 'number', o: 'IN', a: 'pdci' },
     { p: 'sMoTa', t: 'string', o: 'LIKE', a: 'pi' },
     // { p: 'sFiles', t: 'array', o: 'LIKE', a: 'pi' },
-    { p: 'files', t: 'array', o: null, a: 'p' },
+    { p: 'files', t: 'array', o: null, a: '' },
     { p: 'sAvatar', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sLat', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sLng', t: 'string', o: 'LIKE', a: 'pi' },

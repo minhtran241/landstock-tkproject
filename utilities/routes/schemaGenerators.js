@@ -63,8 +63,8 @@ const getSchemaGenerator = (
     };
 };
 
-const postSchemaGenerator = (po, action, requestHandler) => {
-    const requestBodySchema = poToObjSchema(po, action, 'array');
+const postSchemaGenerator = (po, action, requestHandler, extraFields = []) => {
+    const requestBodySchema = poToObjSchema(po, action, 'array', extraFields);
     const responseMessageSchema = createMessageResponse();
     const response201 = responseMessageSchema;
     const response500 = responseMessageSchema;

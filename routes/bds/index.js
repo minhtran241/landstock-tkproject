@@ -25,7 +25,11 @@ const getEntryByIdOpts = getSchemaGenerator(
         },
     ]
 );
-const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry);
+const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry, [
+    {
+        files: 'array',
+    },
+]);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
 
 module.exports = async function (fastify, opts) {
