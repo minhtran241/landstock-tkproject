@@ -20,7 +20,7 @@ CREATE OR REPLACE TABLE tb_BDS (
 		iSoPhongNgu Int32,
 		iSoToilet Int32,
 		sMoTa String NOT NULL,
-		sFiles Array(String),
+		-- sFiles Array(String),
 		sAvatar String,
 		sLat String,
 		sLng String,

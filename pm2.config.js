@@ -9,18 +9,15 @@ module.exports = {
             watch: true,
             max_memory_restart: '1G',
             log_date_format: 'YYYY-MM-DD HH:mm Z',
+            log_type: 'json',
             error_file: '/root/landstock-prod/logs/error.log',
             out_file: '/root/landstock-prod/logs/out.log',
             log_file: '/root/landstock-prod/logs/combined.log',
             merge_logs: true,
-            log_rotate_date: true, // Enable log rotation based on date
-            max_size: '10M', // Optional: Rotate logs when the total size exceeds 10 megabytes
-            keep_logs: 14, // Optional: Keep logs for the last 14 days
         },
         {
             name: 'landstock-api.main.dev',
-            script: 'npm',
-            args: 'start',
+			script: 'app.js',
             instances: 1, // Set the number of instances (nodes)
             autorestart: true,
             watch: true,

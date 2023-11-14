@@ -54,7 +54,13 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
     }
 };
 
-const getEntryByIdStd = async (request, reply, po_Name, table) => {
+const getEntryByIdStd = async (
+    request,
+    reply,
+    po_Name,
+    table,
+    getFiles = false
+) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
         const rows = await client.query({
@@ -62,6 +68,19 @@ const getEntryByIdStd = async (request, reply, po_Name, table) => {
             format: 'JSONEachRow',
         });
         let data = await rows.json();
+        if (getFiles) {
+            const filesQuery = getSelectByIdQuery(
+                request.params,
+                po_HinhAnh,
+                imgTable
+            );
+            const filesRows = await client.query({
+                query: filesQuery,
+                format: 'JSONEachRow',
+            });
+            const filesData = await filesRows.json();
+            data[0].files = filesData;
+        }
         // convertToType(po_Name, data);
         if (data !== null && data.length > 0) {
             reply.code(200).send(data[0]);

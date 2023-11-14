@@ -25,11 +25,22 @@ const po_BDS = [
     { p: 'iSoPhongNgu', t: 'number', o: 'IN', a: 'pdci' },
     { p: 'iSoToilet', t: 'number', o: 'IN', a: 'pdci' },
     { p: 'sMoTa', t: 'string', o: 'LIKE', a: 'pi' },
-    { p: 'sFiles', t: 'array', o: 'LIKE', a: 'pi' },
+    // { p: 'sFiles', t: 'array', o: 'LIKE', a: 'pi' },
+    { p: 'files', t: 'array', o: null, a: 'pi' },
     { p: 'sAvatar', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sLat', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sLng', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sHotline', t: 'string', o: 'IN', a: 'spi' },
+    { p: 'dNgayTao', t: 'date', o: 'BETWEEN', a: '' },
+    { p: 'createdAt', t: 'string', o: '=', a: '' },
+];
+
+const po_HinhAnh = [
+    { p: 'sID', t: 'string', o: '=', a: 'si' },
+    { p: 'sMa', t: 'string', o: '=', a: 'spdci', k: true },
+    { p: 'iID_HinhAnh', t: 'number', o: 'IN', a: 'spdci' },
+    { p: 'sFile', t: 'string', o: 'LIKE', a: 'spi' },
+    { p: 'sFileThumb', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'dNgayTao', t: 'date', o: 'BETWEEN', a: '' },
     { p: 'createdAt', t: 'string', o: '=', a: '' },
 ];
@@ -91,6 +102,7 @@ const po_LoaiHang = [
 
 module.exports = {
     po_BDS,
+    po_HinhAnh,
     po_KhachHang,
     po_Tinh,
     po_Quan,
