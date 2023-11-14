@@ -81,8 +81,9 @@ const getEntryByIdStd = async (
             });
             const filesData = await filesRows.json();
 
-            data[0].files =
-                filesData !== null && filesData.length > 0 ? filesData : [];
+            if (filesData !== null && filesData.length > 0) {
+                data[0].files = filesData;
+            }
         }
 
         if (data !== null && data.length > 0) {
