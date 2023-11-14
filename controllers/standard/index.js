@@ -118,9 +118,8 @@ const postEntryStd = async (
         });
 
         if (po_Files && table_Files) {
-            const filesRequestBody = request.body.map((object) => {
-                return object.files;
-            });
+            const filesRequestBody = request.body.map((object) => object.files);
+            console.log(filesRequestBody);
             const cleanedFilesValues = getPostQueryValues(
                 filesRequestBody,
                 po_Files

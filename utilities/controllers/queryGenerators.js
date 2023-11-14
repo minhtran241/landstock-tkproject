@@ -90,7 +90,7 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
                 obj[attr] = object[attr];
                 return obj;
             }, {});
-
+        console.log(filteredObject);
         // Set a specific value for 'dNgayTao' attribute
         if (paramsOperations.find((po) => po.p === 'dNgayTao') !== undefined) {
             filteredObject.dNgayTao = new Date();
