@@ -2,6 +2,7 @@
 
 const client = require('../../data/clickhouse');
 const httpResponses = require('../../http/httpResponses');
+const { BIG_MAX_LIMIT } = require('../../utilities/constants');
 const {
     getSelectQuery,
     getSelectByIdQuery,
@@ -73,7 +74,8 @@ const getEntryByIdStd = async (
             const filesQuery = getSelectByIdQuery(
                 request.params,
                 po_Files,
-                table_Files
+                table_Files,
+                BIG_MAX_LIMIT
             );
             const filesRows = await client.query({
                 query: filesQuery,

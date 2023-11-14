@@ -50,7 +50,12 @@ const generateWhereConditions = (
 };
 
 // Function to get a real estate by its sID or other ID columns
-const getSelectByIdQuery = (requestParams, paramsOperations, table) => {
+const getSelectByIdQuery = (
+    requestParams,
+    paramsOperations,
+    table,
+    limit = 1
+) => {
     const id = String(requestParams.id);
     const selectByIdAttrs = getAttributesByAction(paramsOperations, 'i');
     const pkAttr = getPKAttr(paramsOperations);
@@ -64,7 +69,7 @@ const getSelectByIdQuery = (requestParams, paramsOperations, table) => {
         query += `${pkAttr.p} = '${id}'`;
     }
 
-    query = concatWithSpace(query, 'LIMIT 1');
+    query = concatWithSpace(query, `LIMIT ${limit}`);
 
     console.info(query);
 

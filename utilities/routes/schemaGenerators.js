@@ -2,10 +2,16 @@
 
 const httpResponses = require('../../http/httpResponses');
 
-const poToObjSchema = (po, action, type = 'object') => {
+const poToObjSchema = (po, action, type = 'object', extraFields = []) => {
     return {
         type,
-        properties: createObjectFromFilteredArray(po, action),
+        properties: {
+            ...createObjectFromFilteredArray(po, action),
+            ...extraFields.reduce((acc, cur) => {
+                acc[cur.name] = { type: cur.type };
+                return acc;
+            }, {}),
+        },
     };
 };
 
@@ -36,8 +42,14 @@ const createMessageResponse = () => {
     };
 };
 
-const getSchemaGenerator = (po, action, type, requestHandler) => {
-    const responseObjSchema = poToObjSchema(po, action, type);
+const getSchemaGenerator = (
+    po,
+    action,
+    type,
+    requestHandler,
+    extraFields = []
+) => {
+    const responseObjSchema = poToObjSchema(po, action, type, extraFields);
     const responseMessageSchema = createMessageResponse();
     const response200 = responseObjSchema;
     const response404 = responseMessageSchema;
