@@ -65,11 +65,9 @@ const getEntryByIdStd = async (
 ) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
-        const rows = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
+        const rows = await client.query({ query, format: 'JSONEachRow' });
         let data = await rows.json();
+
         if (po_Files && table_Files) {
             const filesQuery = getSelectByIdQuery(
                 request.params,
@@ -82,10 +80,10 @@ const getEntryByIdStd = async (
                 format: 'JSONEachRow',
             });
             const filesData = await filesRows.json();
-            data[0].files = filesData;
+
+            data[0].files = data !== null && data.length > 0 ? filesData : [];
         }
-        // convertToType(po_Name, data);
-        console.log(data);
+
         if (data !== null && data.length > 0) {
             reply.code(200).send(data[0]);
         } else {
