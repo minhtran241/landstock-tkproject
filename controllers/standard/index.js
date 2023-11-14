@@ -59,7 +59,8 @@ const getEntryByIdStd = async (
     reply,
     po_Name,
     table,
-    getFiles = false
+    po_Files = null,
+    table_Files = null
 ) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
@@ -68,11 +69,11 @@ const getEntryByIdStd = async (
             format: 'JSONEachRow',
         });
         let data = await rows.json();
-        if (getFiles) {
+        if (po_Files && table_Files) {
             const filesQuery = getSelectByIdQuery(
                 request.params,
-                po_HinhAnh,
-                imgTable
+                po_FilesName,
+                table_Files
             );
             const filesRows = await client.query({
                 query: filesQuery,

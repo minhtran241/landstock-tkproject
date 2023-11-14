@@ -15,7 +15,14 @@ const getAllEntries = async (request, reply) => {
 
 // Function to get a real estate by its sID
 const getEntryById = async (request, reply) => {
-    return getEntryByIdStd(request, reply, po_BDS, table, true);
+    return getEntryByIdStd(
+        request,
+        reply,
+        po_BDS,
+        table,
+        po_HinhAnh,
+        imgTableq
+    );
 };
 
 // Function to insert a new real estate
