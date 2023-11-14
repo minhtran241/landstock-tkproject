@@ -87,7 +87,13 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
         const sanitizedData = sanitizeGetFuncResponse(data, func);
         reply.code(200).send(sanitizedData);
     } catch (error) {
-        handleError(error, reply);
+        if (error.name.startsWith('Invalid function')) {
+            reply
+                .code(httpResponses.BAD_REQUEST.statusCode)
+                .send(httpResponses.BAD_REQUEST);
+        } else {
+            handleError(error, reply);
+        }
     }
 };
 

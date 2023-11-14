@@ -1,12 +1,23 @@
 'use strict';
 
+/**
+ * Fastify plugin for adding security headers using Helmet.
+ * @module HelmetPlugin
+ */
+
 const fp = require('fastify-plugin');
 const helmet = require('@fastify/helmet');
 
-// the use of fastify-plugin is required to be able
-// to export the decorators to the outer scope
-
+/**
+ * Registers the Helmet plugin with the provided Fastify instance.
+ * @function
+ * @param {Object} fastify - The Fastify instance.
+ * @param {Object} opts - Options for the Helmet plugin.
+ */
 module.exports = fp(async function (fastify, opts) {
+    /**
+     * Configure Helmet with security header options.
+     */
     fastify.register(helmet, {
         // Basic configuration options:
         dnsPrefetchControl: false, // Disable DNS prefetching

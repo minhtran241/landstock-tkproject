@@ -1,6 +1,11 @@
 'use strict';
 
-// Function to get attributes by action
+/**
+ * Gets attributes by action.
+ * @param {Array} paramsOperations - The array of parameter operations.
+ * @param {string} action - The action to filter attributes.
+ * @returns {Array} - An array of attributes based on the specified action.
+ */
 const getAttributesByAction = (paramsOperations, action) => {
     const attributes = [];
     paramsOperations.forEach((po) => {
@@ -11,17 +16,25 @@ const getAttributesByAction = (paramsOperations, action) => {
     return attributes;
 };
 
-// Function to get the primary key attribute
+/**
+ * Gets the primary key attribute.
+ * @param {Array} paramsOperations - The array of parameter operations.
+ * @returns {Object|null} - The primary key attribute or null if not found.
+ */
 const getPKAttr = (paramsOperations) => {
-    const pkAttr = paramsOperations.find((po) => po.k === true);
-    return pkAttr;
+    return paramsOperations.find((po) => po.k === true) || null;
 };
 
+/**
+ * Gets file attributes by action.
+ * @param {Array} paramsOperations - The array of parameter operations.
+ * @param {string} action - The action to filter file attributes.
+ * @returns {Array} - An array of file attributes based on the specified action.
+ */
 const getFileAttrs = (paramsOperations, action) => {
-    const fileAttrs = paramsOperations.filter(
+    return paramsOperations.filter(
         (po) => po.isFile === true && po.a.includes(action)
     );
-    return fileAttrs;
 };
 
 module.exports = {

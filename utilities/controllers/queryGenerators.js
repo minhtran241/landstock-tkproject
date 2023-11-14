@@ -5,7 +5,14 @@ const { cleanAndConvert, hasBetweenAttribute } = require('../queryHelper');
 const { sanitizeLimitAndOffset } = require('./sanitization');
 const { concatWithSpace } = require('../stringHelper');
 
-// Function to generate a SELECT query from the request query parameters
+/**
+ * Generates a SELECT query from the request query parameters.
+ *
+ * @param {object} requestQuery - Request query parameters.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @param {string} table - Name of the table.
+ * @returns {object} - The generated SELECT query, limit, and offset.
+ */
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const selectAttrs = getAttributesByAction(paramsOperations, 's');
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
@@ -26,7 +33,14 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
     return { query, limit, skip };
 };
 
-// Function to generate WHERE conditions based on request query parameters and condition attributes
+/**
+ * Generates WHERE conditions based on request query parameters and condition attributes.
+ *
+ * @param {object} requestQuery - Request query parameters.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @param {Array} conditionAttrs - Array of condition attributes.
+ * @returns {string} - WHERE conditions string.
+ */
 const generateWhereConditions = (
     requestQuery,
     paramsOperations,
@@ -49,7 +63,15 @@ const generateWhereConditions = (
     return conditions.length > 0 ? ` ${conditions.join(' ')}` : '';
 };
 
-// Function to get a real estate by its sID or other ID columns
+/**
+ * Generates a SELECT query to retrieve an entry by its primary key (sID or other ID columns).
+ *
+ * @param {object} requestParams - Request parameters.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @param {string} table - Name of the table.
+ * @param {number} [limit=1] - Limit the number of results (default is 1).
+ * @returns {string} - The generated SELECT query.
+ */
 const getSelectByIdQuery = (
     requestParams,
     paramsOperations,
@@ -76,7 +98,13 @@ const getSelectByIdQuery = (
     return query;
 };
 
-// Function to get post query values from the request body
+/**
+ * Gets the values for a post query from the request body.
+ *
+ * @param {Array} requestBody - Request body containing objects to post.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @returns {Array} - Cleaned and processed objects for the post query.
+ */
 const getPostQueryValues = (requestBody, paramsOperations) => {
     // Initialize an array to store cleaned and processed objects
     const cleanedObjects = [];
@@ -104,7 +132,14 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
     return cleanedObjects;
 };
 
-// Function to get a delete query real estate by its sID or other ID columns
+/**
+ * Generates a delete query for a real estate entry based on its sID or other ID columns.
+ *
+ * @param {object} requestParams - Request parameters.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @param {string} table - Name of the table.
+ * @returns {string} - The generated DELETE query.
+ */
 const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const id = String(requestParams.id);
     const pkAttr = getPKAttr(paramsOperations);
@@ -123,6 +158,14 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
     return query;
 };
 
+/**
+ * Generates a COUNT query based on request query parameters.
+ *
+ * @param {object} requestQuery - Request query parameters.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @param {string} table - Name of the table.
+ * @returns {string} - The generated COUNT query.
+ */
 const getCountQuery = (requestQuery, paramsOperations, table) => {
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
     const whereConditions = generateWhereConditions(
@@ -138,10 +181,24 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
     return query;
 };
 
+/**
+ * Object containing functions to generate various statistical queries.
+ * @namespace
+ */
 const getStatsQuery = {
     count: getCountQuery,
 };
 
+/**
+ * Converts a statistical function and its parameters into a corresponding query.
+ *
+ * @param {string} func - The statistical function to perform (e.g., 'count').
+ * @param {object} requestQuery - Request query parameters.
+ * @param {Array} paramsOperations - Array of parameter operations for the table.
+ * @param {string} table - Name of the table.
+ * @returns {string} - The generated statistical query.
+ * @throws {Error} - If an invalid function is provided.
+ */
 const funcParamToQuery = (func, requestQuery, paramsOperations, table) => {
     if (getStatsQuery[func]) {
         const query = getStatsQuery[func](

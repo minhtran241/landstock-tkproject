@@ -1,8 +1,11 @@
 'use strict';
 
-// const { generateBetweenParams } = require('../stringHelper');
-
-// Define a function to convert a parameter and its value into a SQL condition
+/**
+ * Converts a parameter and its value into a SQL condition.
+ * @param {Object} po - The parameter operation object.
+ * @param {Object} values - The values to use in the condition.
+ * @returns {string} - The generated SQL condition.
+ */
 const paramToCondition = (po, values) => {
     // Get the appropriate condition generator function or use the default
     const generateCondition =
@@ -10,19 +13,31 @@ const paramToCondition = (po, values) => {
     return generateCondition(po, values);
 };
 
-// Default condition generator for basic conditions
+/**
+ * Default condition generator for basic conditions.
+ * @param {Object} po - The parameter operation object.
+ * @param {Object} values - The values to use in the condition.
+ * @returns {string} - The default SQL condition.
+ */
 const defaultConditionGenerator = (po, values) => {
     return `AND ${po.p} ${po.o} ${convertValueBasedOnType(po, values)}`;
 };
 
-// Condition generators for special conditions
+/**
+ * Condition generators for special conditions.
+ */
 const sqlConditionGenerators = {
     IN: (po, values) => INCondition(po, values),
     LIKEAND: (po, values) => LIKEANDCondition(po.p, values),
     BETWEEN: (po, values) => BETWEENCondition(po.p, values),
 };
 
-// Function generate a IN operation string of a attribute from a string
+/**
+ * Condition generator for IN conditions.
+ * @param {Object} pattr - The parameter attribute object.
+ * @param {string} values - The values for the IN condition.
+ * @returns {string} - The generated SQL condition.
+ */
 const INCondition = (pattr, values) => {
     const vps = values
         .split(',')
@@ -31,7 +46,12 @@ const INCondition = (pattr, values) => {
     return `AND ${pattr.p} IN (${vps})`;
 };
 
-// Function generate a LIKE AND operation string of a attribute from a string
+/**
+ * Condition generator for LIKE AND conditions.
+ * @param {string} attr - The parameter attribute.
+ * @param {string} values - The values for the LIKE AND condition.
+ * @returns {string} - The generated SQL condition.
+ */
 const LIKEANDCondition = (attr, values) => {
     const likeConditions = values
         .split(',')
@@ -40,7 +60,12 @@ const LIKEANDCondition = (attr, values) => {
     return `AND ${likeConditions}`;
 };
 
-// Function generate a range operation string of a attribute from a range string
+/**
+ * Condition generator for BETWEEN conditions.
+ * @param {string} attr - The parameter attribute.
+ * @param {string} rangeString - The range string for the BETWEEN condition.
+ * @returns {string|null} - The generated SQL condition or null if not applicable.
+ */
 const BETWEENCondition = (attr, rangeString) => {
     const rangeOperations = {
         eq: {
@@ -74,20 +99,14 @@ const BETWEENCondition = (attr, rangeString) => {
         }
     }
     return null;
-
-    // old code
-    // {
-    //     const { from, to } = generateBetweenParams(attr);
-    //     if (values[from] && values[to]) {
-    //         return `AND (${attr} BETWEEN ${values[from]} AND ${values[to]})`;
-    //     } else if (values[from]) {
-    //         return `AND (${attr} >= ${values[from]})`;
-    //     } else if (values[to]) {
-    //         return `AND (${attr} <= ${values[to]})`;
-    //     }
-    // },
 };
 
+/**
+ * Converts a value based on its type.
+ * @param {Object} po - The parameter operation object.
+ * @param {string} val - The value to convert.
+ * @returns {string} - The converted value.
+ */
 const convertValueBasedOnType = (po, val) => {
     if (po.t === 'string') {
         return `'${val}'`;

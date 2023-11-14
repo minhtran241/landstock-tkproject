@@ -13,7 +13,7 @@ const {
 
 /**
  * Recycled function to process file attributes and update the data object.
- * @param {string} po_Name - The name of the table.
+ * @param {string} po_Name - The name of the params operation.
  * @param {Object} requestParams - The request parameters.
  * @param {Object[]} data - The data object to be updated.
  */
@@ -45,7 +45,7 @@ const processFileAttributes = async (po_Name, requestParams, data) => {
 
 /**
  * Recycled function to process file inserts.
- * @param {string} po_Name - The name of the table.
+ * @param {string} po_Name - The name of the params operation.
  * @param {Object} requestBody - The request body.
  */
 const processFileInserts = async (po_Name, requestBody) => {
@@ -78,7 +78,7 @@ const processFileInserts = async (po_Name, requestBody) => {
 
 /**
  * Recycled function to process file deletions.
- * @param {string} po_Name - The name of the table.
+ * @param {string} po_Name - The name of the params operation.
  * @param {Object} requestParams - The request parameters.
  */
 const processFileDeletions = async (po_Name, requestParams) => {
