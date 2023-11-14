@@ -98,7 +98,14 @@ const getEntryByIdStd = async (
     }
 };
 
-const postEntryStd = async (request, reply, po_Name, table) => {
+const postEntryStd = async (
+    request,
+    reply,
+    po_Name,
+    table,
+    po_Files = null,
+    table_Files = null
+) => {
     try {
         // Remove null, undefined values, or not allowed post values from the object
         const cleanedValues = getPostQueryValues(request.body, po_Name);
@@ -109,6 +116,22 @@ const postEntryStd = async (request, reply, po_Name, table) => {
             values: cleanedValues,
             format: 'JSONEachRow',
         });
+
+        if (po_Files && table_Files) {
+            const filesRequestBody = request.body.map((object) => {
+                return object.files;
+            });
+            const cleanedFilesValues = getPostQueryValues(
+                filesRequestBody,
+                po_Files
+            );
+            console.log(cleanedFilesValues);
+            await client.insert({
+                table: table_Files,
+                values: cleanedFilesValues,
+                format: 'JSONEachRow',
+            });
+        }
 
         // reply.code(201).send({ message: 'Data inserted successfully' });
         if (reply) {

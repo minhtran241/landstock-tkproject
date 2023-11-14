@@ -20,15 +20,7 @@ const getEntryById = async (request, reply) => {
 
 // Function to insert a new real estate
 const postEntry = async (request, reply) => {
-    const { files } = request.body;
-    if (files) {
-        files.map((file) => {
-            file.sMa = request.body.sMa;
-        });
-        const fileRequest = { body: files };
-        await postEntryStd(fileRequest, null, po_HinhAnh, imgTable);
-    }
-    return postEntryStd(request, reply, po_BDS, table);
+    return postEntryStd(request, reply, po_BDS, table, po_HinhAnh, imgTable);
 };
 
 // Function to delete a real estate by its sID
