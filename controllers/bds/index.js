@@ -26,7 +26,7 @@ const postEntry = async (request, reply) => {
             file.sMa = request.body.sMa;
         });
         const fileRequest = { body: files };
-        postEntryStd(fileRequest, null, po_HinhAnh, imgTable);
+        await postEntryStd(fileRequest, null, po_HinhAnh, imgTable);
     }
     return postEntryStd(request, reply, po_BDS, table);
 };
