@@ -82,8 +82,15 @@ const getEntryByIdStd = async (
                 format: 'JSONEachRow',
             });
             const filesData = await filesRows.json();
-            console.log(filesData);
-            data[0].files = filesData;
+            data[0].files = [
+                {
+                    sID: 'f3b2154a-209f-4041-a7d8-472f1730166b',
+                    sMa: 'ABC123',
+                    iID_HinhAnh: 900,
+                    sFile: '/Upload/origin',
+                    sFileThumb: '/Upload/origin/thumb',
+                },
+            ];
         }
         // convertToType(po_Name, data);
         console.log(data);
