@@ -108,6 +108,7 @@ const processFileInserts = async (po_Name, requestBody) => {
     await Promise.all(
         fileAttrs.map(async (fileAttr) => {
             const filesRequestBody = requestBody.flatMap((object) => {
+                console.log('OBJECT: ', object);
                 object[fileAttr].forEach((file) => {
                     file.sMa = object.sMa;
                 });

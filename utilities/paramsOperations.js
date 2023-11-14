@@ -46,7 +46,7 @@ const po_BDS = [
         p: 'sFiles',
         t: 'array',
         o: null,
-        a: 'pi',
+        a: 'pdi',
         isFile: true,
         po: po_HinhAnh,
         tbl: 'tb_HinhAnh',
