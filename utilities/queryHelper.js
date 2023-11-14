@@ -15,10 +15,12 @@ function cleanAndConvert(values) {
             if (key.startsWith('i') || key.startsWith('f')) {
                 // Convert numeric attributes to numbers
                 cleanedValues[key] = Number(values[key]);
-            } else if (key.startsWith('s') && key.endsWith('s')) {
-                // Convert string array attributes to string arrays. Example: sFiles
-                cleanedValues[key] = values[key].split(',');
-            } else if (key.startsWith('s')) {
+            }
+            // else if (key.startsWith('s') && key.endsWith('s')) {
+            //     // Convert string array attributes to string arrays. Example: sFiles
+            //     cleanedValues[key] = values[key].split(',');
+            // }
+            else if (key.startsWith('s')) {
                 // Convert string attributes to strings
                 cleanedValues[key] = String(values[key]);
             } else if (key.startsWith('b')) {

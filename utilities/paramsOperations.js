@@ -25,14 +25,22 @@ const po_BDS = [
     { p: 'iSoPhongNgu', t: 'number', o: 'IN', a: 'pdci' },
     { p: 'iSoToilet', t: 'number', o: 'IN', a: 'pdci' },
     { p: 'sMoTa', t: 'string', o: 'LIKE', a: 'pi' },
-    // { p: 'sFiles', t: 'array', o: 'LIKE', a: 'pi' },
-    { p: 'files', t: 'array', o: null, a: '' },
     { p: 'sAvatar', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sLat', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sLng', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sHotline', t: 'string', o: 'IN', a: 'spi' },
     { p: 'dNgayTao', t: 'date', o: 'BETWEEN', a: '' },
     { p: 'createdAt', t: 'string', o: '=', a: '' },
+    // { p: 'sFiles', t: 'array', o: 'LIKE', a: 'pi' },
+    {
+        p: 'sFiles',
+        t: 'array',
+        o: null,
+        a: 'pi',
+        isFile: true,
+        po: po_HinhAnh,
+        tbl: 'tb_HinhAnh',
+    },
 ];
 
 const po_HinhAnh = [

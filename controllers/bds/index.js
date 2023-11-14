@@ -10,6 +10,15 @@ const {
     getFuncValueStd,
 } = require('../standard'); // Import standard CRUD functions for real estate entries
 
+// Configuration for files associated with real estate entry
+const fileConfiguration = [
+    {
+        key_Files: 'sFiles',
+        po_Files: po_HinhAnh,
+        table_Files: imgTable,
+    },
+];
+
 // Function to get all real estate entries
 const getAllEntries = async (request, reply) => {
     // Call the standard function to get all entries
@@ -18,43 +27,18 @@ const getAllEntries = async (request, reply) => {
 
 // Function to get a real estate entry by its sID
 const getEntryById = async (request, reply) => {
-    // Configuration for files associated with real estate entry
-    const fileConfiguration = [
-        {
-            po_Files: po_HinhAnh,
-            table_Files: imgTable,
-        },
-    ];
-
     // Call the standard function to get an entry by ID with files data
     return getEntryByIdStd(request, reply, po_BDS, table, fileConfiguration);
 };
 
 // Function to insert a new real estate entry
 const postEntry = async (request, reply) => {
-    // Configuration for files associated with real estate entry
-    const fileConfiguration = [
-        {
-            po_Files: po_HinhAnh,
-            table_Files: imgTable,
-            key_Files: 'files',
-        },
-    ];
-
     // Call the standard function to insert a new entry with files data
     return postEntryStd(request, reply, po_BDS, table, fileConfiguration);
 };
 
 // Function to delete a real estate entry by its sID
 const deleteEntry = async (request, reply) => {
-    // Configuration for files associated with real estate entry
-    const fileConfiguration = [
-        {
-            po_Files: po_HinhAnh,
-            table_Files: imgTable,
-        },
-    ];
-
     // Call the standard function to delete an entry with files data
     return deleteEntryStd(request, reply, po_BDS, table, fileConfiguration);
 };

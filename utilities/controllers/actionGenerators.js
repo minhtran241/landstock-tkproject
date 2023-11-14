@@ -4,7 +4,7 @@
 const getAttributesByAction = (paramsOperations, action) => {
     const attributes = [];
     paramsOperations.forEach((po) => {
-        if (po.a.includes(action)) {
+        if (po.a.includes(action) && !po.isFile) {
             attributes.push(po.p);
         }
     });
@@ -17,7 +17,15 @@ const getPKAttr = (paramsOperations) => {
     return pkAttr;
 };
 
+const getFileAttrs = (paramsOperations, action) => {
+    const fileAttrs = paramsOperations.filter(
+        (po) => po.isFile === true && po.a.includes(action)
+    );
+    return fileAttrs;
+};
+
 module.exports = {
     getAttributesByAction,
     getPKAttr,
+    getFileAttrs,
 };

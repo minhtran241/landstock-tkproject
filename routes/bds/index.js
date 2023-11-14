@@ -21,14 +21,14 @@ const getEntryByIdOpts = getSchemaGenerator(
     getEntryById,
     [
         {
-            name: 'files',
+            name: 'sFiles',
             type: 'array',
         },
     ]
 );
 const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry, [
     {
-        name: 'files',
+        name: 'sFiles',
         type: 'array',
     },
 ]);
