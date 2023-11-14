@@ -108,11 +108,10 @@ const processFileInserts = async (po_Name, requestBody) => {
     await Promise.all(
         fileAttrs.forEach(async (fileAttr) => {
             const filesRequestBody = requestBody.flatMap((object) => {
-                console.log(fileAttr);
-                object[fileAttr].forEach((file) => {
+                object[fileAttr.p].forEach((file) => {
                     file.sMa = object.sMa;
                 });
-                return object[fileAttr];
+                return object[fileAttr.p];
             });
 
             const cleanedFilesValues = getPostQueryValues(
