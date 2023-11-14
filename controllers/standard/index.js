@@ -85,7 +85,7 @@ const getEntryByIdStd = async (
                 data[0].files = filesData;
             }
         }
-
+        console.log(data);
         if (data !== null && data.length > 0) {
             reply.code(200).send(data[0]);
         } else {
