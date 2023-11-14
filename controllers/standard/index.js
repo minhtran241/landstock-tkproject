@@ -68,28 +68,13 @@ const getEntryByIdStd = async (
         let data = await rows.json();
 
         if (fileConfiguration) {
-            const filesData = await Promise.all(
-                fileConfiguration.map(async (fileConfig) => {
-                    const filesQuery = getSelectByIdQuery(
-                        request.params,
-                        fileConfig.po_Files,
-                        fileConfig.table_Files,
-                        BIG_MAX_LIMIT
-                    );
-
-                    const filesRows = await client.query({
-                        query: filesQuery,
-                        format: 'JSONEachRow',
-                    });
-
-                    return filesRows.json();
-                })
+            const filesData = await getFilesData(
+                fileConfiguration,
+                request.params
             );
 
-            const flattenedFilesData = filesData.flat();
-
-            if (flattenedFilesData !== null && flattenedFilesData.length > 0) {
-                data[0].files = flattenedFilesData;
+            if (filesData !== null && filesData.length > 0) {
+                data[0].files = filesData;
             }
         }
 
@@ -104,8 +89,7 @@ const postEntryStd = async (
     reply,
     po_Name,
     table,
-    po_Files = null,
-    table_Files = null
+    fileConfiguration = null
 ) => {
     try {
         const cleanedValues = getPostQueryValues(request.body, po_Name);
@@ -117,23 +101,12 @@ const postEntryStd = async (
             format: 'JSONEachRow',
         });
 
-        if (po_Files && table_Files) {
-            const filesRequestBody = request.body.flatMap((object) => {
-                object.files.forEach((file) => {
-                    file.sMa = object.sMa;
-                });
-                return object.files;
-            });
-            const cleanedFilesValues = getPostQueryValues(
-                filesRequestBody,
-                po_Files
+        if (fileConfiguration) {
+            await Promise.all(
+                fileConfiguration.map(async (fileConfig) => {
+                    await insertFilesData(fileConfig, request.body);
+                })
             );
-            console.log('POST ENTRY STD: ', cleanedFilesValues);
-            await client.insert({
-                table: table_Files,
-                values: cleanedFilesValues,
-                format: 'JSONEachRow',
-            });
         }
 
         reply
@@ -149,25 +122,20 @@ const deleteEntryStd = async (
     reply,
     po_Name,
     table,
-    po_Files = null,
-    table_Files = null
+    fileConfiguration = null
 ) => {
-    const query = getDeleteQuery(request.params, po_Name, table);
     try {
-        await client.query({
-            query,
-        });
-        if (po_Files && table_Files) {
-            const filesQuery = getDeleteQuery(
-                request.params,
-                po_Files,
-                table_Files
+        const query = getDeleteQuery(request.params, po_Name, table);
+        await client.query({ query });
+
+        if (fileConfiguration) {
+            await Promise.all(
+                fileConfiguration.map(async (fileConfig) => {
+                    await deleteFilesData(fileConfig, request.params);
+                })
             );
-            await client.query({
-                query: filesQuery,
-            });
         }
-        // reply.code(200).send({ message: 'Data deleted successfully' });
+
         if (reply) {
             reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
         }
@@ -187,6 +155,57 @@ function handleError(error, reply) {
     console.error(error);
     reply.code(errorRes.statusCode).send(errorRes);
 }
+
+const getFilesData = async (fileConfiguration, requestParams) => {
+    const filesData = await Promise.all(
+        fileConfiguration.map(async (fileConfig) => {
+            const filesQuery = getSelectByIdQuery(
+                requestParams,
+                fileConfig.po_Files,
+                fileConfig.table_Files,
+                BIG_MAX_LIMIT
+            );
+
+            const filesRows = await client.query({
+                query: filesQuery,
+                format: 'JSONEachRow',
+            });
+
+            return filesRows.json();
+        })
+    );
+
+    return filesData.flat();
+};
+
+const insertFilesData = async (fileConfig, requestBody) => {
+    const filesRequestBody = requestBody.flatMap((object) => {
+        object[fileConfig.key_Files].forEach((file) => {
+            file.sMa = object.sMa;
+        });
+        return object[fileConfig.key_Files];
+    });
+
+    const cleanedFilesValues = getPostQueryValues(
+        filesRequestBody,
+        fileConfig.po_Files
+    );
+
+    await client.insert({
+        table: fileConfig.table_Files,
+        values: cleanedFilesValues,
+        format: 'JSONEachRow',
+    });
+};
+
+const deleteFilesData = async (fileConfig, requestParams) => {
+    const filesQuery = getDeleteQuery(
+        requestParams,
+        fileConfig.po_Files,
+        fileConfig.table_Files
+    );
+    await client.query({ query: filesQuery });
+};
 
 module.exports = {
     getAllEntriesStd,

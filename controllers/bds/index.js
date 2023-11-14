@@ -26,12 +26,25 @@ const getEntryById = async (request, reply) => {
 
 // Function to insert a new real estate
 const postEntry = async (request, reply) => {
-    return postEntryStd(request, reply, po_BDS, table, po_HinhAnh, imgTable);
+    const fileConfiguration = [
+        {
+            po_Files: po_HinhAnh,
+            table_Files: imgTable,
+            key_Files: 'files',
+        },
+    ];
+    return postEntryStd(request, reply, po_BDS, table, fileConfiguration);
 };
 
 // Function to delete a real estate by its sID
 const deleteEntry = async (request, reply) => {
-    return deleteEntryStd(request, reply, po_BDS, table, po_HinhAnh, imgTable);
+    const fileConfiguration = [
+        {
+            po_Files: po_HinhAnh,
+            table_Files: imgTable,
+        },
+    ];
+    return deleteEntryStd(request, reply, po_BDS, table, fileConfiguration);
 };
 
 const getFuncValue = async (request, reply) => {
