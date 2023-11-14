@@ -78,7 +78,19 @@ const processFileAttributes = async (po_Name, requestParams, data) => {
 
     await Promise.all(
         fileAttrs.map(async (fileAttr) => {
-            const filesData = await fetchFilesData(requestParams, fileAttr);
+            const filesQuery = getSelectByIdQuery(
+                requestParams,
+                fileAttr.po,
+                fileAttr.tbl,
+                BIG_MAX_LIMIT
+            );
+
+            const filesRows = await client.query({
+                query: filesQuery,
+                format: 'JSONEachRow',
+            });
+
+            const filesData = await filesRows.json();
 
             if (filesData !== null && filesData.length > 0) {
                 data[0][fileAttr.p] = filesData;
