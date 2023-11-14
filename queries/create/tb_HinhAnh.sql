@@ -5,6 +5,6 @@ CREATE TABLE tb_HinhAnh (
 	sFile String NOT NULL,
 	sFileThumb String,
 	dNgayTao DateTime,
-	createdAt DateTime DEFAULT now() NOT NULL,
+	createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree()
-ORDER BY sMa;
+ORDER BY createdAt;

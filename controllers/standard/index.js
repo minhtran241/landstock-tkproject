@@ -107,9 +107,11 @@ const postEntryStd = async (request, reply, po_Name, table) => {
         });
 
         // reply.code(201).send({ message: 'Data inserted successfully' });
-        reply
-            .code(httpResponses.CREATED.statusCode)
-            .send(httpResponses.CREATED);
+        if (reply) {
+            reply
+                .code(httpResponses.CREATED.statusCode)
+                .send(httpResponses.CREATED);
+        }
     } catch (error) {
         handleError(error, reply);
     }
@@ -122,7 +124,9 @@ const deleteEntryStd = async (request, reply, po_Name, table) => {
             query,
         });
         // reply.code(200).send({ message: 'Data deleted successfully' });
-        reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
+        if (reply) {
+            reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
+        }
     } catch (error) {
         handleError(error, reply);
     }
