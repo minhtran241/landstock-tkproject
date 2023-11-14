@@ -60,39 +60,39 @@ const getEntryByIdStd = async (
     reply,
     po_Name,
     table,
-    po_Files = null,
-    table_Files = null
+    fileConfiguration = null
 ) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
         const rows = await client.query({ query, format: 'JSONEachRow' });
         let data = await rows.json();
 
-        if (po_Files && table_Files) {
-            const filesQuery = getSelectByIdQuery(
-                request.params,
-                po_Files,
-                table_Files,
-                BIG_MAX_LIMIT
-            );
-            const filesRows = await client.query({
-                query: filesQuery,
-                format: 'JSONEachRow',
-            });
-            const filesData = await filesRows.json();
+        if (fileConfiguration) {
+            fileConfiguration
+                .forEach(async (fileConfig) => {
+                    const filesQuery = getSelectByIdQuery(
+                        request.params,
+                        fileConfig.po_Files,
+                        fileConfig.table_Files,
+                        BIG_MAX_LIMIT
+                    );
+                    const filesRows = await client.query({
+                        query: filesQuery,
+                        format: 'JSONEachRow',
+                    });
+                    const filesData = await filesRows.json();
+
+                    return filesData;
+                })
+                .flat();
 
             if (filesData !== null && filesData.length > 0) {
                 data[0].files = filesData;
             }
         }
-        console.log(data);
-        if (data !== null && data.length > 0) {
-            reply.code(200).send(data[0]);
-        } else {
-            reply
-                .code(httpResponses.NOT_FOUND.statusCode)
-                .send(httpResponses.NOT_FOUND);
-        }
+        reply
+            .code(httpResponses.NOT_FOUND.statusCode)
+            .send(httpResponses.NOT_FOUND);
     } catch (error) {
         handleError(error, reply);
     }
@@ -107,10 +107,9 @@ const postEntryStd = async (
     table_Files = null
 ) => {
     try {
-        // Remove null, undefined values, or not allowed post values from the object
         const cleanedValues = getPostQueryValues(request.body, po_Name);
-        console.log(cleanedValues);
-        // Insert the values into the ClickHouse table
+        console.log('POST ENTRY STD: ', cleanedValues);
+
         await client.insert({
             table,
             values: cleanedValues,
@@ -118,20 +117,17 @@ const postEntryStd = async (
         });
 
         if (po_Files && table_Files) {
-            const filesRequestBody = request.body
-                .map((object) => {
-                    object.files.map((file) => {
-                        file.sMa = object.sMa;
-                    });
-                    return object.files;
-                })
-                .flat();
-            console.log(filesRequestBody);
+            const filesRequestBody = request.body.flatMap((object) => {
+                object.files.forEach((file) => {
+                    file.sMa = object.sMa;
+                });
+                return object.files;
+            });
             const cleanedFilesValues = getPostQueryValues(
                 filesRequestBody,
                 po_Files
             );
-            console.log(cleanedFilesValues);
+            console.log('POST ENTRY STD: ', cleanedFilesValues);
             await client.insert({
                 table: table_Files,
                 values: cleanedFilesValues,
@@ -139,23 +135,37 @@ const postEntryStd = async (
             });
         }
 
-        // reply.code(201).send({ message: 'Data inserted successfully' });
-        if (reply) {
-            reply
-                .code(httpResponses.CREATED.statusCode)
-                .send(httpResponses.CREATED);
-        }
+        reply
+            .code(httpResponses.CREATED.statusCode)
+            .send(httpResponses.CREATED);
     } catch (error) {
         handleError(error, reply);
     }
 };
 
-const deleteEntryStd = async (request, reply, po_Name, table) => {
+const deleteEntryStd = async (
+    request,
+    reply,
+    po_Name,
+    table,
+    po_Files = null,
+    table_Files = null
+) => {
     const query = getDeleteQuery(request.params, po_Name, table);
     try {
         await client.query({
             query,
         });
+        if (po_Files && table_Files) {
+            const filesQuery = getDeleteQuery(
+                request.params,
+                po_Files,
+                table_Files
+            );
+            await client.query({
+                query: filesQuery,
+            });
+        }
         // reply.code(200).send({ message: 'Data deleted successfully' });
         if (reply) {
             reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
