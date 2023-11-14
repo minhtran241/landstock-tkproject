@@ -72,7 +72,7 @@ const getEntryByIdStd = async (
         if (po_Files && table_Files) {
             const filesQuery = getSelectByIdQuery(
                 request.params,
-                po_FilesName,
+                po_Files,
                 table_Files
             );
             const filesRows = await client.query({
