@@ -1,149 +1,24 @@
-'use strict';
+'use strict'; // Enable strict mode for better error handling
 
-const client = require('../../data/clickhouse');
-const httpResponses = require('../../http/httpResponses');
-const { BIG_MAX_LIMIT } = require('../../utilities/constants');
+const client = require('../../data/clickhouse'); // ClickHouse client for database operations
+const httpResponses = require('../../http/httpResponses'); // HTTP response constants
 const {
     getSelectQuery,
     getSelectByIdQuery,
     getPostQueryValues,
     getDeleteQuery,
     funcParamToQuery,
-} = require('../../utilities/controllers/queryGenerators');
+} = require('../../utilities/controllers/queryGenerators'); // Utility functions for generating SQL queries
 const {
-    // convertToType,
     sanitizeGetFuncResponse,
-} = require('../../utilities/controllers/sanitization');
+} = require('../../utilities/controllers/sanitization'); // Utility function for sanitizing GET function responses
+const {
+    getFilesData,
+    insertFilesData,
+    deleteFilesData,
+} = require('./fileControllers'); // File-related utility functions
 
-const getAllEntriesStd = async (request, reply, po_Name, table) => {
-    try {
-        const { query } = getSelectQuery(request.query, po_Name, table);
-        const rows = await client.query({
-            query,
-            format: 'JSONEachRow',
-        });
-        let data = await rows.json();
-        // convertToType(po_Name, data);
-        if (data !== null && data.length > 0) {
-            reply.code(200).send(data);
-        } else {
-            reply
-                .code(httpResponses.NOT_FOUND.statusCode)
-                .send(httpResponses.NOT_FOUND);
-        }
-    } catch (error) {
-        handleError(error, reply);
-    }
-};
-
-const getFuncValueStd = async (request, reply, po_Name, table) => {
-    try {
-        if (!request.query.f) {
-            throw new Error('No function specified');
-        }
-        const func = request.query.f.split(',')[0];
-        const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
-        const rows = await client.query({
-            query: funcQuery,
-            format: 'JSONEachRow',
-        });
-        const data = await rows.json();
-        const sanitizedData = sanitizeGetFuncResponse(data, func);
-        reply.code(200).send(sanitizedData);
-    } catch (error) {
-        handleError(error, reply);
-    }
-};
-
-const getEntryByIdStd = async (
-    request,
-    reply,
-    po_Name,
-    table,
-    fileConfiguration = null
-) => {
-    try {
-        const query = getSelectByIdQuery(request.params, po_Name, table);
-        const rows = await client.query({ query, format: 'JSONEachRow' });
-        let data = await rows.json();
-
-        if (fileConfiguration) {
-            const filesData = await getFilesData(
-                fileConfiguration,
-                request.params
-            );
-
-            if (filesData !== null && filesData.length > 0) {
-                data[0].files = filesData;
-            }
-        }
-
-        reply.code(200).send(data[0]);
-    } catch (error) {
-        handleError(error, reply);
-    }
-};
-
-const postEntryStd = async (
-    request,
-    reply,
-    po_Name,
-    table,
-    fileConfiguration = null
-) => {
-    try {
-        const cleanedValues = getPostQueryValues(request.body, po_Name);
-        console.log('POST ENTRY STD: ', cleanedValues);
-
-        await client.insert({
-            table,
-            values: cleanedValues,
-            format: 'JSONEachRow',
-        });
-
-        if (fileConfiguration) {
-            await Promise.all(
-                fileConfiguration.map(async (fileConfig) => {
-                    await insertFilesData(fileConfig, request.body);
-                })
-            );
-        }
-
-        reply
-            .code(httpResponses.CREATED.statusCode)
-            .send(httpResponses.CREATED);
-    } catch (error) {
-        handleError(error, reply);
-    }
-};
-
-const deleteEntryStd = async (
-    request,
-    reply,
-    po_Name,
-    table,
-    fileConfiguration = null
-) => {
-    try {
-        const query = getDeleteQuery(request.params, po_Name, table);
-        await client.query({ query });
-
-        if (fileConfiguration) {
-            await Promise.all(
-                fileConfiguration.map(async (fileConfig) => {
-                    await deleteFilesData(fileConfig, request.params);
-                })
-            );
-        }
-
-        if (reply) {
-            reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
-        }
-    } catch (error) {
-        handleError(error, reply);
-    }
-};
-
+// Function to handle errors
 function handleError(error, reply) {
     let errorRes;
     const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
@@ -156,57 +31,174 @@ function handleError(error, reply) {
     reply.code(errorRes.statusCode).send(errorRes);
 }
 
-const getFilesData = async (fileConfiguration, requestParams) => {
-    const filesData = await Promise.all(
-        fileConfiguration.map(async (fileConfig) => {
-            const filesQuery = getSelectByIdQuery(
-                requestParams,
-                fileConfig.po_Files,
-                fileConfig.table_Files,
-                BIG_MAX_LIMIT
+// Function to get all entries from a table
+const getAllEntriesStd = async (request, reply, po_Name, table) => {
+    try {
+        // Generate SELECT query based on request parameters
+        const { query } = getSelectQuery(request.query, po_Name, table);
+
+        // Execute the query and get data in JSON format
+        const rows = await client.query({
+            query,
+            format: 'JSONEachRow',
+        });
+        let data = await rows.json();
+
+        // Check if data exists and send appropriate response
+        if (data !== null && data.length > 0) {
+            reply.code(200).send(data);
+        } else {
+            reply
+                .code(httpResponses.NOT_FOUND.statusCode)
+                .send(httpResponses.NOT_FOUND);
+        }
+    } catch (error) {
+        handleError(error, reply);
+    }
+};
+
+// Function to get functional values for entries
+const getFuncValueStd = async (request, reply, po_Name, table) => {
+    try {
+        // Check if the query parameter 'f' is present
+        if (!request.query.f) {
+            throw new Error('No function specified');
+        }
+
+        // Extract the first function from the 'f' parameter
+        const func = request.query.f.split(',')[0];
+
+        // Generate a query for the specified function
+        const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
+
+        // Execute the query and get data in JSON format
+        const rows = await client.query({
+            query: funcQuery,
+            format: 'JSONEachRow',
+        });
+
+        // Get data and sanitize the response based on the function
+        const data = await rows.json();
+        const sanitizedData = sanitizeGetFuncResponse(data, func);
+
+        // Send the sanitized data as a response
+        reply.code(200).send(sanitizedData);
+    } catch (error) {
+        handleError(error, reply);
+    }
+};
+
+// Function to get an entry by its ID
+const getEntryByIdStd = async (
+    request,
+    reply,
+    po_Name,
+    table,
+    fileConfiguration = null
+) => {
+    try {
+        // Generate SELECT query for the specified entry ID
+        const query = getSelectByIdQuery(request.params, po_Name, table);
+
+        // Execute the query and get data in JSON format
+        const rows = await client.query({ query, format: 'JSONEachRow' });
+        let data = await rows.json();
+
+        // Check if file configuration is provided
+        if (fileConfiguration) {
+            // Get files data for the specified configuration and parameters
+            const filesData = await getFilesData(
+                fileConfiguration,
+                request.params
             );
 
-            const filesRows = await client.query({
-                query: filesQuery,
-                format: 'JSONEachRow',
-            });
+            // Check if files data exists and attach it to the entry
+            if (filesData !== null && filesData.length > 0) {
+                data[0].files = filesData;
+            }
+        }
 
-            return filesRows.json();
-        })
-    );
-
-    return filesData.flat();
+        // Send the entry data as a response
+        reply.code(200).send(data[0]);
+    } catch (error) {
+        handleError(error, reply);
+    }
 };
 
-const insertFilesData = async (fileConfig, requestBody) => {
-    const filesRequestBody = requestBody.flatMap((object) => {
-        object[fileConfig.key_Files].forEach((file) => {
-            file.sMa = object.sMa;
+// Function to insert a new entry
+const postEntryStd = async (
+    request,
+    reply,
+    po_Name,
+    table,
+    fileConfiguration = null
+) => {
+    try {
+        // Generate cleaned values for inserting the new entry
+        const cleanedValues = getPostQueryValues(request.body, po_Name);
+        console.log('POST ENTRY STD: ', cleanedValues);
+
+        // Insert the new entry into the specified table
+        await client.insert({
+            table,
+            values: cleanedValues,
+            format: 'JSONEachRow',
         });
-        return object[fileConfig.key_Files];
-    });
 
-    const cleanedFilesValues = getPostQueryValues(
-        filesRequestBody,
-        fileConfig.po_Files
-    );
+        // Check if file configuration is provided
+        if (fileConfiguration) {
+            // Insert files data for the specified configuration and request body
+            await Promise.all(
+                fileConfiguration.map(async (fileConfig) => {
+                    await insertFilesData(fileConfig, request.body);
+                })
+            );
+        }
 
-    await client.insert({
-        table: fileConfig.table_Files,
-        values: cleanedFilesValues,
-        format: 'JSONEachRow',
-    });
+        // Send a successful response
+        reply
+            .code(httpResponses.CREATED.statusCode)
+            .send(httpResponses.CREATED);
+    } catch (error) {
+        handleError(error, reply);
+    }
 };
 
-const deleteFilesData = async (fileConfig, requestParams) => {
-    const filesQuery = getDeleteQuery(
-        requestParams,
-        fileConfig.po_Files,
-        fileConfig.table_Files
-    );
-    await client.query({ query: filesQuery });
+// Function to delete an entry by its ID
+const deleteEntryStd = async (
+    request,
+    reply,
+    po_Name,
+    table,
+    fileConfiguration = null
+) => {
+    try {
+        // Generate DELETE query for the specified entry ID
+        const query = getDeleteQuery(request.params, po_Name, table);
+
+        // Execute the DELETE query
+        await client.query({ query });
+
+        // Check if file configuration is provided
+        if (fileConfiguration) {
+            // Delete files data for the specified configuration and parameters
+            await Promise.all(
+                fileConfiguration.map(async (fileConfig) => {
+                    await deleteFilesData(fileConfig, request.params);
+                })
+            );
+        }
+
+        // Send a successful response if a reply object is provided
+        if (reply) {
+            reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
+        }
+    } catch (error) {
+        handleError(error, reply);
+    }
 };
 
+// Export standard CRUD functions for use in other modules
 module.exports = {
     getAllEntriesStd,
     getEntryByIdStd,

@@ -1,6 +1,7 @@
 'use strict';
 
 const fp = require('fastify-plugin');
+const httpResponses = require('../../http/httpResponses');
 
 module.exports = fp(async function (fastify, opts) {
     fastify.register(require('@fastify/jwt'), {
@@ -32,8 +33,10 @@ module.exports = fp(async function (fastify, opts) {
             try {
                 await request.jwtVerify();
             } catch (err) {
-                console.error('Invalid JWT:', err);
-                reply.send(new Error('Invalid token'));
+                console.error(err);
+                reply
+                    .code(httpResponses.UNAUTHORIZED.statusCode)
+                    .send(httpResponses.UNAUTHORIZED);
             }
         }
     });

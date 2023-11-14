@@ -20,6 +20,12 @@ const httpResponses = {
         error: 'Bad Request',
         message: 'The request could not be understood by the server.',
     },
+    UNAUTHORIZED: {
+        statusCode: 401,
+        code: 'UNAUTHORIZED',
+        error: 'Unauthorized',
+        message: 'You are not authorized to access this resource',
+    },
     FORBIDDEN_ACCESS: {
         statusCode: 403,
         code: 'FORBIDDEN_ACCESS',
