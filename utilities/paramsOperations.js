@@ -5,8 +5,8 @@
 
 const po_HinhAnh = [
     { p: 'sID', t: 'string', o: '=', a: 'si' },
-    { p: 'sMa', t: 'string', o: '=', a: 'spdci', k: true },
-    { p: 'iID_HinhAnh', t: 'number', o: 'IN', a: 'spdci' },
+    { p: 'sMa', t: 'string', o: '=', a: 'spci', k: true },
+    { p: 'iID_HinhAnh', t: 'number', o: 'IN', a: 'spci' },
     { p: 'sFile', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sFile_Thums', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'dNgayTao', t: 'date', o: 'BETWEEN', a: '' },
@@ -15,25 +15,25 @@ const po_HinhAnh = [
 
 const po_BDS = [
     { p: 'sID', t: 'string', o: '=', a: 'si' },
-    { p: 'sMa', t: 'string', o: '=', a: 'spdci', k: true },
+    { p: 'sMa', t: 'string', o: '=', a: 'spci', k: true },
     { p: 'sNoiDung', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sTenTinh', t: 'string', o: 'LIKE', a: 'spi' },
-    { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'spdci' },
+    { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'spci' },
     { p: 'sTenQuan', t: 'string', o: 'LIKE', a: 'spi' },
-    { p: 'iID_MaQuan', t: 'number', o: 'IN', a: 'spdci' },
+    { p: 'iID_MaQuan', t: 'number', o: 'IN', a: 'spci' },
     { p: 'sTenPhuongXa', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'iID_MaPhuongXa', t: 'number', o: 'IN', a: 'pci' },
     { p: 'sTenDuong', t: 'string', o: 'LIKE', a: 'pi' },
-    { p: 'sLoaiHang', t: 'string', o: 'LIKEAND', a: 'pdci' },
-    { p: 'iDienTich', t: 'number', o: 'BETWEEN', a: 'spdci' },
+    { p: 'sLoaiHang', t: 'string', o: 'LIKEAND', a: 'pci' },
+    { p: 'iDienTich', t: 'number', o: 'BETWEEN', a: 'spci' },
     { p: 'iSoTang', t: 'number', o: 'BETWEEN', a: 'spci' },
-    { p: 'iMatTien', t: 'number', o: 'BETWEEN', a: 'pdci' },
-    { p: 'iGiaChaoHopDong', t: 'number', o: 'BETWEEN', a: 'pdci' },
+    { p: 'iMatTien', t: 'number', o: 'BETWEEN', a: 'pci' },
+    { p: 'iGiaChaoHopDong', t: 'number', o: 'BETWEEN', a: 'pci' },
     { p: 'sGiaChaoHopDong', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sHuongNha', t: 'string', o: 'LIKE', a: 'pi' },
-    { p: 'iID_HuongNha', t: 'number', o: 'IN', a: 'pdci' },
-    { p: 'iSoPhongNgu', t: 'number', o: 'IN', a: 'pdci' },
-    { p: 'iSoToilet', t: 'number', o: 'IN', a: 'pdci' },
+    { p: 'iID_HuongNha', t: 'number', o: 'IN', a: 'pci' },
+    { p: 'iSoPhongNgu', t: 'number', o: 'IN', a: 'pci' },
+    { p: 'iSoToilet', t: 'number', o: 'IN', a: 'pci' },
     { p: 'sMoTa', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'sAvatar', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sLat', t: 'string', o: 'LIKE', a: 'pi' },
@@ -56,46 +56,46 @@ const po_BDS = [
 const po_KhachHang = [
     { p: 'sID', t: 'string', o: '=', a: 'si' },
     { p: 'sTen', t: 'string', o: 'LIKE', a: 'spi' },
-    { p: 'sDienThoai', t: 'string', o: '=', a: 'spdci' },
-    { p: 'sEmail', t: 'string', o: 'LIKE', a: 'spdci' },
-    { p: 'iTrangThai', t: 'number', o: 'IN', a: 'spdci' },
-    { p: 'sMa', t: 'string', o: 'LIKE', a: 'spdci', k: true },
+    { p: 'sDienThoai', t: 'string', o: '=', a: 'spci' },
+    { p: 'sEmail', t: 'string', o: 'LIKE', a: 'spci' },
+    { p: 'iTrangThai', t: 'number', o: 'IN', a: 'spci' },
+    { p: 'sMa', t: 'string', o: 'LIKE', a: 'spci', k: true },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 
 const po_Tinh = [
     { p: 'sID', t: 'string', o: '=', a: '' },
-    { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'spdci', k: true },
+    { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'spci', k: true },
     { p: 'sTenTinh', t: 'string', o: 'IN', a: 'spi' },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 
 const po_Quan = [
     { p: 'sID', t: 'string', o: '=', a: '' },
-    { p: 'iID_MaQuan', t: 'number', o: 'IN', a: 'spdci', k: true },
+    { p: 'iID_MaQuan', t: 'number', o: 'IN', a: 'spci', k: true },
     { p: 'sTenQuan', t: 'string', o: 'IN', a: 'spi' },
-    { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'spdci' },
+    { p: 'iID_MaTinh', t: 'number', o: 'IN', a: 'spci' },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 
 const po_PhuongXa = [
     { p: 'sID', t: 'string', o: '=', a: '' },
-    { p: 'iID_MaPhuongXa', t: 'number', o: 'IN', a: 'spdci', k: true },
+    { p: 'iID_MaPhuongXa', t: 'number', o: 'IN', a: 'spci', k: true },
     { p: 'sTenPhuongXa', t: 'string', o: 'IN', a: 'spi' },
-    { p: 'iID_MaQuan', t: 'number', o: 'IN', a: 'spdci' },
+    { p: 'iID_MaQuan', t: 'number', o: 'IN', a: 'spci' },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 
 const po_HuongNha = [
     { p: 'sID', t: 'string', o: '=', a: '' },
-    { p: 'iID_HuongNha', t: 'number', o: 'IN', a: 'spdci', k: true },
+    { p: 'iID_HuongNha', t: 'number', o: 'IN', a: 'spci', k: true },
     { p: 'sHuongNha', t: 'string', o: 'IN', a: 'spi' },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
 
 const po_LoaiHang = [
     { p: 'sID', t: 'string', o: '=', a: '' },
-    { p: 'sCode', t: 'string', o: 'IN', a: 'spdci', k: true },
+    { p: 'sCode', t: 'string', o: 'IN', a: 'spci', k: true },
     { p: 'sTen', t: 'string', o: 'IN', a: 'spi' },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];
@@ -110,7 +110,7 @@ const po_LoaiHang = [
 
 module.exports = {
     po_BDS,
-    po_HinhAnh,
+    // po_HinhAnh,
     po_KhachHang,
     po_Tinh,
     po_Quan,
