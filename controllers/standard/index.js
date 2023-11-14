@@ -68,31 +68,32 @@ const getEntryByIdStd = async (
         let data = await rows.json();
 
         if (fileConfiguration) {
-            fileConfiguration
-                .map(async (fileConfig) => {
+            const filesData = await Promise.all(
+                fileConfiguration.map(async (fileConfig) => {
                     const filesQuery = getSelectByIdQuery(
                         request.params,
                         fileConfig.po_Files,
                         fileConfig.table_Files,
                         BIG_MAX_LIMIT
                     );
+
                     const filesRows = await client.query({
                         query: filesQuery,
                         format: 'JSONEachRow',
                     });
-                    const filesData = await filesRows.json();
 
-                    return filesData;
+                    return filesRows.json();
                 })
-                .flat();
+            );
 
-            if (filesData !== null && filesData.length > 0) {
-                data[0].files = filesData;
+            const flattenedFilesData = filesData.flat();
+
+            if (flattenedFilesData !== null && flattenedFilesData.length > 0) {
+                data[0].files = flattenedFilesData;
             }
         }
-        reply
-            .code(httpResponses.NOT_FOUND.statusCode)
-            .send(httpResponses.NOT_FOUND);
+
+        reply.code(200).send(data[0]);
     } catch (error) {
         handleError(error, reply);
     }
