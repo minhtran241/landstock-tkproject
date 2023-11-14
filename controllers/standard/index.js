@@ -2,7 +2,6 @@
 
 const client = require('../../data/clickhouse');
 const httpResponses = require('../../http/httpResponses');
-const { handleError } = require('../../utilities/controllers/actionGenerators');
 const {
     getSelectQuery,
     getSelectByIdQuery,
@@ -18,6 +17,19 @@ const {
     processFileInserts,
     processFileDeletions,
 } = require('./fileControllers');
+
+// Function to handle errors
+function handleError(error, reply) {
+    let errorRes;
+    const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
+    if (dbErrors.includes(error.name)) {
+        errorRes = httpResponses.INTERNAL_SERVER_ERROR;
+    } else {
+        errorRes = httpResponses.BAD_REQUEST;
+    }
+    console.error(error);
+    reply.code(errorRes.statusCode).send(errorRes);
+}
 
 // Function to get all entries from a table
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
