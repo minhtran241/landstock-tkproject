@@ -82,6 +82,7 @@ const getEntryByIdStd = async (
                 format: 'JSONEachRow',
             });
             const filesData = await filesRows.json();
+            console.log(filesData);
             data[0].files = filesData;
         }
         // convertToType(po_Name, data);
