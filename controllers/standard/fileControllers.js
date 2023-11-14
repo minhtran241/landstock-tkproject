@@ -65,6 +65,8 @@ const processFileInserts = async (po_Name, requestBody) => {
                 fileAttr.po
             );
 
+            console.log('POST FILES QUERY: ', cleanedFilesValues);
+
             await client.insert({
                 table: fileAttr.tbl,
                 values: cleanedFilesValues,
