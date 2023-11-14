@@ -18,7 +18,11 @@ const {
     processFileDeletions,
 } = require('./fileControllers');
 
-// Function to handle errors
+/**
+ * Function to handle errors.
+ * @param {Error} error - The error object.
+ * @param {object} reply - The Fastify reply object.
+ */
 function handleError(error, reply) {
     let errorRes;
     const dbErrors = ['ClickHouseSyntaxError', 'ClickHouseNetworkError'];
@@ -31,10 +35,17 @@ function handleError(error, reply) {
     reply.code(errorRes.statusCode).send(errorRes);
 }
 
-// Function to get all entries from a table
+/**
+ * Function to get all entries from a table.
+ * @param {object} request - The Fastify request object.
+ * @param {object} reply - The Fastify reply object.
+ * @param {string} po_name - The name of the params operation
+ * @param {string} table - The name of the table.
+ */
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
         const { query } = getSelectQuery(request.query, po_Name, table);
+        console.log('QUERY: ', query);
         const rows = await client.query({ query, format: 'JSONEachRow' });
         let data = await rows.json();
 
@@ -50,15 +61,24 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
     }
 };
 
-// Function to get functional values for entries
+/**
+ * Function to get functional values for entries.
+ * @param {object} request - The Fastify request object.
+ * @param {object} reply - The Fastify reply object.
+ * @param {string} po_name - The name of the params operation
+ * @param {string} table - The name of the table.
+ */
 const getFuncValueStd = async (request, reply, po_Name, table) => {
     try {
         if (!request.query.f) {
-            throw new Error('No function specified');
+            reply
+                .code(httpResponses.BAD_REQUEST.statusCode)
+                .send(httpResponses.BAD_REQUEST);
         }
 
         const func = request.query.f.split(',')[0];
         const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
+        console.log('QUERY: ', funcQuery);
         const rows = await client.query({
             query: funcQuery,
             format: 'JSONEachRow',
@@ -71,35 +91,51 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
     }
 };
 
-// Function to get an entry by its ID
+/**
+ * Function to get an entry by its ID.
+ * @param {object} request - The Fastify request object.
+ * @param {object} reply - The Fastify reply object.
+ * @param {string} po_name - The name of the params operation
+ * @param {string} table - The name of the table.
+ * @param {object} includeFiles - Process includes files or not.
+ */
 const getEntryByIdStd = async (
     request,
     reply,
     po_Name,
     table,
-    fileConfiguration = null
+    includeFiles = false
 ) => {
     try {
         const query = getSelectByIdQuery(request.params, po_Name, table);
+        console.log('QUERY: ', query);
         const rows = await client.query({ query, format: 'JSONEachRow' });
         let data = await rows.json();
 
-        if (fileConfiguration) {
-            await processFileAttributes(
-                po_Name,
-                request.params,
-                data,
-                fileConfiguration
-            );
+        if (includeFiles) {
+            await processFileAttributes(po_Name, request.params, data);
         }
 
-        reply.code(200).send(data[0]);
+        if (data !== null && data.length > 0) {
+            reply.code(200).send(data[0]);
+        } else {
+            reply
+                .code(httpResponses.NOT_FOUND.statusCode)
+                .send(httpResponses.NOT_FOUND);
+        }
     } catch (error) {
         handleError(error, reply);
     }
 };
 
-// Function to insert a new entry
+/**
+ * Function to insert a new entry.
+ * @param {object} request - The Fastify request object.
+ * @param {object} reply - The Fastify reply object.
+ * @param {string} po_name - The name of the params operation
+ * @param {string} table - The name of the table.
+ * @param {boolean} includeFiles - Whether to include files.
+ */
 const postEntryStd = async (
     request,
     reply,
@@ -129,7 +165,14 @@ const postEntryStd = async (
     }
 };
 
-// Function to delete an entry by its ID
+/**
+ * Function to delete an entry by its ID.
+ * @param {object} request - The Fastify request object.
+ * @param {object} reply - The Fastify reply object.
+ * @param {string} po_name - The name of the params operation
+ * @param {string} table - The name of the table.
+ * @param {boolean} includeFiles - Whether to include files.
+ */
 const deleteEntryStd = async (
     request,
     reply,
@@ -139,15 +182,14 @@ const deleteEntryStd = async (
 ) => {
     try {
         const query = getDeleteQuery(request.params, po_Name, table);
+        console.log('QUERY: ', query);
         await client.query({ query });
 
         if (includeFiles) {
             await processFileDeletions(po_Name, request.params);
         }
 
-        if (reply) {
-            reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
-        }
+        reply.code(httpResponses.OK.statusCode).send(httpResponses.OK);
     } catch (error) {
         handleError(error, reply);
     }

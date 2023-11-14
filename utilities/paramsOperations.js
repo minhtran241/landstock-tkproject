@@ -8,7 +8,7 @@ const po_HinhAnh = [
     { p: 'sMa', t: 'string', o: '=', a: 'spdci', k: true },
     { p: 'iID_HinhAnh', t: 'number', o: 'IN', a: 'spdci' },
     { p: 'sFile', t: 'string', o: 'LIKE', a: 'spi' },
-    { p: 'sFileThumb', t: 'string', o: 'LIKE', a: 'spi' },
+    { p: 'sFile_Thums', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'dNgayTao', t: 'date', o: 'BETWEEN', a: '' },
     { p: 'createdAt', t: 'string', o: '=', a: '' },
 ];
