@@ -69,7 +69,7 @@ const getEntryByIdStd = async (
 
         if (fileConfiguration) {
             fileConfiguration
-                .forEach(async (fileConfig) => {
+                .map(async (fileConfig) => {
                     const filesQuery = getSelectByIdQuery(
                         request.params,
                         fileConfig.po_Files,
