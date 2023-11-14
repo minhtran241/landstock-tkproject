@@ -21,13 +21,15 @@ const getEntryByIdOpts = getSchemaGenerator(
     getEntryById,
     [
         {
-            files: 'array',
+            name: 'files',
+            type: 'array',
         },
     ]
 );
 const postEntryOpts = postSchemaGenerator(po_BDS, 'p', postEntry, [
     {
-        files: 'array',
+        name: 'files',
+        type: 'array',
     },
 ]);
 const deleteEntryOpts = deleteSchemaGenerator(deleteEntry);
