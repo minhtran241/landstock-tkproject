@@ -86,6 +86,7 @@ const getEntryByIdStd = async (
             data[0].files = filesData;
         }
         // convertToType(po_Name, data);
+        console.log(data);
         if (data !== null && data.length > 0) {
             reply.code(200).send(data[0]);
         } else {
