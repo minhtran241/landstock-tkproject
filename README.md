@@ -193,6 +193,7 @@ This route handles interactions related to customer properties.
 ## API Models
 
 - BDS models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_BDS.sql)
+- Image models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_HinhAnh.sql)
 - City models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_Tinh.sql)
 - District models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_Quan.sql)
 - Ward models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_PhuongXa.sql)
