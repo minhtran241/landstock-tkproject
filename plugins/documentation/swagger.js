@@ -26,7 +26,7 @@ module.exports = fp(async function (fastify, opts) {
                 url: 'https://github.com/minhtran241/landstock-tkproject/tree/main',
                 description: 'Find more info here',
             },
-            host: 'https://b.thienkhoi.com',
+            host: 'https://b.thienkhoi.com/mbls',
             basePath: '',
             schemes: ['http', 'https'],
             consumes: ['application/json'],

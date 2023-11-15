@@ -4,8 +4,8 @@
 // Action involves the following: k = primary key, s = select, p = post, d = delete, c: in condition (where clause)
 
 const po_HinhAnh = [
-    { p: 'sID', t: 'string', o: '=', a: 'si' },
-    { p: 'sMa', t: 'string', o: '=', a: 'spci', k: true },
+    { p: 'sID', t: 'string', o: '=', a: '' },
+    { p: 'sMa', t: 'string', o: '=', a: 'pc', k: true },
     { p: 'iID_HinhAnh', t: 'number', o: 'IN', a: 'spci' },
     { p: 'sFile', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sFile_Thums', t: 'string', o: 'LIKE', a: 'spi' },
