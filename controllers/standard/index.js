@@ -187,6 +187,11 @@ const deleteEntryStd = async (
     includeFiles = false
 ) => {
     try {
+        if (!request.params.id || request.params.id === '') {
+            reply
+                .code(httpResponses.BAD_REQUEST.statusCode)
+                .send(httpResponses.BAD_REQUEST);
+        }
         const query = getDeleteQuery(request.params, po_Name, table);
         console.log('QUERY: ', query);
         await client.query({ query });

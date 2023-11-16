@@ -28,7 +28,7 @@ const po_BDS = [
     { p: 'iDienTich', t: 'number', o: 'BETWEEN', a: 'spci' },
     { p: 'iSoTang', t: 'number', o: 'BETWEEN', a: 'spci' },
     { p: 'iMatTien', t: 'number', o: 'BETWEEN', a: 'pci' },
-    { p: 'iGiaChaoHopDong', t: 'number', o: 'BETWEEN', a: 'pci' },
+    { p: 'iGiaChaoHopDong', t: 'number', o: 'BETWEEN', a: 'spci' },
     { p: 'sGiaChaoHopDong', t: 'string', o: 'LIKE', a: 'spi' },
     { p: 'sHuongNha', t: 'string', o: 'LIKE', a: 'pi' },
     { p: 'iID_HuongNha', t: 'number', o: 'IN', a: 'pci' },
