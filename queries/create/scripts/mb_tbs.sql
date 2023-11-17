@@ -1,3 +1,4 @@
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_Tinh (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenTinh String NOT NULL,
@@ -5,6 +6,7 @@ CREATE TABLE IF NOT EXISTS mb_Tinh (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_Quan (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenQuan String NOT NULL,
@@ -13,6 +15,7 @@ CREATE TABLE IF NOT EXISTS mb_Quan (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_PhuongXa (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenPhuongXa String NOT NULL,
@@ -21,6 +24,7 @@ CREATE TABLE IF NOT EXISTS mb_PhuongXa (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_LoaiHang (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sCode String,
@@ -28,6 +32,7 @@ CREATE TABLE IF NOT EXISTS mb_LoaiHang (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_KhachHang (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTen String,
@@ -38,6 +43,7 @@ CREATE TABLE IF NOT EXISTS mb_KhachHang (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_HuongNha (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     iID_HuongNha Int64,
@@ -45,6 +51,7 @@ CREATE TABLE IF NOT EXISTS mb_HuongNha (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_HinhAnh (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sMa String NOT NULL,
@@ -55,6 +62,7 @@ CREATE TABLE IF NOT EXISTS mb_HinhAnh (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_BDS (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sMa String NOT NULL,
