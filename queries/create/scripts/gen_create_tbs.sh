@@ -7,12 +7,14 @@ fi
 
 # Default value if client_code is not set in .env
 CLIENT_CODE=${CLIENT_CODE:-"tb"}
+CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE:-"landstock"}
 
 # SQL script file
 SQL_FILE="${CLIENT_CODE}_tbs.sql"
 
 # Function to create a table
 create_table() {
+    echo "USE $CLICKHOUSE_DATABASE;" >> "$SQL_FILE"
     TABLE_NAME="${CLIENT_CODE}_${1}"
     echo "CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (" >> "$SQL_FILE"
     echo "    sID UUID DEFAULT generateUUIDv4() NOT NULL," >> "$SQL_FILE"
