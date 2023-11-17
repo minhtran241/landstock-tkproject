@@ -39,7 +39,10 @@ const BIG_MAX_OFFSET = BIG_MAX_LIMIT * BIG_MAX_LIMIT;
  * Tables with a small limit.
  * @constant {Array}
  */
-const SMALL_LIMIT_TABLES = ['tb_BDS', 'tb_KhachHang'];
+const SMALL_LIMIT_TABLES = [
+    `${process.env.CLIENT_CODE}_BDS`,
+    `${process.env.CLIENT_CODE}_KhachHang`,
+];
 
 module.exports = {
     MAX_UINT64,

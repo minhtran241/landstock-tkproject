@@ -1,7 +1,7 @@
 'use strict';
 
-const table = 'tb_BDS';
-// const imgTable = 'tb_HinhAnh';
+const table = process.env.CLIENT_CODE + '_BDS';
+// const imgTable = process.env.CLIENT_CODE + '_HinhAnh'
 
 module.exports = {
     table,

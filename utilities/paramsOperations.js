@@ -49,7 +49,7 @@ const po_BDS = [
         a: 'pdi',
         isFile: true,
         po: po_HinhAnh,
-        tbl: 'tb_HinhAnh',
+        tbl: `${process.env.CLIENT_CODE}_HinhAnh`,
     },
 ];
 

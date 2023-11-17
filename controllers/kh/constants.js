@@ -1,6 +1,6 @@
 'use strict';
 
-const table = 'tb_KhachHang';
+const table = process.env.CLIENT_CODE + '_KhachHang';
 
 module.exports = {
     table,

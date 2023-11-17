@@ -1,6 +1,6 @@
 'use strict';
 
-const table = 'tb_LoaiHang';
+const table = process.env.CLIENT_CODE + '_LoaiHang';
 
 module.exports = {
     table,
