@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # Source the .env file to set environment variables
-if [ -f "../../../.env" ]; then
-    source "../../../.env"
+if [ -f "./.env" ]; then
+    source "./.env"
 fi
 
 # Default value if client_code is not set in .env
-CLIENT_CODE=${CLIENT_CODE:-"tb"}
+CLIENT_CODE=${CLIENT_CODE:-"dev"}
 CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE:-"landstock"}
 
 # SQL script file
-SQL_FILE="${CLIENT_CODE}_tbs.sql"
+SQL_FILE="./queries/create-tables/${CLIENT_CODE}_tbs.sql"
 
+echo "USE $CLICKHOUSE_DATABASE;" >> "$SQL_FILE"
 # Function to create a table
 create_table() {
-    echo "USE $CLICKHOUSE_DATABASE;" >> "$SQL_FILE"
     TABLE_NAME="${CLIENT_CODE}_${1}"
     echo "CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (" >> "$SQL_FILE"
     echo "    sID UUID DEFAULT generateUUIDv4() NOT NULL," >> "$SQL_FILE"
@@ -101,6 +101,3 @@ create_table "KhachHang"
 create_table "HuongNha"
 create_table "HinhAnh"
 create_table "BDS"
-
-# Execute the script
-# clickhouse-client -n -f "$SQL_FILE"

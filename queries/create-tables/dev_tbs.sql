@@ -1,13 +1,12 @@
 USE landstock;
-CREATE TABLE IF NOT EXISTS mb_Tinh (
+CREATE TABLE IF NOT EXISTS dev_Tinh (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenTinh String NOT NULL,
     iID_MaTinh Int64 NOT NULL,
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_Quan (
+CREATE TABLE IF NOT EXISTS dev_Quan (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenQuan String NOT NULL,
     iID_MaQuan Int64 NOT NULL,
@@ -15,8 +14,7 @@ CREATE TABLE IF NOT EXISTS mb_Quan (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_PhuongXa (
+CREATE TABLE IF NOT EXISTS dev_PhuongXa (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenPhuongXa String NOT NULL,
     iID_MaPhuongXa Int64 NOT NULL,
@@ -24,16 +22,14 @@ CREATE TABLE IF NOT EXISTS mb_PhuongXa (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_LoaiHang (
+CREATE TABLE IF NOT EXISTS dev_LoaiHang (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sCode String,
     sTen String,
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_KhachHang (
+CREATE TABLE IF NOT EXISTS dev_KhachHang (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTen String,
     sDienThoai String NOT NULL,
@@ -43,16 +39,14 @@ CREATE TABLE IF NOT EXISTS mb_KhachHang (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_HuongNha (
+CREATE TABLE IF NOT EXISTS dev_HuongNha (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     iID_HuongNha Int64,
     sHuongNha String,
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_HinhAnh (
+CREATE TABLE IF NOT EXISTS dev_HinhAnh (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sMa String NOT NULL,
     iID_HinhAnh Int64 NOT NULL,
@@ -62,8 +56,7 @@ CREATE TABLE IF NOT EXISTS mb_HinhAnh (
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;
 
-USE landstock;
-CREATE TABLE IF NOT EXISTS mb_BDS (
+CREATE TABLE IF NOT EXISTS dev_BDS (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sMa String NOT NULL,
     sNoiDung String NOT NULL,
