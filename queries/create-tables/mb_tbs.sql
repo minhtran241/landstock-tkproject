@@ -1,4 +1,4 @@
-USE landstock;
+USE landstock_prod;
 CREATE TABLE IF NOT EXISTS mb_Tinh (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenTinh String NOT NULL,

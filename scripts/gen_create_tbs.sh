@@ -12,7 +12,7 @@ CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE:-"landstock"}
 # SQL script file
 SQL_FILE="./queries/create-tables/${CLIENT_CODE}_tbs.sql"
 
-echo "USE $CLICKHOUSE_DATABASE;" >> "$SQL_FILE"
+echo "USE ${CLICKHOUSE_DATABASE};" >> "$SQL_FILE"
 # Function to create a table
 create_table() {
     TABLE_NAME="${CLIENT_CODE}_${1}"
