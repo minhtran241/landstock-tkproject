@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "-------------------------------------------------"
+echo "       Generate create tables queries file       "
+echo "-------------------------------------------------"
+
 # Source the .env file to set environment variables
 if [ -f "./.env" ]; then
     source "./.env"

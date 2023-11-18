@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "-----------------------------------------------"
-echo "  Execute ClickHouse Table Deletion Script     "
+echo "  Execute ClickHouse Data Insertion Script     "
 echo "-----------------------------------------------"
 
 # Source the .env file to set environment variables
@@ -17,9 +17,6 @@ CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-"default"}
 
 # Table names (array)
 TABLE_NAMES=(
-    "BDS"
-    "HinhAnh"
-    "KhachHang"
     "LoaiHang"
     "Tinh"
     "Quan"
@@ -27,13 +24,14 @@ TABLE_NAMES=(
     "HuongNha"
 )
 
-echo "Deleting tables from ClickHouse..."
+echo "Inserting data into ClickHouse tables..."
 
 for i in "${!TABLE_NAMES[@]}"; do
     TABLE_NAME="${CLIENT_CODE}_${TABLE_NAMES[$i]}"
+    CSV_FILE="${TABLE_NAMES[$i]}.csv"
     
-    echo "DROP TABLE IF EXISTS ${CLICKHOUSE_DATABASE}.${TABLE_NAME}"
-    clickhouse-client --user=${CLICKHOUSE_USER} --password=${CLICKHOUSE_PASSWORD} -q "DROP TABLE IF EXISTS ${CLICKHOUSE_DATABASE}.${TABLE_NAME}"
+    echo "INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames" < "${CSV_FILE}"
+    clickhouse-client --user=${CLICKHOUSE_USER} --password=${CLICKHOUSE_PASSWORD} -q "INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames" < "${CSV_FILE}"
 done
 
-echo "Table deletion completed."
+echo "Data insertion completed."

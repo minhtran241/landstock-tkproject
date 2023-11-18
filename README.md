@@ -1,52 +1,47 @@
 <div align="center">
-<h1 align="center">
-<img src="https://icons.veryicon.com/png/o/system/easemob-management-background-icon/rest-api.png" width="100" />
-<br>LANDSTOCK-TKPROJECT</h1>
-<h3>◦ Developed with the software and tools below.</h3>
+  <h1 align="center">
+    <img src="https://icons.veryicon.com/png/o/system/easemob-management-background-icon/rest-api.png" width="100" />
+    <br>LANDSTOCK-TKPROJECT</h1>
+  <h3>◦ Developed with the software and tools below.</h3>
 
-<p align="center">
-<img src="https://img.shields.io/badge/Fastify-000000.svg?style&logo=Fastify&logoColor=white" alt="Fastify" />
-<img src="https://img.shields.io/badge/ClickHouse-00AFC7.svg?style&logo=ClickHouse&logoColor=white" alt="ClickHouse" />
-</p>
-<img src="https://img.shields.io/github/license/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub license" />
-<img src="https://img.shields.io/github/last-commit/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="git-last-commit" />
-<img src="https://img.shields.io/github/commit-activity/m/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub commit activity" />
-<img src="https://img.shields.io/github/languages/top/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub top language" />
+  <p align="center">
+    <img src="https://img.shields.io/badge/Fastify-000000.svg?style&logo=Fastify&logoColor=white" alt="Fastify" />
+    <img src="https://img.shields.io/badge/ClickHouse-00AFC7.svg?style&logo=ClickHouse&logoColor=white" alt="ClickHouse" />
+  </p>
+  <img src="https://img.shields.io/github/license/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub license" />
+  <img src="https://img.shields.io/github/last-commit/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="git-last-commit" />
+  <img src="https://img.shields.io/github/commit-activity/m/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub commit activity" />
+  <img src="https://img.shields.io/github/languages/top/minhtran241/landstock-tkproject?style&color=5D6D7E" alt="GitHub top language" />
 </div>
 
 ---
 
 ## Table of Contents
 
-- [Table of Contents](#-table-of-contents)
-- [Overview](#-overview)
-- [API Documentation](#-api-documentation)
+- [Overview](#overview)
+- [API Documentation](#api-documentation)
 - [API Routes](#api-routes)
-- [API Models](#-api-models)
-- [Plugins](#-plugins)
-- [Getting Started](#-getting-started)
-- [Installation](#-installation)
-- [Running landstock-tkproject](#-running-landstock-tkproject)
-- [Tests](#-tests)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Acknowledgments](#-acknowledgments)
+- [API Models](#api-models)
+- [Database Migration](#database-migration)
+- [Plugins](#plugins)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
 ---
 
 ## Overview
 
 - **Framework:** The project is built on the [Fastify](https://fastify.io/) framework, known for its high performance and low overhead.
-
 - **Database:** We use the powerful [ClickHouse](https://clickhouse.tech/) database to efficiently store and manage real estate data.
-
 - **Domain:** Visit our domain at [https://b.thienkhoi.com/mbls](https://b.thienkhoi.com/mbls) to access the API's endpoints and explore the wealth of information available.
 
 ---
 
 ## API Documentation
 
-- Explore the API's endpoints and discover how to use it by checking out our detailed [Swagger documentation](https://b.thienkhoi.com/mbls/docs).
+Explore the API's endpoints and discover how to use it by checking out our detailed [Swagger documentation](https://b.thienkhoi.com/mbls/docs).
 
 ---
 
@@ -200,6 +195,50 @@ This route handles interactions related to customer properties.
 - Direction models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_HuongNha.sql)
 - Section models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_LoaiHang.sql)
 - Customer models can be found [here](https://github.com/minhtran241/landstock-tkproject/blob/main/queries/create/tb_KhachHang.sql)
+
+---
+
+## Database Migration
+
+Follow the steps below to manage database operations seamlessly:
+
+### Migration Script Files
+
+Find all the necessary migration script files in the [scripts directory](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts).
+
+### Generate Table Creation Queries
+
+To generate SQL queries for table creation in the database, utilize the [generate_ctb_queries_file.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/generate_ctb_queries_file.py). This script outputs .sql files containing the necessary queries.
+
+```bash
+./scripts/generate_ctb_queries_file.py
+```
+
+### Run Table Creation Queries
+
+Execute the generated queries to create tables in the database by using the [run_ctb_queries_file.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/run_ctb_queries_file.py).
+
+```bash
+./scripts/run_ctb_queries_file.py
+```
+
+### Insert CSV Data
+
+For populating the database with CSV data, leverage the [insert_csv_data.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/insert_csv_data.py). This script streamlines the process of inserting data into the created tables.
+
+```bash
+./scripts/insert_csv_data.py
+```
+
+### Drop All Tables
+
+To remove all tables from the database, utilize the [drop_tables.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/drop_tables.py). This script aids in the clean-up and removal of existing tables.
+
+```bash
+./scripts/drop_tables.py
+```
+
+Feel free to explore and adapt these scripts according to your specific requirements for the API's database management.
 
 ---
 
