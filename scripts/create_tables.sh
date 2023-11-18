@@ -14,4 +14,4 @@ CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-"default"}
 SQL_FILE="./queries/create-tables/${CLIENT_CODE}_tbs.sql"
 
 # Execute the script
-clickhouse-client -n --user=default --password=${CLICKHOUSE_PASSWORD} < "$SQL_FILE"
+clickhouse-client -n --user=${CLICKHOUSE_USER} --password=${CLICKHOUSE_PASSWORD} < "$SQL_FILE"
