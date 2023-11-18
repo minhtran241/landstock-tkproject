@@ -13,6 +13,9 @@ CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-"default"}
 
 # table names (array)
 TABLE_NAMES=(
+    "BDS"
+    "HinhAnh"
+    "KhachHang"
     "LoaiHang"
     "Tinh"
     "Quan"
