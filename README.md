@@ -208,7 +208,7 @@ Find all the necessary migration script files in the [scripts directory](https:/
 
 ### Generate Table Creation Queries
 
-To generate SQL queries for table creation in the database, utilize the [generate_ctb_queries_file.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/generate_ctb_queries_file.py). This script outputs .sql files containing the necessary queries.
+To generate SQL queries for table creation in the database, utilize the [generate_ctb_queries_file.sh script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/generate_ctb_queries_file.sh). This script outputs .sql files containing the necessary queries.
 
 ```bash
 ./scripts/generate_ctb_queries_file.py
@@ -216,7 +216,7 @@ To generate SQL queries for table creation in the database, utilize the [generat
 
 ### Run Table Creation Queries
 
-Execute the generated queries to create tables in the database by using the [run_ctb_queries_file.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/run_ctb_queries_file.py).
+Execute the generated queries to create tables in the database by using the [run_ctb_queries_file.sh script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/run_ctb_queries_file.sh).
 
 ```bash
 ./scripts/run_ctb_queries_file.py
@@ -224,7 +224,7 @@ Execute the generated queries to create tables in the database by using the [run
 
 ### Insert CSV Data
 
-For populating the database with CSV data, leverage the [insert_csv_data.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/insert_csv_data.py). This script streamlines the process of inserting data into the created tables.
+For populating the database with CSV data, leverage the [insert_csv_data.sh script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/insert_csv_data.sh). This script streamlines the process of inserting data into the created tables.
 
 ```bash
 ./scripts/insert_csv_data.py
@@ -232,7 +232,7 @@ For populating the database with CSV data, leverage the [insert_csv_data.py scri
 
 ### Drop All Tables
 
-To remove all tables from the database, utilize the [drop_tables.py script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/drop_tables.py). This script aids in the clean-up and removal of existing tables.
+To remove all tables from the database, utilize the [drop_tables.sh script](https://github.com/minhtran241/landstock-tkproject/blob/main/scripts/drop_tables.sh). This script aids in the clean-up and removal of existing tables.
 
 ```bash
 ./scripts/drop_tables.py
