@@ -7,10 +7,11 @@ fi
 
 # Default value if client_code is not set in .env
 CLIENT_CODE=${CLIENT_CODE:-"dev"}
+CLICKHOUSE_USER=${CLICKHOUSE_USER:-"default"}
 CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-"default"}
 
 # SQL script file
 SQL_FILE="./queries/create-tables/${CLIENT_CODE}_tbs.sql"
 
 # Execute the script
-clickhouse-client -n --password=${CLICKHOUSE_PASSWORD} < "$SQL_FILE"
+clickhouse-client -n --user=default --password=${CLICKHOUSE_PASSWORD} < "$SQL_FILE"

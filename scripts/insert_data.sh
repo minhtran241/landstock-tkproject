@@ -8,6 +8,7 @@ fi
 # Default value if client_code is not set in .env
 CLIENT_CODE=${CLIENT_CODE:-"dev"}
 CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE:-"landstock"}
+CLICKHOUSE_USER=${CLICKHOUSE_USER:-"default"}
 CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-"default"}
 
 # CSV files (array)
@@ -30,7 +31,7 @@ TABLE_NAMES=(
 
 for i in "${!CSV_FILES[@]}"; do
     echo "INSERT INTO landstock.tb_${TABLE_NAMES[$i]} FORMAT CSVWithNames" < "${CSV_FILES[$i]}"
-    clickhouse-client --user=default --password=${CLICKHOUSE_PASSWORD} -q "INSERT INTO ${CLICKHOUSE_DATABASE}.${CLIENT_CODE}_${TABLE_NAMES[$i]} FORMAT CSVWithNames" < "${CSV_FILES[$i]}"
+    clickhouse-client --user=${CLICKHOUSE_USER} --password=${CLICKHOUSE_PASSWORD} -q "INSERT INTO ${CLICKHOUSE_DATABASE}.${CLIENT_CODE}_${TABLE_NAMES[$i]} FORMAT CSVWithNames" < "${CSV_FILES[$i]}"
 done
 
 # Ex: clickhouse-client --user=default --password=default -q "INSERT INTO landstock.tb_LoaiHang FORMAT CSVWithNames" < tb_LoaiHang.csv
