@@ -34,6 +34,7 @@ module.exports = fp(async function (fastify, opts) {
                 `${path.join(__dirname, 'certs')}/private.pem`,
                 'utf8'
             ),
+            public: '',
         },
         sign: {
             algorithm: 'RS256',
