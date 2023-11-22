@@ -30,8 +30,16 @@ for i in "${!TABLE_NAMES[@]}"; do
     TABLE_NAME="${CLIENT_CODE}_${TABLE_NAMES[$i]}"
     CSV_FILE="./data/csv/${TABLE_NAMES[$i]}.csv"
     
-    echo "INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames" < "${CSV_FILE}"
-    clickhouse-client --user=${CLICKHOUSE_USER} --password=${CLICKHOUSE_PASSWORD} -q "INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames" < "${CSV_FILE}"
+    if [ -f "$CSV_FILE" ]; then
+		echo "Inserting data into ${TABLE_NAME} table..."
+		clickhouse-client \
+			--user="${CLICKHOUSE_USER}" \
+			--password="${CLICKHOUSE_PASSWORD}" \
+			--query="INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSV" \
+			< "$CSV_FILE"
+	else
+		echo "File ${CSV_FILE} does not exist."
+	fi
 done
 
 echo "Data insertion completed."
