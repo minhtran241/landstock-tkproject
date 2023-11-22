@@ -1,5 +1,7 @@
 'use strict';
 
+const { readFileSync } = require('node:fs');
+const path = require('node:path');
 const fp = require('fastify-plugin');
 const httpResponses = require('../../http/httpResponses');
 
@@ -27,7 +29,11 @@ module.exports = fp(async function (fastify, opts) {
      */
     fastify.register(require('@fastify/jwt'), {
         secret: {
-            private: process.env.MB_JWT_PRIVATE_KEY,
+            // .pem file path
+            private: readFileSync(
+                `${path.join(__dirname, 'certs')}/private.pem`,
+                'utf8'
+            ),
         },
         sign: {
             algorithm: 'RS256',

@@ -62,3 +62,5 @@ profile*
 
 # nginx
 nginx
+
+plugins/authentication/certs/*
