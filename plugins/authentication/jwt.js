@@ -39,6 +39,7 @@ module.exports = fp(async function (fastify, opts) {
         sign: {
             algorithm: 'RS256',
         },
+        verify: false,
     });
 
     /**
