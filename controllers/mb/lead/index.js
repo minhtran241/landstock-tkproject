@@ -11,8 +11,8 @@ const signNewToken = () => {
         'utf-8'
     );
     const payload = {
-        timestamp: Date.now(), // Current timestamp
-        iat: Date.now(), // Issued at timestamp
+        timestamp: 1690789715794, // Current timestamp
+        iat: 1690789715, // Issued at timestamp
     };
 
     // Sign a new token
