@@ -1,4 +1,4 @@
-USE landstock_prod;
+USE landstock;
 CREATE TABLE IF NOT EXISTS mb_Tinh (
     sID UUID DEFAULT generateUUIDv4() NOT NULL,
     sTenTinh String NOT NULL,
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS mb_KhachHang (
     sDienThoai String NOT NULL,
     sEmail String,
     iTrangThai Int32,
+    sTrangThai String,
     sMa String,
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;

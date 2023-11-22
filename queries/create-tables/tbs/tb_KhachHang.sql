@@ -4,6 +4,7 @@ CREATE TABLE tb_KhachHang (
 	sDienThoai String NOT NULL,
 	sEmail String,
 	iTrangThai Int32,
+	sTrangThai String,
 	sMa String,
 	createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree()

@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS dev_KhachHang (
     sDienThoai String NOT NULL,
     sEmail String,
     iTrangThai Int32,
+    sTrangThai String,
     sMa String,
     createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree() ORDER BY createdAt;

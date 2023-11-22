@@ -16,6 +16,12 @@ CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE:-"landstock"}
 # SQL script file
 SQL_FILE="./queries/create-tables/${CLIENT_CODE}_tbs.sql"
 
+# Overwrite the file if it already exists
+if [ -f "$SQL_FILE" ]; then
+	rm "$SQL_FILE"
+	touch "$SQL_FILE"
+fi
+
 echo "USE ${CLICKHOUSE_DATABASE};" >> "$SQL_FILE"
 # Function to create a table
 create_table() {
@@ -76,6 +82,7 @@ create_table() {
             echo "    sDienThoai String NOT NULL," >> "$SQL_FILE"
             echo "    sEmail String," >> "$SQL_FILE"
             echo "    iTrangThai Int32," >> "$SQL_FILE"
+			echo "    sTrangThai String," >> "$SQL_FILE"
             echo "    sMa String," >> "$SQL_FILE"
         ;;
         "HuongNha")

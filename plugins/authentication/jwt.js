@@ -23,6 +23,18 @@ module.exports = fp(async function (fastify, opts) {
     });
 
     /**
+     * Register the @fastify/jwt plugin with the specified options (for MB to sign JWTs)
+     */
+    fastify.register(require('@fastify/jwt'), {
+        secret: {
+            private: process.env.MB_JWT_PRIVATE_KEY,
+        },
+        sign: {
+            algorithm: 'RS256',
+        },
+    });
+
+    /**
      * Global onRequest hook for JWT verification.
      * @param {object} request - The Fastify request object.
      * @param {object} reply - The Fastify reply object.
