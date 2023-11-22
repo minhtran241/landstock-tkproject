@@ -1,6 +1,6 @@
 const axios = require('axios');
 const httpResponses = require('../../../http/httpResponses');
-const fastify = require('fastify')();
+const jwt = require('jsonwebtoken');
 
 // Reusable Axios instance
 const apiClient = axios.create({
@@ -24,7 +24,8 @@ const postToLead = async (request, reply) => {
     let apiToken = previousApiToken;
 
     // If the previous token is older than 5 seconds, sign a new one
-    if (fastify.jwt.decode(apiToken).timestamp < fiveSecondsAgo) {
+    console.log(jwt.decode(apiToken).timestamp);
+    if (jwt.decode(apiToken).timestamp < fiveSecondsAgo) {
         apiToken = signNewToken();
         previousApiToken = apiToken; // Update the previous token
     }
@@ -62,10 +63,22 @@ const postToLead = async (request, reply) => {
 };
 
 // Function to sign a new token
-const signNewToken = () =>
-    fastify.jwt.sign({
+const signNewToken = () => {
+    // Load the private key
+    const privateKey = fs.readFileSync(
+        '../../../plugins/authentication/certs/private.pem',
+        'utf-8'
+    );
+    const payload = {
         timestamp: Date.now(),
+        iat: Math.floor(Date.now() / 1000),
+    };
+
+    // Sign a new token
+    return jwt.sign(payload, privateKey, {
+        algorithm: 'RS256',
     });
+};
 
 module.exports = {
     postToLead,
