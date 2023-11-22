@@ -58,11 +58,11 @@ const postToLead = async (request, reply) => {
     console.log(apiToken);
 
     try {
-        const { response } = await apiClient.put(mbApiUrl, body, {
+        const { status, data } = await apiClient.put(mbApiUrl, body, {
             headers,
         });
 
-        return reply.code(response.status).send(response.data);
+        return reply.code(status).send(data);
     } catch (error) {
         if (
             error.response &&
@@ -71,14 +71,14 @@ const postToLead = async (request, reply) => {
             // If the request fails due to an invalid token, sign a new one and try again
             apiToken = signNewToken();
             headers.Authorization = `Bearer ${apiToken}`;
-            const { response } = await apiClient.put(mbApiUrl, body, {
+            const { status, data } = await apiClient.put(mbApiUrl, body, {
                 headers,
             });
 
-            return reply.code(response.status).send(response.data);
+            return reply.code(status).send(data);
         }
         console.log(error);
-        return reply.code(response.status).send(response.data);
+        return reply.code(error.response.status).send(error.response.data);
     }
 };
 
