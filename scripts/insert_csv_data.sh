@@ -28,7 +28,7 @@ echo "Inserting data into ClickHouse tables..."
 
 for i in "${!TABLE_NAMES[@]}"; do
     TABLE_NAME="${CLIENT_CODE}_${TABLE_NAMES[$i]}"
-    CSV_FILE="${TABLE_NAMES[$i]}.csv"
+    CSV_FILE="./data/csv/${TABLE_NAMES[$i]}.csv"
     
     echo "INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames" < "${CSV_FILE}"
     clickhouse-client --user=${CLICKHOUSE_USER} --password=${CLICKHOUSE_PASSWORD} -q "INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames" < "${CSV_FILE}"
