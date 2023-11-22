@@ -23,5 +23,5 @@ const postToLeadOpts = {
  * @param {Object} opts - Options for the route registration.
  */
 module.exports = async function (fastify, opts) {
-    fastify.post('/', opts);
+    fastify.post('/', postToLeadOpts);
 };
