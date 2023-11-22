@@ -15,7 +15,7 @@ module.exports = fp(async function (fastify, opts) {
     fastify.register(require('@fastify/jwt'), {
         secret: process.env.JWT_SECRET,
         verify: {
-            algorithms: ['HS256'], // Specify the allowed verification algorithms
+            algorithms: 'HS256', // Specify the allowed verification algorithms
             allowedIss: process.env.JWT_ISSUER, // Validate the issuer
             allowedAud: process.env.JWT_AUDIENCE, // Validate the audience
             allowedSub: process.env.JWT_SUBJECT, // Validate the subject
@@ -28,10 +28,14 @@ module.exports = fp(async function (fastify, opts) {
      * Register the @fastify/jwt plugin with the specified options (for MB to sign JWTs)
      */
     fastify.register(require('@fastify/jwt'), {
-        secret: readFileSync(
-            `${path.join(__dirname, 'certs')}/private.pem`,
-            'utf8'
-        ),
+        secret: {
+            // .pem file path
+            private: readFileSync(
+                `${path.join(__dirname, 'certs')}/private.pem`,
+                'utf8'
+            ),
+            public: null,
+        },
         sign: {
             algorithm: 'RS256',
         },
