@@ -2,6 +2,24 @@ const axios = require('axios');
 const httpResponses = require('../../../http/httpResponses');
 const jwt = require('jsonwebtoken');
 
+// Function to sign a new token
+const signNewToken = () => {
+    // Load the private key
+    const privateKey = fs.readFileSync(
+        '../../../plugins/authentication/certs/private.pem',
+        'utf-8'
+    );
+    const payload = {
+        timestamp: Date.now(),
+        iat: Math.floor(Date.now() / 1000),
+    };
+
+    // Sign a new token
+    return jwt.sign(payload, privateKey, {
+        algorithm: 'RS256',
+    });
+};
+
 // Reusable Axios instance
 const apiClient = axios.create({
     baseURL: process.env.MB_DEV_API_URL,
@@ -60,24 +78,6 @@ const postToLead = async (request, reply) => {
 
         throw error; // Propagate other errors
     }
-};
-
-// Function to sign a new token
-const signNewToken = () => {
-    // Load the private key
-    const privateKey = fs.readFileSync(
-        '../../../plugins/authentication/certs/private.pem',
-        'utf-8'
-    );
-    const payload = {
-        timestamp: Date.now(),
-        iat: Math.floor(Date.now() / 1000),
-    };
-
-    // Sign a new token
-    return jwt.sign(payload, privateKey, {
-        algorithm: 'RS256',
-    });
 };
 
 module.exports = {
