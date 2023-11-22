@@ -1,3 +1,4 @@
+const fs = require('fs');
 const axios = require('axios');
 const httpResponses = require('../../../http/httpResponses');
 const jwt = require('jsonwebtoken');
