@@ -43,7 +43,6 @@ const postToLead = async (request, reply) => {
     let apiToken = previousApiToken;
 
     // If the previous token is older than 5 seconds, sign a new one
-    console.log(jwt.decode(apiToken).timestamp);
     if (jwt.decode(apiToken).timestamp < fiveSecondsAgo) {
         apiToken = signNewToken();
         previousApiToken = apiToken; // Update the previous token
@@ -58,8 +57,6 @@ const postToLead = async (request, reply) => {
         const res = await apiClient.put(mbApiUrl, body, {
             headers,
         });
-
-        console.log(res);
 
         return reply.code(res.status).send(res.data);
     } catch (error) {
@@ -76,7 +73,7 @@ const postToLead = async (request, reply) => {
 
             return reply.code(status).send(data);
         }
-
+        console.log(error);
         throw error; // Propagate other errors
     }
 };
