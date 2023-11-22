@@ -12,7 +12,22 @@ const { postToLead } = require('../../../controllers/mb/lead');
  * @type {Object}
  */
 const postToLeadOpts = {
-    // schema:
+    schema: {
+        tags: ['MB', 'lead'],
+        description: 'Route for testing MB lead put API',
+        summary: 'Route for testing MB lead put API',
+        body: {
+            type: 'object',
+            properties: {
+                code: {
+                    type: 'string',
+                },
+                status: {
+                    type: 'string',
+                },
+            },
+        },
+    },
     handler: postToLead,
 };
 
@@ -23,5 +38,5 @@ const postToLeadOpts = {
  * @param {Object} opts - Options for the route registration.
  */
 module.exports = async function (fastify, opts) {
-    fastify.post('/', postToLeadOpts);
+    fastify.put('/', postToLeadOpts);
 };
