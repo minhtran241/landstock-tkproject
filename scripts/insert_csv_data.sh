@@ -28,7 +28,7 @@ echo "Inserting data into ClickHouse tables..."
 
 for i in "${!TABLE_NAMES[@]}"; do
     TABLE_NAME="${CLIENT_CODE}_${TABLE_NAMES[$i]}"
-    CSV_FILE="./data/csv/${TABLE_NAMES[$i]}.csv"
+    CSV_FILE="./data/csv/tb_${TABLE_NAMES[$i]}.csv"
     
     if [ -f "$CSV_FILE" ]; then
 		echo "Inserting data into ${TABLE_NAME} table..."
