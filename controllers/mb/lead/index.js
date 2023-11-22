@@ -10,7 +10,6 @@ const signNewToken = () => {
         `${__dirname}/certs/private.pem`,
         'utf-8'
     );
-    console.log(privateKey);
     const payload = {
         timestamp: Date.now(), // Current timestamp
         iat: Date.now(), // Issued at timestamp
@@ -55,6 +54,8 @@ const postToLead = async (request, reply) => {
         Authorization: `Bearer ${apiToken}`,
         ...apiClient.defaults.headers,
     };
+
+    console.log(apiToken);
 
     try {
         const res = await apiClient.put(mbApiUrl, body, {
