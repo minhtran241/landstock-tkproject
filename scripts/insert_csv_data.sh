@@ -37,7 +37,7 @@ for i in "${!TABLE_NAMES[@]}"; do
 		clickhouse-client \
 			--user="${CLICKHOUSE_USER}" \
 			--password="${CLICKHOUSE_PASSWORD}" \
-			--q "$query" < "$CSV_FILE"
+			-q "$query" < "$CSV_FILE"
 	else
 		echo "File ${CSV_FILE} does not exist."
 	fi
