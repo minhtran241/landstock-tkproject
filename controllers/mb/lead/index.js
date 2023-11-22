@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const signNewToken = () => {
     // Load the private key
     const privateKey = fs.readFileSync(
-        '../../../plugins/authentication/certs/private.pem',
+        `${__dirname}/certs/private.pem`,
         'utf-8'
     );
     const payload = {
