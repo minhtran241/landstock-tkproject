@@ -6,20 +6,22 @@ const jwt = require('jsonwebtoken');
 // Function to sign a new token
 const signNewToken = () => {
     // Load the private key
-    // const privateKey = fs.readFileSync(
-    //     `${__dirname}/certs/private.pem`,
-    //     'utf-8'
-    // );
-    // const payload = {
-    //     timestamp: 1690789715794,
-    //     iat: 1690789715,
-    // };
+    const privateKey = fs.readFileSync(
+        `${__dirname}/certs/private.pem`,
+        'utf-8'
+    );
+    console.log(privateKey);
+    const payload = {
+        timestamp: Date.now(), // Current timestamp
+        iat: Date.now(), // Issued at timestamp
+    };
 
-    // // Sign a new token
-    // return jwt.sign(payload, privateKey, {
-    //     algorithm: 'RS256',
-    // });
-    return process.env.MB_API_TOKEN;
+    // Sign a new token
+    return jwt.sign(payload, privateKey, {
+        algorithm: 'RS256',
+        expiresIn: '5m',
+    });
+    // return process.env.MB_API_TOKEN;
 };
 
 // Reusable Axios instance
