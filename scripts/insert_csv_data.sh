@@ -32,11 +32,12 @@ for i in "${!TABLE_NAMES[@]}"; do
     
     if [ -f "$CSV_FILE" ]; then
 		echo "Inserting data into ${TABLE_NAME} table..."
+		query="INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSVWithNames"
+		echo "$query"
 		clickhouse-client \
 			--user="${CLICKHOUSE_USER}" \
 			--password="${CLICKHOUSE_PASSWORD}" \
-			--query="INSERT INTO ${CLICKHOUSE_DATABASE}.${TABLE_NAME} FORMAT CSV" \
-			< "$CSV_FILE"
+			--q "$query" < "$CSV_FILE"
 	else
 		echo "File ${CSV_FILE} does not exist."
 	fi
