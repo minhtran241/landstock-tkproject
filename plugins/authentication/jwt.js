@@ -18,6 +18,7 @@ module.exports = fp(async function (fastify, opts) {
      * @param {object} reply - The Fastify reply object.
      */
     fastify.addHook('onRequest', async (request, reply) => {
+        // Check if the request method and URL meet the specified conditions:
         if (
             (request.method === 'GET' ||
                 (request.method === 'POST' && request.url === '/kh')) &&

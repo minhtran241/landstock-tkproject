@@ -39,14 +39,15 @@ const putLeadLand = async (request, reply) => {
     const { body } = request;
     const mbApiUrl = '/lead/land';
 
-    const currentTimestamp = Date.now();
-    const fiveSecondsAgo = currentTimestamp - 5000;
+    const currentTimestamp = Date.now() / 1000;
+    const fiveSecondsAgo = currentTimestamp - 5;
 
     let apiToken = previousApiToken;
 
     // If the previous token is older than 5 seconds, sign a new one
     if (jwt.decode(apiToken).timestamp < fiveSecondsAgo) {
         apiToken = signNewToken();
+        console.log(`Signed a new token: ${apiToken}`);
         previousApiToken = apiToken; // Update the previous token
     }
 
@@ -54,8 +55,6 @@ const putLeadLand = async (request, reply) => {
         Authorization: `Bearer ${apiToken}`,
         ...apiClient.defaults.headers,
     };
-
-    console.log(apiToken);
 
     try {
         const { status, data } = await apiClient.put(mbApiUrl, body, {
@@ -70,6 +69,8 @@ const putLeadLand = async (request, reply) => {
         ) {
             // If the request fails due to an invalid token, sign a new one and try again
             apiToken = signNewToken();
+            previousApiToken = apiToken; // Update the previous token
+            console.log(`Signed a new token: ${apiToken}`);
             headers.Authorization = `Bearer ${apiToken}`;
             const { status, data } = await apiClient.put(mbApiUrl, body, {
                 headers,
