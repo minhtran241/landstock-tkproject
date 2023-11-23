@@ -12,37 +12,11 @@ const jwt = require('jsonwebtoken');
  * @param {object} opts - Options for the plugin.
  */
 module.exports = fp(async function (fastify, opts) {
-    // Register the @fastify/jwt plugin with the specified options
-    fastify.register(require('@fastify/jwt'), {
-        secret: process.env.JWT_SECRET,
-        verify: {
-            algorithms: 'HS256', // Specify the allowed verification algorithms
-            allowedIss: process.env.JWT_ISSUER, // Validate the issuer
-            allowedAud: process.env.JWT_AUDIENCE, // Validate the audience
-            allowedSub: process.env.JWT_SUBJECT, // Validate the subject
-            ignoreExpiration: true, // Do not reject expired tokens
-            cache: true, // Enable caching of the key lookup
-        },
-    });
-
     /**
-     * Register the @fastify/jwt plugin with the specified options (for MB to sign JWTs)
+     * Global onRequest hook for JWT verification.
+     * @param {object} request - The Fastify request object.
+     * @param {object} reply - The Fastify reply object.
      */
-    // fastify.register(require('@fastify/jwt'), {
-    //     secret: {
-    //         // .pem file path
-    //         private: readFileSync(
-    //             `${path.join(__dirname, 'certs')}/private.pem`,
-    //             'utf8'
-    //         ),
-    //         public: '',
-    //     },
-    //     sign: {
-    //         algorithm: 'RS256',
-    //     },
-    //     verify: false,
-    // });
-
     fastify.addHook('onRequest', async (request, reply) => {
         if (
             (request.method === 'GET' ||
@@ -69,6 +43,37 @@ module.exports = fp(async function (fastify, opts) {
             }
         }
     });
+
+    // Register the @fastify/jwt plugin with the specified options
+    // fastify.register(require('@fastify/jwt'), {
+    //     secret: process.env.JWT_SECRET,
+    //     verify: {
+    //         algorithms: 'HS256', // Specify the allowed verification algorithms
+    //         allowedIss: process.env.JWT_ISSUER, // Validate the issuer
+    //         allowedAud: process.env.JWT_AUDIENCE, // Validate the audience
+    //         allowedSub: process.env.JWT_SUBJECT, // Validate the subject
+    //         ignoreExpiration: true, // Do not reject expired tokens
+    //         cache: true, // Enable caching of the key lookup
+    //     },
+    // });
+
+    /**
+     * Register the @fastify/jwt plugin with the specified options (for MB to sign JWTs)
+     */
+    // fastify.register(require('@fastify/jwt'), {
+    //     secret: {
+    //         // .pem file path
+    //         private: readFileSync(
+    //             `${path.join(__dirname, 'certs')}/private.pem`,
+    //             'utf8'
+    //         ),
+    //         public: '',
+    //     },
+    //     sign: {
+    //         algorithm: 'RS256',
+    //     },
+    //     verify: false,
+    // });
 
     /**
      * Global onRequest hook for JWT verification.
