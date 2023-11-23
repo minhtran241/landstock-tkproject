@@ -26,11 +26,20 @@ const signNewToken = () => {
         partner: process.env.MB_PARTNER_KEY,
     };
 
+    const start_time = new Date().getTime();
     // Sign a new token with RS256 algorithm and a 5-minute expiration
-    return jwt.sign(payload, privateKey, {
+    const newToken = jwt.sign(payload, privateKey, {
         algorithm: 'RS256',
         expiresIn: TOKEN_EXPIRATION,
     });
+    const end_time = new Date().getTime();
+    console.log({
+        start_time,
+        end_time,
+        duration: end_time - start_time,
+        newToken,
+    });
+    return newToken;
 };
 
 // Reusable Axios instance with default headers
@@ -71,7 +80,6 @@ const putLeadLand = async (request, reply) => {
         currentTimestamp - TOKEN_REFRESH_THRESHOLD
     ) {
         apiToken = signNewToken();
-        console.log(`Signed a new token: ${apiToken}`);
         previousApiToken = apiToken; // Update the previous token
     }
 
@@ -97,7 +105,6 @@ const putLeadLand = async (request, reply) => {
         ) {
             apiToken = signNewToken();
             previousApiToken = apiToken; // Update the previous token
-            console.log(`Signed a new token: ${apiToken}`);
             headers.Authorization = `Bearer ${apiToken}`;
 
             // Retry the request with the new token
