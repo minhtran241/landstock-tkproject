@@ -12,7 +12,7 @@ const signNewToken = () => {
     );
     const payload = {
         timestamp: Date.now() / 1000, // Current timestamp
-        // iat: Date.now() / 1000, // Issued at timestamp
+        partner: process.env.MB_PARTNER_KEY,
     };
 
     // Sign a new token
