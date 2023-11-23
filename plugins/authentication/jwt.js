@@ -59,13 +59,10 @@ module.exports = fp(async function (fastify, opts) {
                     subject: process.env.JWT_SUBJECT,
                 });
             } catch (error) {
-                if (error.name === 'TokenExpiredError') {
-                    console.error('JWT has expired:', error.message);
-                    console.error(error);
-                } else {
-                    console.error('JWT verification failed:', error.message);
-                    console.error(error);
-                }
+                console.error({
+                    error: `${error.name}: ${error.message}`,
+                    token,
+                });
                 reply
                     .code(httpResponses.UNAUTHORIZED.statusCode)
                     .send(httpResponses.UNAUTHORIZED);
