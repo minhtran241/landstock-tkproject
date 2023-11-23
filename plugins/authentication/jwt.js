@@ -52,18 +52,19 @@ module.exports = fp(async function (fastify, opts) {
         ) {
             const token = request.headers.authorization.split(' ')[1];
             try {
-                const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+                jwt.verify(token, process.env.JWT_SECRET, {
                     algorithms: 'HS256',
                     issuer: process.env.JWT_ISSUER,
                     audience: process.env.JWT_AUDIENCE,
                     subject: process.env.JWT_SUBJECT,
                 });
-                console.log(decoded);
             } catch (error) {
                 if (error.name === 'TokenExpiredError') {
                     console.error('JWT has expired:', error.message);
+                    console.error(error);
                 } else {
                     console.error('JWT verification failed:', error.message);
+                    console.error(error);
                 }
                 reply
                     .code(httpResponses.UNAUTHORIZED.statusCode)
