@@ -9,7 +9,7 @@ const TOKEN_EXPIRATION = '5m';
 const TOKEN_REFRESH_THRESHOLD = 5; // seconds
 
 /**
- * Function to sign a new JWT token.
+ * Function to sign a new JWT token and monitor the time it takes to sign it.
  * @returns {string} - The signed JWT token.
  */
 const signNewToken = () => {
@@ -26,6 +26,7 @@ const signNewToken = () => {
         partner: process.env.MB_PARTNER_KEY,
     };
 
+    // Monitor the time it takes to sign a new token
     const start_time = new Date().getTime();
     // Sign a new token with RS256 algorithm and a 5-minute expiration
     const newToken = jwt.sign(payload, privateKey, {
@@ -34,9 +35,9 @@ const signNewToken = () => {
     });
     const end_time = new Date().getTime();
     console.log({
-        start_time,
-        end_time,
-        duration: end_time - start_time,
+        start_time, // start_time: milliseconds
+        end_time, // end_time: milliseconds
+        duration: end_time - start_time, // duration: milliseconds
         newToken,
     });
     return newToken;

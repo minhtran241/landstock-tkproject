@@ -46,7 +46,7 @@ const postEntry = async (request, reply) => {
  * @returns {Promise} - A promise resolving to the result of the standard function for deleting an entry.
  */
 const deleteEntry = async (request, reply) => {
-    return deleteEntryStd(request, reply, po_KhachHang);
+    return deleteEntryStd(request, reply, po_KhachHang, table);
 };
 
 // Export functions for use in other modules

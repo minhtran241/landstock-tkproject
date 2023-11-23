@@ -26,7 +26,7 @@ const getAllEntries = async (request, reply) => {
  * @returns {Promise} - A promise resolving to the result of the standard function for getting an entry by ID.
  */
 const getEntryById = async (request, reply) => {
-    return getEntryByIdStd(request, reply, po_Tinh, table, 'iID_MaTinh');
+    return getEntryByIdStd(request, reply, po_Tinh, table);
 };
 
 /**
@@ -46,7 +46,7 @@ const postEntry = async (request, reply) => {
  * @returns {Promise} - A promise resolving to the result of the standard function for deleting an entry.
  */
 const deleteEntry = async (request, reply) => {
-    return deleteEntryStd(request, reply, po_Tinh, table, 'iID_MaTinh');
+    return deleteEntryStd(request, reply, po_Tinh, table);
 };
 
 // Export functions for use in other modules
