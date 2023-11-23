@@ -7,7 +7,7 @@ const httpResponses = require('../../http/httpResponses');
 const jwt = require('jsonwebtoken');
 
 /**
- * Fastify plugin for JWT authentication.
+ * Hook for JWT verification.
  * @param {object} fastify - The Fastify instance.
  * @param {object} opts - Options for the plugin.
  */
@@ -18,14 +18,27 @@ module.exports = fp(async function (fastify, opts) {
      * @param {object} reply - The Fastify reply object.
      */
     fastify.addHook('onRequest', async (request, reply) => {
-        // Check if the request method and URL meet the specified conditions:
-        if (
+        // Check if the request method and URL meet the specified conditions
+        const isAuthorizedRoute =
             (request.method === 'GET' ||
                 (request.method === 'POST' && request.url === '/kh')) &&
             request.url !== '/' &&
-            !request.url.includes('/docs')
-        ) {
-            const token = request.headers.authorization.split(' ')[1];
+            !request.url.includes('/docs');
+
+        if (isAuthorizedRoute) {
+            const authorizationHeader = request.headers.authorization;
+
+            if (
+                !authorizationHeader ||
+                !authorizationHeader.startsWith('Bearer ')
+            ) {
+                return reply
+                    .code(httpResponses.UNAUTHORIZED.statusCode)
+                    .send(httpResponses.UNAUTHORIZED);
+            }
+
+            const token = authorizationHeader.split(' ')[1];
+
             try {
                 jwt.verify(token, process.env.JWT_SECRET, {
                     algorithms: 'HS256',

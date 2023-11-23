@@ -59,6 +59,7 @@ const po_KhachHang = [
     { p: 'sDienThoai', t: 'string', o: '=', a: 'spci' },
     { p: 'sEmail', t: 'string', o: 'LIKE', a: 'spci' },
     { p: 'iTrangThai', t: 'number', o: 'IN', a: 'spci' },
+    { p: 'sTrangThai', t: 'string', o: 'IN', a: 'spi' },
     { p: 'sMa', t: 'string', o: 'LIKE', a: 'spci', k: true },
     { p: 'createdAt', t: 'date', o: '=', a: '' },
 ];

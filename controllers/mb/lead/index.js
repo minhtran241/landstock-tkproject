@@ -1,29 +1,40 @@
+// Import required modules
 const fs = require('fs');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const httpResponses = require('../../../http/httpResponses');
 
-// Function to sign a new token
+// Constants for configuration
+const PRIVATE_KEY_PATH = `${__dirname}/certs/private.pem`;
+const TOKEN_EXPIRATION = '5m';
+const TOKEN_REFRESH_THRESHOLD = 5; // seconds
+
+/**
+ * Function to sign a new JWT token.
+ * @returns {string} - The signed JWT token.
+ */
 const signNewToken = () => {
     // Load the private key
-    const privateKey = fs.readFileSync(
-        `${__dirname}/certs/private.pem`,
-        'utf-8'
-    );
+    const privateKey = fs.readFileSync(PRIVATE_KEY_PATH, 'utf-8');
+
+    // Get the current timestamp in seconds
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+
+    // Create payload for the JWT token
     const payload = {
-        timestamp: Date.now() / 1000, // Current timestamp
+        timestamp: currentTimestamp,
+        iat: currentTimestamp,
         partner: process.env.MB_PARTNER_KEY,
     };
 
-    // Sign a new token
+    // Sign a new token with RS256 algorithm and a 5-minute expiration
     return jwt.sign(payload, privateKey, {
         algorithm: 'RS256',
-        expiresIn: '5m',
+        expiresIn: TOKEN_EXPIRATION,
     });
-    // return process.env.MB_API_TOKEN;
 };
 
-// Reusable Axios instance
+// Reusable Axios instance with default headers
 const apiClient = axios.create({
     baseURL: process.env.MB_DEV_API_URL,
     headers: {
@@ -33,56 +44,79 @@ const apiClient = axios.create({
     },
 });
 
+// Initialize the previous API token with a new one
 let previousApiToken = signNewToken();
 
+/**
+ * Handler for the "putLeadLand" route.
+ * @param {Object} request - The Fastify request object.
+ * @param {Object} reply - The Fastify reply object.
+ * @returns {Object} - The API response.
+ */
 const putLeadLand = async (request, reply) => {
+    // Extract the request body
     const { body } = request;
+
+    // API endpoint for the lead/land operation
     const mbApiUrl = '/lead/land';
 
-    const currentTimestamp = Date.now() / 1000;
-    const fiveSecondsAgo = currentTimestamp - 5;
+    // Get the current timestamp in seconds
+    const currentTimestamp = Math.floor(Date.now() / 1000);
 
+    // Initialize API token with the previous one
     let apiToken = previousApiToken;
 
-    // If the previous token is older than 5 seconds, sign a new one
-    if (jwt.decode(apiToken).timestamp < fiveSecondsAgo) {
+    // If the previous token is older than the refresh threshold, sign a new one
+    if (
+        jwt.decode(apiToken).timestamp <
+        currentTimestamp - TOKEN_REFRESH_THRESHOLD
+    ) {
         apiToken = signNewToken();
         console.log(`Signed a new token: ${apiToken}`);
         previousApiToken = apiToken; // Update the previous token
     }
 
+    // Construct headers for the API request
     const headers = {
         Authorization: `Bearer ${apiToken}`,
         ...apiClient.defaults.headers,
     };
 
     try {
+        // Make a PUT request to the API with the constructed headers
         const { status, data } = await apiClient.put(mbApiUrl, body, {
             headers,
         });
 
+        // Respond with the API response
         return reply.code(status).send(data);
     } catch (error) {
+        // Handle unauthorized errors by refreshing the token and retrying the request
         if (
             error.response &&
             error.response.status === httpResponses.UNAUTHORIZED.code
         ) {
-            // If the request fails due to an invalid token, sign a new one and try again
             apiToken = signNewToken();
             previousApiToken = apiToken; // Update the previous token
             console.log(`Signed a new token: ${apiToken}`);
             headers.Authorization = `Bearer ${apiToken}`;
+
+            // Retry the request with the new token
             const { status, data } = await apiClient.put(mbApiUrl, body, {
                 headers,
             });
-
             return reply.code(status).send(data);
         }
-        console.log(error);
-        return reply.code(error.response.status).send(error.response.data);
+
+        // Log and respond with the error details
+        console.error(error);
+        return reply
+            .code(error.response?.status || 500)
+            .send(error.response?.data || 'Internal Server Error');
     }
 };
 
+// Export the handler for external use
 module.exports = {
     putLeadLand,
 };
