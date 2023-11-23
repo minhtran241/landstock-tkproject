@@ -50,7 +50,7 @@ module.exports = fp(async function (fastify, opts) {
             request.url !== '/' &&
             !request.url.includes('/docs')
         ) {
-            token = request.headers.authorization.split(' ')[1];
+            const token = request.headers.authorization.split(' ')[1];
             try {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET, {
                     algorithms: 'HS256',
