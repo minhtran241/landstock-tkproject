@@ -1,4 +1,3 @@
-// Import required modules
 const fs = require('fs');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
@@ -111,8 +110,11 @@ const putLeadLand = async (request, reply) => {
         // Log and respond with the error details
         console.error(error);
         return reply
-            .code(error.response?.status || 500)
-            .send(error.response?.data || 'Internal Server Error');
+            .code(
+                error.response?.status ||
+                    httpResponses.INTERNAL_SERVER_ERROR.code
+            )
+            .send(error.response?.data || httpResponses.INTERNAL_SERVER_ERROR);
     }
 };
 

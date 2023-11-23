@@ -6,6 +6,7 @@ CREATE TABLE tb_KhachHang (
 	iTrangThai Int32,
 	sTrangThai String,
 	sMa String,
+	sSuKien String,
 	createdAt DateTime DEFAULT now() NOT NULL
 ) ENGINE = MergeTree()
 ORDER BY createdAt;

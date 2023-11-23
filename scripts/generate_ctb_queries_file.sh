@@ -84,6 +84,7 @@ create_table() {
             echo "    iTrangThai Int32," >> "$SQL_FILE"
 			echo "    sTrangThai String," >> "$SQL_FILE"
             echo "    sMa String," >> "$SQL_FILE"
+			echo "    sSuKien String," >> "$SQL_FILE"
         ;;
         "HuongNha")
             echo "    iID_HuongNha Int64," >> "$SQL_FILE"
