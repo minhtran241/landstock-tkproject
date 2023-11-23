@@ -1,6 +1,6 @@
 'use strict';
 
-const { postToLead } = require('../../../controllers/mb/lead');
+const { putLeadLand } = require('../../../controllers/mb/lead');
 
 /**
  *
@@ -11,7 +11,7 @@ const { postToLead } = require('../../../controllers/mb/lead');
  * Route for testing MB lead post API.
  * @type {Object}
  */
-const postToLeadOpts = {
+const putLeadLandOpts = {
     schema: {
         tags: ['MB', 'lead'],
         description: 'Route for testing MB lead put API',
@@ -28,7 +28,7 @@ const postToLeadOpts = {
             },
         },
     },
-    handler: postToLead,
+    handler: putLeadLand,
 };
 
 /**
@@ -38,5 +38,5 @@ const postToLeadOpts = {
  * @param {Object} opts - Options for the route registration.
  */
 module.exports = async function (fastify, opts) {
-    fastify.put('/', postToLeadOpts);
+    fastify.put('/', putLeadLandOpts);
 };

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
-const httpResponses = require('../../../http/httpResponses');
 const jwt = require('jsonwebtoken');
+const httpResponses = require('../../../http/httpResponses');
 
 // Function to sign a new token
 const signNewToken = () => {
@@ -11,8 +11,8 @@ const signNewToken = () => {
         'utf-8'
     );
     const payload = {
-        timestamp: 1690789715794, // Current timestamp
-        iat: 1690789715, // Issued at timestamp
+        timestamp: Date.now() / 1000, // Current timestamp
+        // iat: Date.now() / 1000, // Issued at timestamp
     };
 
     // Sign a new token
@@ -35,7 +35,7 @@ const apiClient = axios.create({
 
 let previousApiToken = signNewToken();
 
-const postToLead = async (request, reply) => {
+const putLeadLand = async (request, reply) => {
     const { body } = request;
     const mbApiUrl = '/lead/land';
 
@@ -83,5 +83,5 @@ const postToLead = async (request, reply) => {
 };
 
 module.exports = {
-    postToLead,
+    putLeadLand,
 };
