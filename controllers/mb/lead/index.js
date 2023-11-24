@@ -45,7 +45,7 @@ const signNewToken = () => {
 
 // Reusable Axios instance with default headers
 const apiClient = axios.create({
-    baseURL: process.env.MB_DEV_API_URL,
+    baseURL: process.env.MB_UAT_API_URL,
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
