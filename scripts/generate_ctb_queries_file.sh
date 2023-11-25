@@ -22,7 +22,7 @@ if [ -f "$SQL_FILE" ]; then
 	touch "$SQL_FILE"
 fi
 
-echo "USE ${CLICKHOUSE_DATABASE};" >> "$SQL_FILE"
+# echo "USE ${CLICKHOUSE_DATABASE};" >> "$SQL_FILE"
 # Function to create a table
 create_table() {
     TABLE_NAME="${CLIENT_CODE}_${1}"
