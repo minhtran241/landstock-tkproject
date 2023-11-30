@@ -42,7 +42,8 @@ module.exports = fp(async function (fastify, opts) {
             try {
                 jwt.verify(token, process.env.JWT_SECRET, {
                     algorithms: 'HS256',
-                    issuer: process.env.JWT_ISSUER,
+                    issuer:
+                        process.env.JWT_ISSUER || process.env.JWT_ISSUER_LAN,
                     audience: process.env.JWT_AUDIENCE,
                     subject: process.env.JWT_SUBJECT,
                 });
