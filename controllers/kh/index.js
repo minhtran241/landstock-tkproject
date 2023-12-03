@@ -2,16 +2,6 @@
 
 const axios = require('axios');
 
-axios.interceptors.request.use((request) => {
-    console.log('Starting Request', JSON.stringify(request, null, 2));
-    return request;
-});
-
-axios.interceptors.response.use((response) => {
-    console.log('Response:', JSON.stringify(response, null, 2));
-    return response;
-});
-
 const { po_KhachHang } = require('../../utilities/paramsOperations');
 const {
     getAllEntriesStd,
@@ -58,6 +48,15 @@ const getEntryById = async (request, reply) => {
  */
 const postEntry = async (request, reply) => {
     const TKKhCallBack = async () => {
+        axios.interceptors.request.use((request) => {
+            console.log('Starting Request', JSON.stringify(request, null, 2));
+            return request;
+        });
+
+        axios.interceptors.response.use((response) => {
+            console.log('Response:', JSON.stringify(response, null, 2));
+            return response;
+        });
         const khApiUrl = '/kh';
         const headers = {
             ...apiClient.defaults.headers,
