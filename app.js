@@ -33,6 +33,7 @@ const start = async () => {
             host: process.env.FASTIFY_ADDRESS || '127.0.0.1',
             port: process.env.FASTIFY_PORT || 3000,
         });
+        fastify.swagger();
         fastify.log.info(
             `Server listening on ${fastify.server.address().port}`
         );

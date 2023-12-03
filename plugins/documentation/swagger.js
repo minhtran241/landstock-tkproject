@@ -6,7 +6,8 @@ const fp = require('fastify-plugin');
 // to export the decorators to the outer scope
 
 module.exports = fp(async function (fastify, opts) {
-    fastify.register(require('@fastify/swagger'), {
+    fastify.register(require('@fastify/swagger'), {});
+    fastify.register(require('@fastify/swagger-ui'), {
         routePrefix: '/docs',
         swagger: {
             info: {
