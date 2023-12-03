@@ -164,15 +164,15 @@ const postEntryStd = async (
             await processFileInserts(po_Name, request.body);
         }
 
-        reply
-            .code(httpResponses.CREATED.statusCode)
-            .send(httpResponses.CREATED);
-
         // Call the custom callback if it exists, don't need to wait for it to finish
         if (customCallback) {
             await customCallback(request.body);
             console.log('CUSTOM CALLBACK');
         }
+
+        reply
+            .code(httpResponses.CREATED.statusCode)
+            .send(httpResponses.CREATED);
     } catch (error) {
         handleError(error, reply);
     }
