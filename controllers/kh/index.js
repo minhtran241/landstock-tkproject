@@ -53,11 +53,14 @@ const postEntry = async (request, reply) => {
             ...apiClient.defaults.headers,
         };
         const { body } = request;
-        // call axios and don't need to await
-        const res = await apiClient.post(khApiUrl, body, {
-            headers,
-        });
-        return res;
+        try {
+            const res = await apiClient.post(khApiUrl, body, {
+                headers,
+            });
+            return res;
+        } catch (error) {
+            console.log('ERROR: ', error);
+        }
     };
     return postEntryStd(
         request,
