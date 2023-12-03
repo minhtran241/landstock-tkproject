@@ -24,6 +24,7 @@
     "@fastify/swagger": "^8.11.0",
     "@fastify/swagger-ui": "^1.10.1",
     "axios": "^1.6.2",
+    "axios-debug-log": "^1.0.0",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.8.0",
     "fastify-plugin": "^4.5.1",
