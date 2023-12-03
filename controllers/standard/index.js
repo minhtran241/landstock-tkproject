@@ -147,7 +147,8 @@ const postEntryStd = async (
     reply,
     po_Name,
     table,
-    includeFiles = false
+    includeFiles = false,
+    customCallback = null
 ) => {
     try {
         const cleanedValues = getPostQueryValues(request.body, po_Name);
@@ -166,6 +167,11 @@ const postEntryStd = async (
         reply
             .code(httpResponses.CREATED.statusCode)
             .send(httpResponses.CREATED);
+
+        // Call the custom callback if it exists, don't need to wait for it to finish
+        if (customCallback) {
+            customCallback(request.body);
+        }
     } catch (error) {
         handleError(error, reply);
     }

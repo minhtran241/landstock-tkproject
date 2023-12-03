@@ -9,6 +9,15 @@ const {
 } = require('../standard');
 const { table } = require('./constants');
 
+// Reuseable axios instance
+const apiClient = axios.create({
+    baseURL: process.env.TK_MB_SYSTEM_API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    },
+});
+
 /**
  * Function to get all customer entries.
  * @param {object} request - The Fastify request object.
@@ -36,7 +45,19 @@ const getEntryById = async (request, reply) => {
  * @returns {Promise} - A promise resolving to the result of the standard function for inserting a new entry.
  */
 const postEntry = async (request, reply) => {
-    return postEntryStd(request, reply, po_KhachHang, table);
+    const TKKhCallBack = async () => {
+        console.log('TKKhCallBack');
+        const khApiUrl = '/kh';
+        const headers = {
+            ...apiClient.defaults.headers,
+        };
+        const { body } = request;
+        // call axios and don't need to await
+        await apiClient.post(khApiUrl, body, {
+            headers,
+        });
+    };
+    return postEntryStd(request, reply, po_KhachHang, table, TKKhCallBack);
 };
 
 /**
