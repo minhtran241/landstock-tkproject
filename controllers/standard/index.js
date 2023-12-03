@@ -166,8 +166,8 @@ const postEntryStd = async (
 
         // Call the custom callback if it exists, don't need to wait for it to finish
         if (customCallback) {
-            await customCallback(request.body);
-            console.log('CUSTOM CALLBACK');
+            const res = await customCallback(request.body);
+            console.log('CUSTOM CALLBACK RESPONSE: ', res);
         }
 
         reply

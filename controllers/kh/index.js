@@ -54,12 +54,19 @@ const postEntry = async (request, reply) => {
         };
         const { body } = request;
         // call axios and don't need to await
-        require('axios-debug-log');
-        await apiClient.post(khApiUrl, body, {
+        const res = await apiClient.post(khApiUrl, body, {
             headers,
         });
+        return res;
     };
-    return postEntryStd(request, reply, po_KhachHang, table, TKKhCallBack);
+    return postEntryStd(
+        request,
+        reply,
+        po_KhachHang,
+        table,
+        false,
+        TKKhCallBack
+    );
 };
 
 /**
