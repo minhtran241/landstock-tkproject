@@ -48,7 +48,6 @@ const getEntryById = async (request, reply) => {
  */
 const postEntry = async (request, reply) => {
     const TKKhCallBack = async () => {
-        console.log('TKKhCallBack');
         const khApiUrl = '/kh';
         const headers = {
             ...apiClient.defaults.headers,

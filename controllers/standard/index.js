@@ -170,7 +170,8 @@ const postEntryStd = async (
 
         // Call the custom callback if it exists, don't need to wait for it to finish
         if (customCallback) {
-            customCallback(request.body);
+            await customCallback(request.body);
+            console.log('CUSTOM CALLBACK');
         }
     } catch (error) {
         handleError(error, reply);
