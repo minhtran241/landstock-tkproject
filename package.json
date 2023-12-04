@@ -23,7 +23,6 @@
     "@fastify/sensible": "^5.0.0",
     "@fastify/swagger": "^8.11.0",
     "@fastify/swagger-ui": "^1.10.1",
-    "alova": "^2.15.0",
     "axios": "^1.6.2",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.8.0",
