@@ -1,5 +1,6 @@
 const fs = require('fs');
 const axios = require('axios');
+const alova = require('alova');
 const jwt = require('jsonwebtoken');
 const httpResponses = require('../../../http/httpResponses');
 
@@ -53,6 +54,13 @@ const apiClient = axios.create({
     },
 });
 
+const alovaInstance = alova.createAlova({
+    baseURL: process.env.MB_UAT_API_URL,
+    cacheLogger: true,
+    localCache: true,
+    timeout: 10000,
+});
+
 // Initialize the previous API token with a new one
 let previousApiToken = signNewToken();
 
@@ -87,17 +95,26 @@ const putLeadLand = async (request, reply) => {
     // Construct headers for the API request
     const headers = {
         Authorization: `Bearer ${apiToken}`,
-        ...apiClient.defaults.headers,
+        // ...apiClient.defaults.headers,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        partnerKey: process.env.MB_PARTNER_KEY,
     };
 
     try {
         // Make a PUT request to the API with the constructed headers
-        const { status, data } = await apiClient.put(mbApiUrl, body, {
+        // const { status, data } = await apiClient.put(mbApiUrl, body, {
+        //     headers,
+        // });
+
+        const x = await alovaInstance.Put(mbApiUrl, body, {
             headers,
         });
 
+        console.log('ALOVA RESPONSE: ', x);
+
         // Respond with the API response
-        return reply.code(status).send(data);
+        return reply.code(201).send(x);
     } catch (error) {
         // Handle unauthorized errors by refreshing the token and retrying the request
         if (
