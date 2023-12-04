@@ -1,9 +1,9 @@
 const fs = require('fs');
 const axios = require('axios');
-const alova = require('alova');
 const jwt = require('jsonwebtoken');
 const httpResponses = require('../../../http/httpResponses');
 
+import { createAlova } from 'alova';
 // Constants for configuration
 const PRIVATE_KEY_PATH = `${__dirname}/certs/private.pem`;
 const TOKEN_EXPIRATION = '5m';
@@ -54,7 +54,7 @@ const apiClient = axios.create({
     },
 });
 
-const alovaInstance = alova.createAlova({
+const alovaInstance = createAlova({
     baseURL: process.env.MB_UAT_API_URL,
     cacheLogger: true,
     localCache: true,
