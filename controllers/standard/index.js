@@ -127,11 +127,11 @@ const getEntryByIdStd = async (
         );
         console.log('QUERY: ', query);
         console.log('VALUES: ', values);
-        const rows = await client.queryPromise({
+        const rows = await client.queryPromise(
             query,
-            values,
+            values
             // format: 'JSONEachRow',
-        });
+        );
         // let data = await rows.json();
 
         if (includeFiles) {
