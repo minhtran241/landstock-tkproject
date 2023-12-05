@@ -47,7 +47,7 @@ const INCondition = (pattr, values) => {
     // use data binding to prevent SQL injection
     const vps = values
         .split(',')
-        .map((val, index) => `${pattr.p}:${pattr.clht}`)
+        .map((val, index) => `{${pattr.p}:${pattr.clht}}`)
         .join(',');
     const valueParams = values.split(',').reduce((params, val, index) => {
         params[`${pattr.p}:${pattr.clht}`] = convertValueBasedOnType(
