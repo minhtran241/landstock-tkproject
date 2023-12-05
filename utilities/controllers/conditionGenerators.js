@@ -4,7 +4,7 @@
  * Converts a parameter and its value into a SQL condition.
  * @param {Object} po - The parameter operation object.
  * @param {Object} values - The values to use in the condition.
- * @returns {string} - The generated SQL condition.
+ * @returns {object} - An object containing the condition format and values for data binding.
  */
 const paramToCondition = (po, values) => {
     // Get the appropriate condition generator function or use the default
@@ -17,10 +17,15 @@ const paramToCondition = (po, values) => {
  * Default condition generator for basic conditions.
  * @param {Object} po - The parameter operation object.
  * @param {Object} values - The values to use in the condition.
- * @returns {string} - The default SQL condition.
+ * @returns {object} - An object containing the condition format and values for data binding.
  */
 const defaultConditionGenerator = (po, values) => {
-    return `AND ${po.p} ${po.o} ${convertValueBasedOnType(po, values)}`;
+    // use data binding to prevent SQL injection
+    const paramName = `:${po.p}`;
+    return {
+        conditionFormat: `AND ${po.p} ${po.o} ${paramName}`,
+        values: { [paramName]: convertValueBasedOnType(po, values) },
+    };
 };
 
 /**
@@ -36,42 +41,66 @@ const sqlConditionGenerators = {
  * Condition generator for IN conditions.
  * @param {Object} pattr - The parameter attribute object.
  * @param {string} values - The values for the IN condition.
- * @returns {string} - The generated SQL condition.
+ * @returns {object} - An object containing the condition format and values for data binding.
  */
 const INCondition = (pattr, values) => {
+    // use data binding to prevent SQL injection
     const vps = values
         .split(',')
-        .map((val) => convertValueBasedOnType(pattr, val))
+        .map((val, index) => `:${pattr.p}_in_${index}`)
         .join(',');
-    return `AND ${pattr.p} IN (${vps})`;
+    const valueParams = values.split(',').reduce((params, val, index) => {
+        params[`${pattr.p}_in_${index}`] = convertValueBasedOnType(pattr, val);
+        return params;
+    }, {});
+    return {
+        conditionFormat: `AND ${pattr.p} IN (${vps})`,
+        values: valueParams,
+    };
 };
 
 /**
  * Condition generator for LIKE AND conditions.
  * @param {string} attr - The parameter attribute.
  * @param {string} values - The values for the LIKE AND condition.
- * @returns {string} - The generated SQL condition.
+ * @returns {object} - An object containing the condition format and values for data binding.
  */
 const LIKEANDCondition = (attr, values) => {
+    // use query parameters to prevent SQL injection
     const likeConditions = values
         .split(',')
-        .map((val) => `${attr} LIKE '%${val}%'`)
+        .map((val, index) => `${attr} LIKE :${attr}_like_${index}`)
         .join(' AND ');
-    return `AND ${likeConditions}`;
+
+    const valueParams = values.split(',').reduce((params, val, index) => {
+        params[`${attr}_like_${index}`] = `%${val}%`;
+        return params;
+    }, {});
+
+    return {
+        conditionFormat: `AND ${likeConditions}`,
+        values: valueParams,
+    };
 };
 
 /**
  * Condition generator for BETWEEN conditions.
  * @param {string} attr - The parameter attribute.
  * @param {string} rangeString - The range string for the BETWEEN condition.
- * @returns {string|null} - The generated SQL condition or null if not applicable.
+ * @returns {object|null} - An object containing the condition format and values for data binding, or null if not applicable.
  */
 const BETWEENCondition = (attr, rangeString) => {
     const rangeOperations = {
         eq: {
             // equal (Ex: ?iSoTang=1)
             regex: /^\d+(\.\d+)?$|^\.\d+$/,
-            fn: (match) => `AND ${attr} = ${parseFloat(match[0])}`,
+            fn: (match) => {
+                const paramName = `:${attr}_eq`;
+                return {
+                    conditionFormat: `AND ${attr} = ${paramName}`,
+                    values: { [paramName]: parseFloat(match[0]) },
+                };
+            },
         },
         mm: {
             // min max (Ex: ?iSoTang=[1,2], ?iSoTang=(1,2], ?iSoTang=[1,2), ?iSoTang=(1,2))
@@ -82,11 +111,27 @@ const BETWEENCondition = (attr, rangeString) => {
                     match[1] === '(' || match[1] === ')' ? '>' : '>=',
                     match[4] === '(' || match[4] === ')' ? '<' : '<=',
                 ];
-                const minCond = min ? `${attr} ${minOp} ${min}` : '';
-                const maxCond = max ? `${attr} ${maxOp} ${max}` : '';
-                return `AND ${minCond}${
-                    minCond && maxCond ? ' AND ' : ''
-                }${maxCond}`;
+
+                const valueParams = {};
+                if (min) {
+                    const minParamName = `:${attr}_min`;
+                    valueParams[minParamName] = min;
+                }
+
+                if (max) {
+                    const maxParamName = `:${attr}_max`;
+                    valueParams[maxParamName] = max;
+                }
+
+                const minCond = min ? `${attr} ${minOp} ${minParamName}` : '';
+                const maxCond = max ? `${attr} ${maxOp} ${maxParamName}` : '';
+
+                return {
+                    conditionFormat: `AND ${minCond}${
+                        minCond && maxCond ? ' AND ' : ''
+                    }${maxCond}`,
+                    values: valueParams,
+                };
             },
         },
     };
@@ -109,7 +154,7 @@ const BETWEENCondition = (attr, rangeString) => {
  */
 const convertValueBasedOnType = (po, val) => {
     if (po.t === 'string') {
-        return `'${val}'`;
+        return val;
     } else {
         return `${val}`;
     }

@@ -16,7 +16,7 @@ const { concatWithSpace } = require('../stringHelper');
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const selectAttrs = getAttributesByAction(paramsOperations, 's');
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    const whereConditions = generateWhereConditions(
+    const { conditionFormat, values } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
@@ -24,13 +24,14 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     // Sanitize limit and offset values
     const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
-    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${whereConditions} ${
+
+    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${
         limit ? `LIMIT ${limit}` : ''
     } ${skip ? `OFFSET ${skip}` : ''}`;
 
-    console.info(query);
+    console.info(query, values);
 
-    return { query, limit, skip };
+    return { query, values, limit, skip };
 };
 
 /**
@@ -39,7 +40,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
  * @param {object} requestQuery - Request query parameters.
  * @param {Array} paramsOperations - Array of parameter operations for the table.
  * @param {Array} conditionAttrs - Array of condition attributes.
- * @returns {string} - WHERE conditions string.
+ * @returns {object} - An object containing the condition format and values for data binding.
  */
 const generateWhereConditions = (
     requestQuery,
@@ -47,12 +48,7 @@ const generateWhereConditions = (
     conditionAttrs
 ) => {
     const conditions = conditionAttrs
-        .filter((attr) => {
-            // if (paramsOperations.find((po) => po.p === attr).o === 'BETWEEN') {
-            //     return hasBetweenAttribute(requestQuery, attr);
-            // }
-            return requestQuery[attr] !== undefined;
-        })
+        .filter((attr) => requestQuery[attr] !== undefined)
         .map((attr) =>
             paramToCondition(
                 paramsOperations.find((po) => po.p === attr),
@@ -60,7 +56,19 @@ const generateWhereConditions = (
             )
         );
 
-    return conditions.length > 0 ? ` ${conditions.join(' ')}` : '';
+    const conditionFormat =
+        conditions.length > 0
+            ? conditions.map((condition) => condition.conditionFormat).join(' ')
+            : '';
+    const values =
+        conditions.length > 0
+            ? conditions.reduce((allValues, condition) => {
+                  Object.assign(allValues, condition.values);
+                  return allValues;
+              }, {})
+            : {};
+
+    return { conditionFormat, values };
 };
 
 /**

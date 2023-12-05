@@ -44,9 +44,14 @@ function handleError(error, reply) {
  */
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
-        const { query } = getSelectQuery(request.query, po_Name, table);
+        const { query, values } = getSelectQuery(request.query, po_Name, table);
         console.log('QUERY: ', query);
-        const rows = await client.query({ query, format: 'JSONEachRow' });
+
+        const rows = await client.query({
+            query,
+            params: values,
+            format: 'JSONEachRow',
+        });
         let data = await rows.json();
 
         if (data !== null && data.length > 0) {
