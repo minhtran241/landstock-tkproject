@@ -22,22 +22,24 @@ const processFileAttributes = async (po_Name, requestParams, data) => {
 
     await Promise.all(
         fileAttrs.map(async (fileAttr) => {
-            const filesQuery = getSelectByIdQuery(
+            const { query, values } = getSelectByIdQuery(
                 requestParams,
                 fileAttr.po,
                 fileAttr.tbl,
                 BIG_MAX_LIMIT
             );
 
-            const filesRows = await client.query({
-                query: filesQuery,
-                format: 'JSONEachRow',
-            });
+            const filesRows = await client.queryPromise(query, values);
 
-            const filesData = await filesRows.json();
+            // const filesRows = await client.query({
+            //     query: filesQuery,
+            //     // format: 'JSONEachRow',
+            // });
 
-            if (filesData !== null && filesData.length > 0) {
-                data[0][fileAttr.p] = filesData;
+            // const filesData = await filesRows.json();
+
+            if (filesRows !== null && filesRows.length > 0) {
+                data[0][fileAttr.p] = filesRows;
             }
         })
     );
