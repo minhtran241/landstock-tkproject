@@ -73,7 +73,7 @@ const LIKEANDCondition = (pattr, values) => {
         .join(' AND ');
 
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[`${pattr.p}:${pattr.clht}`] = convertValueBasedOnType(val);
+        params[pattr.p] = convertToType(val, pattr.t);
         return params;
     }, {});
 
@@ -98,8 +98,8 @@ const BETWEENCondition = (pattr, rangeString) => {
                 // match[0] = 1
                 const paramName = `${pattr.p}:${pattr.clht}`;
                 return {
-                    conditionFormat: `AND ${pattr} = {${paramName}}`,
-                    values: { [paramName]: parseFloat(match[0]) },
+                    conditionFormat: `AND ${pattr.p} = {${paramName}}`,
+                    values: { [pattr.p]: convertToType(match[0], pattr.t) },
                 };
             },
         },
@@ -125,10 +125,10 @@ const BETWEENCondition = (pattr, rangeString) => {
                 }
 
                 const minCond = min
-                    ? `${pattr} ${minOp} {${minParamName}}`
+                    ? `${pattr.p} ${minOp} {${minParamName}}`
                     : '';
                 const maxCond = max
-                    ? `${pattr} ${maxOp} {${maxParamName}}`
+                    ? `${pattr.p} ${maxOp} {${maxParamName}}`
                     : '';
 
                 return {
