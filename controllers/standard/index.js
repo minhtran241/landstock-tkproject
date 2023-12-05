@@ -48,12 +48,13 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         console.log('QUERY: ', query);
         console.log('VALUES: ', values);
 
-        const rows = await client.query({
+        const rows = await client.queryPromise({
             query,
             params: values,
-            format: 'JSONEachRow',
+            // format: 'JSONEachRow',
         });
-        let data = await rows.json();
+        // let data = await rows.json();
+        let data = rows;
 
         if (data !== null && data.length > 0) {
             reply.code(200).send(data);
