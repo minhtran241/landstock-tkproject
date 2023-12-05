@@ -17,6 +17,7 @@ const client = new ClickHouseClient({
     password: process.env.CLICKHOUSE_PASSWORD,
     database: process.env.CLICKHOUSE_DATABASE,
     // max_open_connections: process.env.CLICKHOUSE_MAX_OPEN_CONNECTIONS ?? 1,
+    logger: console,
 });
 
 module.exports = client;
