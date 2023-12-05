@@ -21,7 +21,7 @@ const paramToCondition = (po, values) => {
  */
 const defaultConditionGenerator = (po, values) => {
     // use data binding to prevent SQL injection
-    const paramName = `:${po.p}`;
+    const paramName = `:${po.p}:${typeof values}`;
     return {
         conditionFormat: `AND ${po.p} ${po.o} ${paramName}`,
         values: { [paramName]: convertValueBasedOnType(po, values) },
@@ -47,10 +47,11 @@ const INCondition = (pattr, values) => {
     // use data binding to prevent SQL injection
     const vps = values
         .split(',')
-        .map((val, index) => `:${pattr.p}_in_${index}`)
+        .map((val, index) => `:${pattr.p}_in_${index}:${typeof val}`)
         .join(',');
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[`${pattr.p}_in_${index}`] = convertValueBasedOnType(pattr, val);
+        params[`${pattr.p}_in_${index}:${typeof val}`] =
+            convertValueBasedOnType(pattr, val);
         return params;
     }, {});
     return {
@@ -69,11 +70,13 @@ const LIKEANDCondition = (attr, values) => {
     // use query parameters to prevent SQL injection
     const likeConditions = values
         .split(',')
-        .map((val, index) => `${attr} LIKE :${attr}_like_${index}`)
+        .map(
+            (val, index) => `${attr} LIKE :${attr}_like_${index}:${typeof val}`
+        )
         .join(' AND ');
 
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[`${attr}_like_${index}`] = `%${val}%`;
+        params[`${attr}_like_${index}:${typeof val}`] = `%${val}%`;
         return params;
     }, {});
 
@@ -95,7 +98,7 @@ const BETWEENCondition = (attr, rangeString) => {
             // equal (Ex: ?iSoTang=1)
             regex: /^\d+(\.\d+)?$|^\.\d+$/,
             fn: (match) => {
-                const paramName = `:${attr}_eq`;
+                const paramName = `:${attr}_eq:${typeof parseFloat(match[0])}`;
                 return {
                     conditionFormat: `AND ${attr} = ${paramName}`,
                     values: { [paramName]: parseFloat(match[0]) },
@@ -114,12 +117,12 @@ const BETWEENCondition = (attr, rangeString) => {
 
                 const valueParams = {};
                 if (min) {
-                    const minParamName = `:${attr}_min`;
+                    const minParamName = `:${attr}_min:${typeof min}`;
                     valueParams[minParamName] = min;
                 }
 
                 if (max) {
-                    const maxParamName = `:${attr}_max`;
+                    const maxParamName = `:${attr}_max:${typeof max}`;
                     valueParams[maxParamName] = max;
                 }
 
