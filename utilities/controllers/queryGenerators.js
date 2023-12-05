@@ -186,17 +186,18 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
  */
 const getCountQuery = (requestQuery, paramsOperations, table) => {
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    const whereConditions = generateWhereConditions(
+    const { conditionFormat, values } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
     );
 
-    const query = `SELECT COUNT(*) FROM ${table} WHERE 1 = 1 ${whereConditions}`;
+    // const query = `SELECT COUNT(*) FROM ${table} WHERE 1 = 1 ${whereConditions}`;
+    const query = `SELECT COUNT(*) FROM ${table} WHERE 1 = 1 ${conditionFormat}`;
 
-    console.info(query);
+    // console.info(query);
 
-    return query;
+    return { query, values };
 };
 
 /**

@@ -84,14 +84,21 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
         }
 
         const func = request.query.f.split(',')[0];
-        const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
-        console.log('QUERY: ', funcQuery);
-        const rows = await client.queryPromise({
-            query: funcQuery,
+        const { query, values } = funcParamToQuery(
+            func,
+            request.query,
+            po_Name,
+            table
+        );
+        console.log('QUERY: ', query);
+        console.log('VALUES: ', values);
+        const rows = await client.queryPromise(
+            query,
+            values
             // format: 'JSONEachRow',
-        });
-        const data = await rows.json();
-        const sanitizedData = sanitizeGetFuncResponse(data, func);
+        );
+        // const data = await rows.json();
+        const sanitizedData = sanitizeGetFuncResponse(rows, func);
         reply.code(200).send(sanitizedData);
     } catch (error) {
         if (error.name.startsWith('Invalid function')) {
