@@ -48,11 +48,11 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         console.log('QUERY: ', query);
         console.log('VALUES: ', values);
 
-        const rows = await client.queryPromise({
+        const rows = await client.queryPromise(
             query,
-            params: values,
+            values
             // format: 'JSONEachRow',
-        });
+        );
         // let data = await rows.json();
         let data = rows;
 
