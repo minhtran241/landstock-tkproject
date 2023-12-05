@@ -86,9 +86,9 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
         const func = request.query.f.split(',')[0];
         const funcQuery = funcParamToQuery(func, request.query, po_Name, table);
         console.log('QUERY: ', funcQuery);
-        const rows = await client.query({
+        const rows = await client.queryPromise({
             query: funcQuery,
-            format: 'JSONEachRow',
+            // format: 'JSONEachRow',
         });
         const data = await rows.json();
         const sanitizedData = sanitizeGetFuncResponse(data, func);
@@ -120,17 +120,26 @@ const getEntryByIdStd = async (
     includeFiles = false
 ) => {
     try {
-        const query = getSelectByIdQuery(request.params, po_Name, table);
+        const { query, values } = getSelectByIdQuery(
+            request.params,
+            po_Name,
+            table
+        );
         console.log('QUERY: ', query);
-        const rows = await client.query({ query, format: 'JSONEachRow' });
-        let data = await rows.json();
+        console.log('VALUES: ', values);
+        const rows = await client.queryPromise({
+            query,
+            values,
+            // format: 'JSONEachRow',
+        });
+        // let data = await rows.json();
 
         if (includeFiles) {
-            await processFileAttributes(po_Name, request.params, data);
+            await processFileAttributes(po_Name, request.params, rows);
         }
 
-        if (data !== null && data.length > 0) {
-            reply.code(200).send(data[0]);
+        if (rows !== null && rows.length > 0) {
+            reply.code(200).send(rows[0]);
         } else {
             reply
                 .code(httpResponses.NOT_FOUND.statusCode)

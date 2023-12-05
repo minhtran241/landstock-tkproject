@@ -89,14 +89,14 @@ const getSelectByIdQuery = (
     const id = String(requestParams.id);
     const selectByIdAttrs = getAttributesByAction(paramsOperations, 'i');
     const pkAttr = getPKAttr(paramsOperations);
-    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE {${pkAttr.p}:${pkAttr.clht}} =`;
+    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT ${limit}`;
+    let values = {};
 
     if (pkAttr.p === 'sID') {
-        query += ` toUUID('${id}')`;
-    } else if (pkAttr.t === 'number') {
-        query += ` ${id}`;
-    } else if (pkAttr.t === 'string') {
-        query += ` '${id}'`;
+        // query += ` toUUID('${id}')`;
+        values[pkAttr.p] = `toUUID('${id}')`;
+    } else {
+        values[pkAttr.p] = id;
     }
 
     // if (pkAttr.p === 'sID') {
@@ -107,11 +107,11 @@ const getSelectByIdQuery = (
     //     query += `${pkAttr.p} = '${id}'`;
     // }
 
-    query = concatWithSpace(query, `LIMIT ${limit}`);
+    // query = concatWithSpace(query, `LIMIT ${limit}`);
 
-    console.info(query);
+    // console.info(query);
 
-    return query;
+    return { query, values };
 };
 
 /**
