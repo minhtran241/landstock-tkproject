@@ -21,7 +21,7 @@ const paramToCondition = (po, values) => {
  */
 const defaultConditionGenerator = (po, values) => {
     // use data binding to prevent SQL injection
-    const paramName = `:${po.p}:${typeof values}`;
+    const paramName = `:${po.p}:${po.clht}`;
     return {
         conditionFormat: `AND ${po.p} ${po.o} ${paramName}`,
         values: { [paramName]: convertValueBasedOnType(po, values) },
@@ -33,8 +33,8 @@ const defaultConditionGenerator = (po, values) => {
  */
 const sqlConditionGenerators = {
     IN: (po, values) => INCondition(po, values),
-    LIKEAND: (po, values) => LIKEANDCondition(po.p, values),
-    BETWEEN: (po, values) => BETWEENCondition(po.p, values),
+    LIKEAND: (po, values) => LIKEANDCondition(po, values),
+    BETWEEN: (po, values) => BETWEENCondition(po, values),
 };
 
 /**
@@ -47,11 +47,13 @@ const INCondition = (pattr, values) => {
     // use data binding to prevent SQL injection
     const vps = values
         .split(',')
-        .map((val, index) => `:${pattr.p}_in_${index}:${typeof val}`)
+        .map((val, index) => `${pattr.p}:${pattr.clht}`)
         .join(',');
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[`${pattr.p}_in_${index}:${typeof val}`] =
-            convertValueBasedOnType(pattr, val);
+        params[`${pattr.p}:${pattr.clht}`] = convertValueBasedOnType(
+            pattr,
+            val
+        );
         return params;
     }, {});
     return {
@@ -66,17 +68,15 @@ const INCondition = (pattr, values) => {
  * @param {string} values - The values for the LIKE AND condition.
  * @returns {object} - An object containing the condition format and values for data binding.
  */
-const LIKEANDCondition = (attr, values) => {
+const LIKEANDCondition = (pattr, values) => {
     // use query parameters to prevent SQL injection
     const likeConditions = values
         .split(',')
-        .map(
-            (val, index) => `${attr} LIKE :${attr}_like_${index}:${typeof val}`
-        )
+        .map((val, index) => `${pattr.p} LIKE %{${pattr.p}:${pattr.clht}}%`)
         .join(' AND ');
 
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[`${attr}_like_${index}:${typeof val}`] = `%${val}%`;
+        params[`${pattr.p}:${pattr.clht}`] = convertValueBasedOnType(val);
         return params;
     }, {});
 
@@ -92,15 +92,16 @@ const LIKEANDCondition = (attr, values) => {
  * @param {string} rangeString - The range string for the BETWEEN condition.
  * @returns {object|null} - An object containing the condition format and values for data binding, or null if not applicable.
  */
-const BETWEENCondition = (attr, rangeString) => {
+const BETWEENCondition = (pattr, rangeString) => {
     const rangeOperations = {
         eq: {
             // equal (Ex: ?iSoTang=1)
             regex: /^\d+(\.\d+)?$|^\.\d+$/,
             fn: (match) => {
-                const paramName = `:${attr}_eq:${typeof parseFloat(match[0])}`;
+                // match[0] = 1
+                const paramName = `${pattr.p}:${pattr.clht}`;
                 return {
-                    conditionFormat: `AND ${attr} = ${paramName}`,
+                    conditionFormat: `AND ${pattr} = {${paramName}}`,
                     values: { [paramName]: parseFloat(match[0]) },
                 };
             },
@@ -117,17 +118,21 @@ const BETWEENCondition = (attr, rangeString) => {
 
                 const valueParams = {};
                 if (min) {
-                    const minParamName = `:${attr}_min:${typeof min}`;
+                    const minParamName = `${pattr.p}:${pattr.clht}`;
                     valueParams[minParamName] = min;
                 }
 
                 if (max) {
-                    const maxParamName = `:${attr}_max:${typeof max}`;
+                    const maxParamName = `${pattr.p}:${pattr.clht}`;
                     valueParams[maxParamName] = max;
                 }
 
-                const minCond = min ? `${attr} ${minOp} ${minParamName}` : '';
-                const maxCond = max ? `${attr} ${maxOp} ${maxParamName}` : '';
+                const minCond = min
+                    ? `${pattr} ${minOp} {${minParamName}}`
+                    : '';
+                const maxCond = max
+                    ? `${pattr} ${maxOp} {${maxParamName}}`
+                    : '';
 
                 return {
                     conditionFormat: `AND ${minCond}${
