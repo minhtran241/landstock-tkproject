@@ -94,14 +94,14 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
         console.log('VALUES: ', values);
         const rows = await client.queryPromise(
             query,
-            values
+            values``
             // format: 'JSONEachRow',
         );
         // const data = await rows.json();
         const sanitizedData = sanitizeGetFuncResponse(rows, func);
         reply.code(200).send(sanitizedData);
     } catch (error) {
-        if (error.name.startsWith('Invalid function')) {
+        if (error.name.startsWith('Invalid function.')) {
             reply
                 .code(httpResponses.BAD_REQUEST.statusCode)
                 .send(httpResponses.BAD_REQUEST);
@@ -241,9 +241,14 @@ const deleteEntryStd = async (
                 .code(httpResponses.BAD_REQUEST.statusCode)
                 .send(httpResponses.BAD_REQUEST);
         }
-        const query = getDeleteQuery(request.params, po_Name, table);
+        const { query, values } = getDeleteQuery(
+            request.params,
+            po_Name,
+            table
+        );
         console.log('QUERY: ', query);
-        await client.query({ query });
+        console.log('VALUES: ', values);
+        await client.queryPromise(query, values);
 
         if (includeFiles) {
             await processFileDeletions(po_Name, request.params);

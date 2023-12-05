@@ -24,10 +24,11 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     // Sanitize limit and offset values
     const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
+    values = { ...values, limit, skip };
 
     const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${
-        limit ? `LIMIT ${limit}` : ''
-    } ${skip ? `OFFSET ${skip}` : ''}`;
+        limit ? `LIMIT {limit:UInt8}` : ''
+    } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
 
     console.info(query, values);
 
@@ -161,19 +162,20 @@ const getPostQueryValues = (requestBody, paramsOperations) => {
 const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const id = String(requestParams.id);
     const pkAttr = getPKAttr(paramsOperations);
-    let query = `ALTER TABLE ${table} DELETE WHERE `;
     const idCol = pkAttr.p;
+    let query = `ALTER TABLE ${table} DELETE WHERE ${idCol} = {${idCol}:${pkAttr.clht}}`;
+    values = {};
     if (idCol === 'sID') {
-        query += `sID = toUUID('${id}')`;
-    } else if (idCol.startsWith('i')) {
-        query += `${idCol} = ${id}`;
-    } else if (idCol.startsWith('s')) {
-        query += `${idCol} = '${id}'`;
+        values[idCol] = `toUUID('${id}')`;
+        // query += `sID = toUUID('${id}')`;
+    } else {
+        values[idCol] = id;
+        // query += `${idCol} = ${id}`;
     }
 
-    console.info(query);
+    // console.info(query);
 
-    return query;
+    return { query, values };
 };
 
 /**

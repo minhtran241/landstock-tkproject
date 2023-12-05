@@ -50,7 +50,7 @@ const INCondition = (pattr, values) => {
         .map((val, index) => `{${pattr.p}:${pattr.clht}}`)
         .join(',');
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[pattr.p] = convertToType(val, pattr.t);
+        params[pattr.p] = val;
         return params;
     }, {});
     return {
@@ -73,7 +73,7 @@ const LIKEANDCondition = (pattr, values) => {
         .join(' AND ');
 
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[pattr.p] = convertToType(val, pattr.t);
+        params[pattr.p] = val;
         return params;
     }, {});
 
@@ -99,7 +99,7 @@ const BETWEENCondition = (pattr, rangeString) => {
                 const paramName = `${pattr.p}:${pattr.clht}`;
                 return {
                     conditionFormat: `AND ${pattr.p} = {${paramName}}`,
-                    values: { [pattr.p]: convertToType(match[0], pattr.t) },
+                    values: { [pattr.p]: match[0] },
                 };
             },
         },
@@ -162,28 +162,6 @@ const convertValueBasedOnType = (po, val) => {
         return val;
     } else {
         return `${val}`;
-    }
-};
-
-const convertToType = (val, type) => {
-    // convert to number, string, array, object, boolean, null, undefined
-    switch (type) {
-        case 'number':
-            return Number(val);
-        case 'string':
-            return String(val);
-        case 'array':
-            return Array(val);
-        case 'object':
-            return Object(val);
-        case 'boolean':
-            return Boolean(val);
-        case 'null':
-            return null;
-        case 'undefined':
-            return undefined;
-        default:
-            return val;
     }
 };
 

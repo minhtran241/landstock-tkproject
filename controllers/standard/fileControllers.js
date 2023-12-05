@@ -88,13 +88,13 @@ const processFileDeletions = async (po_Name, requestParams) => {
 
     await Promise.all(
         fileAttrs.map(async (fileAttr) => {
-            const filesQuery = getDeleteQuery(
+            const { query, values } = getDeleteQuery(
                 requestParams,
                 fileAttr.po,
                 fileAttr.tbl
             );
 
-            await client.query({ query: filesQuery });
+            await client.queryPromise(query, values);
         })
     );
 };
