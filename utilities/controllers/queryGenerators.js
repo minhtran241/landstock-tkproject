@@ -16,7 +16,7 @@ const { concatWithSpace } = require('../stringHelper');
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const selectAttrs = getAttributesByAction(paramsOperations, 's');
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    const { conditionFormat, values } = generateWhereConditions(
+    let { conditionFormat, values } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
