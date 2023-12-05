@@ -50,7 +50,7 @@ const INCondition = (pattr, values) => {
         .map((val, index) => `{${pattr.p}:${pattr.clht}}`)
         .join(',');
     const valueParams = values.split(',').reduce((params, val, index) => {
-        params[pattr.p] = convertValueBasedOnType(pattr, val);
+        params[pattr.p] = convertValueBasedOnType(pattr, pattr.t);
         return params;
     }, {});
     return {
