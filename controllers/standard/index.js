@@ -187,8 +187,10 @@ const postEntryStd = async (
 
         // Call the custom callback if it exists after the response is sent
         if (customCallback) {
-            const res = await customCallback(request.body);
-            console.log('CUSTOM CALLBACK RESPONSE: ', res);
+            const { status, data } = await customCallback(request.body);
+            if (status !== httpResponses.OK.statusCode) {
+                console.error(data);
+            }
         }
     } catch (error) {
         handleError(error, reply);

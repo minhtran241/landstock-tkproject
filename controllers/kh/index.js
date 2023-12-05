@@ -59,7 +59,7 @@ const postEntry = async (request, reply) => {
             });
             return res;
         } catch (error) {
-            console.log('ERROR: ', error);
+            throw error;
         }
     };
     return postEntryStd(
