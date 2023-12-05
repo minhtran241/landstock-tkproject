@@ -12,10 +12,10 @@ const { ClickHouseClient } = require('@depyronick/clickhouse-client');
 // });
 
 const client = new ClickHouseClient({
-    host: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
-    username: process.env.CLICKHOUSE_USER ?? 'default',
-    password: process.env.CLICKHOUSE_PASSWORD ?? '',
-    database: process.env.CLICKHOUSE_DATABASE ?? 'default',
+    // host: process.env.CLICKHOUSE_HOST,
+    username: process.env.CLICKHOUSE_USER,
+    password: process.env.CLICKHOUSE_PASSWORD,
+    database: process.env.CLICKHOUSE_DATABASE,
     // max_open_connections: process.env.CLICKHOUSE_MAX_OPEN_CONNECTIONS ?? 1,
 });
 
