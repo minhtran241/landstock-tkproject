@@ -69,11 +69,11 @@ const processFileInserts = async (po_Name, requestBody) => {
 
             console.log('POST FILE ENTRIES: ', cleanedFilesValues);
 
-            await client.insert({
-                table: fileAttr.tbl,
-                values: cleanedFilesValues,
-                format: 'JSONEachRow',
-            });
+            await client.insertPromise(
+                fileAttr.tbl,
+                cleanedFilesValues
+                // format: 'JSONEachRow',
+            );
         })
     );
 };

@@ -187,11 +187,11 @@ const postEntryStd = async (
         const cleanedValues = getPostQueryValues(request.body, po_Name);
         console.log('POST ENTRY STD: ', cleanedValues);
 
-        await client.insert({
+        await client.insertPromise(
             table,
-            values: cleanedValues,
-            format: 'JSONEachRow',
-        });
+            cleanedValues
+            // format: 'JSONEachRow',
+        );
 
         if (includeFiles) {
             await processFileInserts(po_Name, request.body);
