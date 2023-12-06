@@ -27,8 +27,8 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
     query_params = { ...query_params, limit, skip };
 
     const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${
-        limit ? `LIMIT {limit:Int8}` : ''
-    } ${skip ? `OFFSET {skip:Int8}` : ''}`;
+        limit ? `LIMIT {limit:UInt8}` : ''
+    } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
 
     return { query, query_params, limit, skip };
 };
@@ -88,7 +88,7 @@ const getSelectByIdQuery = (
     const id = String(requestParams.id);
     const selectByIdAttrs = getAttributesByAction(paramsOperations, 'i');
     const pkAttr = getPKAttr(paramsOperations);
-    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT {limit:Int8}`;
+    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT {limit:UInt8}`;
     let query_params = {
         limit: limit,
     };
