@@ -50,7 +50,7 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', query_params);
+        console.log('PARAMS: ', query_params);
 
         const rows = await client.query({
             query,
@@ -94,7 +94,7 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', query_params);
+        console.log('PARAMS: ', query_params);
         const rows = await client.query({
             query,
             query_params,
@@ -136,7 +136,7 @@ const getEntryByIdStd = async (
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', query_params);
+        console.log('PARAMS: ', query_params);
         const rows = await client.query({
             query,
             query_params,
@@ -161,29 +161,13 @@ const getEntryByIdStd = async (
 };
 
 /**
- * The function `postEntryStd` is an asynchronous function that handles the
- * creation of a new entry in a database table, with optional file processing and a
- * custom callback function.
- * @param request - The `request` parameter is an object that represents the HTTP
- * request made to the server. It contains information such as the request method,
- * headers, body, and URL.
- * @param reply - The `reply` parameter is the function used to send the response
- * back to the client. It is typically provided by the framework or library being
- * used for handling HTTP requests.
- * @param po_Name - The `po_Name` parameter is a string that represents the name of
- * the post object. It is used in the `getPostQueryValues` and `processFileInserts`
- * functions to retrieve and process the values from the request body.
- * @param table - The `table` parameter is the name of the database table where the
- * entry will be inserted.
- * @param [includeFiles=false] - The `includeFiles` parameter is a boolean flag
- * that determines whether or not to include file uploads in the post entry. If set
- * to `true`, the function will call the `processFileInserts` function to handle
- * file uploads. If set to `false` or not provided, file uploads will
- * @param [customCallback=null] - The `customCallback` parameter is a function that
- * can be passed as an argument to the `postEntryStd` function. It allows you to
- * provide a custom callback function that will be called after the response is
- * sent. This can be useful if you need to perform additional actions or logic
- * after the entry
+ * Function to post an entry.
+ * @param {object} request - The Fastify request object.
+ * @param {object} reply - The Fastify reply object.
+ * @param {string} po_name - The name of the params operation
+ * @param {string} table - The name of the table.
+ * @param {boolean} includeFiles - Whether to include files.
+ * @param {function} customCallback - A custom callback function.
  */
 const postEntryStd = async (
     request,
@@ -250,7 +234,7 @@ const deleteEntryStd = async (
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', query_params);
+        console.log('PARAMS: ', query_params);
         await client.query({
             query,
             query_params,

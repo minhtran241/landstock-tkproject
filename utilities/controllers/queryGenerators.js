@@ -3,20 +3,18 @@ const { paramToCondition } = require('./conditionGenerators');
 const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
 const { cleanAndConvert, hasBetweenAttribute } = require('../queryHelper');
 const { sanitizeLimitAndOffset } = require('./sanitization');
-const { concatWithSpace } = require('../stringHelper');
 
 /**
- * Generates a SELECT query from the request query parameters.
- *
+ * Generates a SELECT query based on request query parameters.
  * @param {object} requestQuery - Request query parameters.
  * @param {Array} paramsOperations - Array of parameter operations for the table.
  * @param {string} table - Name of the table.
- * @returns {object} - The generated SELECT query, limit, and offset.
+ * @returns {object} - An object containing the query, query_params, limit, and skip.
  */
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const selectAttrs = getAttributesByAction(paramsOperations, 's');
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    let { conditionFormat, query_params } = generateWhereConditions(
+    const { conditionFormat, query_params } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
@@ -24,8 +22,6 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
 
     // Sanitize limit and offset query_params
     const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
-    query_params = { ...query_params, limit, skip };
-
     const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${
         limit ? `LIMIT {limit:UInt8}` : ''
     } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
@@ -61,10 +57,13 @@ const generateWhereConditions = (
             : '';
     const query_params =
         conditions.length > 0
-            ? conditions.reduce((allValues, condition) => {
-                  Object.assign(allValues, condition.query_params);
-                  return allValues;
-              }, {})
+            ? conditions.reduce(
+                  (allValues, condition) => ({
+                      ...allValues,
+                      ...condition.query_params,
+                  }),
+                  {}
+              )
             : {};
 
     return { conditionFormat, query_params };
@@ -88,29 +87,11 @@ const getSelectByIdQuery = (
     const id = String(requestParams.id);
     const selectByIdAttrs = getAttributesByAction(paramsOperations, 'i');
     const pkAttr = getPKAttr(paramsOperations);
-    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT {limit:UInt8}`;
-    let query_params = {
-        limit: limit,
+    const query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT {limit:UInt8}`;
+    const query_params = {
+        limit,
+        [pkAttr.p]: pkAttr.p === 'sID' ? `toUUID('${id}')` : id,
     };
-
-    if (pkAttr.p === 'sID') {
-        // query += ` toUUID('${id}')`;
-        query_params[pkAttr.p] = `toUUID('${id}')`;
-    } else {
-        query_params[pkAttr.p] = id;
-    }
-
-    // if (pkAttr.p === 'sID') {
-    //     query += `sID = toUUID('${id}')`;
-    // } else if (pkAttr.t === 'number') {
-    //     query += `${pkAttr.p} = ${id}`;
-    // } else if (pkAttr.t === 'string') {
-    //     query += `${pkAttr.p} = '${id}'`;
-    // }
-
-    // query = concatWithSpace(query, `LIMIT ${limit}`);
-
-    // console.info(query);
 
     return { query, query_params };
 };
@@ -123,27 +104,16 @@ const getSelectByIdQuery = (
  * @returns {Array} - Cleaned and processed objects for the post query.
  */
 const getPostQueryValues = (requestBody, paramsOperations) => {
-    // Initialize an array to store cleaned and processed objects
-    const cleanedObjects = [];
-    // Filter out only the attributes that are allowed to be posted (action 'p')
-    const postAttrs = getAttributesByAction(paramsOperations, 'p');
-
-    requestBody.forEach((object) => {
-        const filteredObject = Object.keys(object)
-            .filter((attr) => postAttrs.includes(attr))
-            .reduce((obj, attr) => {
-                obj[attr] = object[attr];
-                return obj;
-            }, {});
-        // Set a specific value for 'dNgayTao' attribute
-        if (paramsOperations.find((po) => po.p === 'dNgayTao') !== undefined) {
+    const cleanedObjects = requestBody.map((object) => {
+        const filteredObject = Object.fromEntries(
+            Object.entries(object).filter(([attr]) =>
+                getAttributesByAction(paramsOperations, 'p').includes(attr)
+            )
+        );
+        if (paramsOperations.find((po) => po.p === 'dNgayTao')) {
             filteredObject.dNgayTao = new Date();
         }
-
-        // Clean and convert the filtered object
-        const cleanedObject = cleanAndConvert(filteredObject);
-
-        cleanedObjects.push(cleanedObject);
+        return cleanAndConvert(filteredObject);
     });
 
     return cleanedObjects;
@@ -161,17 +131,10 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const id = String(requestParams.id);
     const pkAttr = getPKAttr(paramsOperations);
     const idCol = pkAttr.p;
-    let query = `ALTER TABLE ${table} DELETE WHERE ${idCol} = {${idCol}:${pkAttr.clht}}`;
-    let query_params = {};
-    if (idCol === 'sID') {
-        query_params[idCol] = `toUUID('${id}')`;
-        // query += `sID = toUUID('${id}')`;
-    } else {
-        query_params[idCol] = id;
-        // query += `${idCol} = ${id}`;
-    }
-
-    // console.info(query);
+    const query = `ALTER TABLE ${table} DELETE WHERE ${idCol} = {${idCol}:${pkAttr.clht}}`;
+    const query_params = {
+        [idCol]: idCol === 'sID' ? `toUUID('${id}')` : id,
+    };
 
     return { query, query_params };
 };
@@ -191,11 +154,7 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
         paramsOperations,
         conditionAttrs
     );
-
-    // const query = `SELECT COUNT(*) FROM ${table} WHERE 1 = 1 ${whereConditions}`;
     const query = `SELECT COUNT(*) FROM ${table} WHERE 1 = 1 ${conditionFormat}`;
-
-    // console.info(query);
 
     return { query, query_params };
 };
@@ -220,12 +179,12 @@ const getStatsQuery = {
  */
 const funcParamToQuery = (func, requestQuery, paramsOperations, table) => {
     if (getStatsQuery[func]) {
-        const query = getStatsQuery[func](
+        const { query, query_params } = getStatsQuery[func](
             requestQuery,
             paramsOperations,
             table
         );
-        return query;
+        return { query, query_params };
     } else {
         throw new Error(`Invalid function: ${func}`);
     }

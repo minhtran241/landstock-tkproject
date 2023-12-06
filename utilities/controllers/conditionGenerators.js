@@ -20,34 +20,39 @@ const paramToCondition = (po, query_params) => {
  * @returns {object} - An object containing the condition format and query_params for data binding.
  */
 const defaultConditionGenerator = (po, query_params) => {
+    const valueParams = {};
+    valueParams[po.p] = convertValueBasedOnType(po, query_params);
     return {
-        conditionFormat: `AND ${po.p} ${po.o} ${paramName}`,
-        query_params: { [po.p]: convertValueBasedOnType(po, query_params) },
+        conditionFormat: `AND ${po.p} ${po.o} {${po.p}:${po.clht}}`,
+        query_params: valueParams,
     };
 };
 
 /**
- * Condition generators for special conditions.
+ * Object containing condition generators for each operator.
+ * @type {Object}
+ * @property {function} IN - IN condition generator.
+ * @property {function} LIKEAND - LIKEAND condition generator.
+ * @property {function} BETWEEN - BETWEEN condition generator.
  */
 const sqlConditionGenerators = {
-    IN: (po, query_params) => INCondition(po, query_params),
-    LIKEAND: (po, query_params) => LIKEANDCondition(po, query_params),
-    BETWEEN: (po, query_params) => BETWEENCondition(po, query_params),
+    IN: INCondition,
+    LIKEAND: LIKEANDCondition,
+    BETWEEN: BETWEENCondition,
 };
 
 /**
- * Condition generator for IN conditions.
- * @param {Object} pattr - The parameter attribute object.
- * @param {string} query_params - The query_params for the IN condition.
+ * IN condition generator.
+ * @param {Object} pattr - The parameter operation object.
+ * @param {Object} query_params - The query_params to use in the condition.
  * @returns {object} - An object containing the condition format and query_params for data binding.
  */
 const INCondition = (pattr, query_params) => {
-    // use data binding to prevent SQL injection
     const vps = query_params
         .split(',')
-        .map((val, index) => `{${pattr.p}:${pattr.clht}}`)
+        .map((val) => `{${pattr.p}:${pattr.clht}}`)
         .join(',');
-    const valueParams = query_params.split(',').reduce((params, val, index) => {
+    const valueParams = query_params.split(',').reduce((params, val) => {
         params[pattr.p] = val;
         return params;
     }, {});
@@ -58,23 +63,20 @@ const INCondition = (pattr, query_params) => {
 };
 
 /**
- * Condition generator for LIKE AND conditions.
- * @param {string} attr - The parameter attribute.
- * @param {string} query_params - The query_params for the LIKE AND condition.
+ * LIKEAND condition generator.
+ * @param {Object} pattr - The parameter operation object.
+ * @param {Object} query_params - The query_params to use in the condition.
  * @returns {object} - An object containing the condition format and query_params for data binding.
  */
 const LIKEANDCondition = (pattr, query_params) => {
-    // use query parameters to prevent SQL injection
     const likeConditions = query_params
         .split(',')
-        .map((val, index) => `${pattr.p} LIKE %{${pattr.p}:${pattr.clht}}%`)
+        .map((val) => `${pattr.p} LIKE %{${pattr.p}:${pattr.clht}}%`)
         .join(' AND ');
-
-    const valueParams = query_params.split(',').reduce((params, val, index) => {
+    const valueParams = query_params.split(',').reduce((params, val) => {
         params[pattr.p] = val;
         return params;
     }, {});
-
     return {
         conditionFormat: `AND ${likeConditions}`,
         query_params: valueParams,
@@ -82,18 +84,16 @@ const LIKEANDCondition = (pattr, query_params) => {
 };
 
 /**
- * Condition generator for BETWEEN conditions.
- * @param {string} attr - The parameter attribute.
- * @param {string} rangeString - The range string for the BETWEEN condition.
- * @returns {object|null} - An object containing the condition format and query_params for data binding, or null if not applicable.
+ * BETWEEN condition generator.
+ * @param {Object} pattr - The parameter operation object.
+ * @param {Object} query_params - The query_params to use in the condition.
+ * @returns {object} - An object containing the condition format and query_params for data binding.
  */
 const BETWEENCondition = (pattr, rangeString) => {
     const rangeOperations = {
         eq: {
-            // equal (Ex: ?iSoTang=1)
             regex: /^\d+(\.\d+)?$|^\.\d+$/,
             fn: (match) => {
-                // match[0] = 1
                 const paramName = `${pattr.p}:${pattr.clht}`;
                 return {
                     conditionFormat: `AND ${pattr.p} = {${paramName}}`,
@@ -102,7 +102,6 @@ const BETWEENCondition = (pattr, rangeString) => {
             },
         },
         mm: {
-            // min max (Ex: ?iSoTang=[1,2], ?iSoTang=(1,2], ?iSoTang=[1,2), ?iSoTang=(1,2))
             regex: /(\[|\(|\),\])([^,]*),([^)]*)(\[|\(|\)|\])/,
             fn: (match) => {
                 const [min, max] = [match[2].trim(), match[3].trim()];
@@ -114,17 +113,8 @@ const BETWEENCondition = (pattr, rangeString) => {
                 const valueParams = {};
                 const minParamName = `${pattr.p}_min:${pattr.clht}`;
                 const maxParamName = `${pattr.p}_max:${pattr.clht}`;
-                valueParams[minParamName.split(':')[0]] = min ? min : null;
-                valueParams[maxParamName.split(':')[0]] = max ? max : null;
-                // if (min) {
-                //     const minParamName = `${pattr.p}:${pattr.clht}`;
-                //     valueParams[minParamName] = min;
-                // }
-
-                // if (max) {
-                //     const maxParamName = `${pattr.p}:${pattr.clht}`;
-                //     valueParams[maxParamName] = max;
-                // }
+                valueParams[minParamName.split(':')[0]] = min || null;
+                valueParams[maxParamName.split(':')[0]] = max || null;
 
                 const minCond = min
                     ? `${pattr.p} ${minOp} {${minParamName}}`
@@ -156,16 +146,11 @@ const BETWEENCondition = (pattr, rangeString) => {
 /**
  * Converts a value based on its type.
  * @param {Object} po - The parameter operation object.
- * @param {string} val - The value to convert.
+ * @param {Object} val - The value to convert.
  * @returns {string} - The converted value.
  */
-const convertValueBasedOnType = (po, val) => {
-    if (po.t === 'string') {
-        return val;
-    } else {
-        return `${val}`;
-    }
-};
+const convertValueBasedOnType = (po, val) =>
+    po.t === 'string' ? val : `${val}`;
 
 module.exports = {
     paramToCondition,
