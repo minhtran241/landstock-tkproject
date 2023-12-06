@@ -112,8 +112,8 @@ const BETWEENCondition = (pattr, rangeString) => {
                 ];
 
                 const valueParams = {};
-                const minParamName = pattr.p;
-                const maxParamName = pattr.p;
+                const minParamName = `${pattr.p}_min:${pattr.clht}`;
+                const maxParamName = `${pattr.p}_max:${pattr.clht}`;
                 valueParams[minParamName] = min ? min : null;
                 valueParams[maxParamName] = max ? max : null;
                 // if (min) {
