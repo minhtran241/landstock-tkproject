@@ -20,11 +20,9 @@ const paramToCondition = (po, values) => {
  * @returns {object} - An object containing the condition format and values for data binding.
  */
 const defaultConditionGenerator = (po, values) => {
-    // use data binding to prevent SQL injection
-    const paramName = `:${po.p}:${po.clht}`;
     return {
         conditionFormat: `AND ${po.p} ${po.o} ${paramName}`,
-        values: { [paramName]: convertValueBasedOnType(po, values) },
+        values: { [po.p]: convertValueBasedOnType(po, values) },
     };
 };
 

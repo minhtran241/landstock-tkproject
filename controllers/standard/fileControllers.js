@@ -22,24 +22,23 @@ const processFileAttributes = async (po_Name, requestParams, data) => {
 
     await Promise.all(
         fileAttrs.map(async (fileAttr) => {
-            const { query, values } = getSelectByIdQuery(
+            const { query, query_params } = getSelectByIdQuery(
                 requestParams,
                 fileAttr.po,
                 fileAttr.tbl,
                 BIG_MAX_LIMIT
             );
 
-            const filesRows = await client.queryPromise(query, values);
+            const filesRows = await client.query({
+                query,
+                query_params,
+                format: 'JSONEachRow',
+            });
 
-            // const filesRows = await client.query({
-            //     query: filesQuery,
-            //     // format: 'JSONEachRow',
-            // });
+            const filesData = await filesRows.json();
 
-            // const filesData = await filesRows.json();
-
-            if (filesRows !== null && filesRows.length > 0) {
-                data[0][fileAttr.p] = filesRows;
+            if (filesData !== null && filesData.length > 0) {
+                data[0][fileAttr.p] = filesData;
             }
         })
     );
@@ -69,11 +68,11 @@ const processFileInserts = async (po_Name, requestBody) => {
 
             console.log('POST FILE ENTRIES: ', cleanedFilesValues);
 
-            await client.insertPromise(
-                fileAttr.tbl,
-                cleanedFilesValues
-                // format: 'JSONEachRow',
-            );
+            await client.insert({
+                table: fileAttr.tbl,
+                values: cleanedFilesValues,
+                format: 'JSONEachRow',
+            });
         })
     );
 };
@@ -88,13 +87,17 @@ const processFileDeletions = async (po_Name, requestParams) => {
 
     await Promise.all(
         fileAttrs.map(async (fileAttr) => {
-            const { query, values } = getDeleteQuery(
+            const { query, query_params } = getDeleteQuery(
                 requestParams,
                 fileAttr.po,
                 fileAttr.tbl
             );
 
-            await client.queryPromise(query, values);
+            await client.query({
+                query,
+                query_params,
+                format: 'JSONEachRow',
+            });
         })
     );
 };

@@ -16,23 +16,21 @@ const { concatWithSpace } = require('../stringHelper');
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const selectAttrs = getAttributesByAction(paramsOperations, 's');
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    let { conditionFormat, values } = generateWhereConditions(
+    let { conditionFormat, query_params } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
     );
 
-    // Sanitize limit and offset values
+    // Sanitize limit and offset query_params
     const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
-    values = { ...values, limit, skip };
+    query_params = { ...query_params, limit, skip };
 
     const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${
-        limit ? `LIMIT {limit:UInt8}` : ''
-    } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
+        limit ? `LIMIT {limit:Int8}` : ''
+    } ${skip ? `OFFSET {skip:Int8}` : ''}`;
 
-    console.info(query, values);
-
-    return { query, values, limit, skip };
+    return { query, query_params, limit, skip };
 };
 
 /**
@@ -41,7 +39,7 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
  * @param {object} requestQuery - Request query parameters.
  * @param {Array} paramsOperations - Array of parameter operations for the table.
  * @param {Array} conditionAttrs - Array of condition attributes.
- * @returns {object} - An object containing the condition format and values for data binding.
+ * @returns {object} - An object containing the condition format and query_params for data binding.
  */
 const generateWhereConditions = (
     requestQuery,
@@ -61,15 +59,15 @@ const generateWhereConditions = (
         conditions.length > 0
             ? conditions.map((condition) => condition.conditionFormat).join(' ')
             : '';
-    const values =
+    const query_params =
         conditions.length > 0
             ? conditions.reduce((allValues, condition) => {
-                  Object.assign(allValues, condition.values);
+                  Object.assign(allValues, condition.query_params);
                   return allValues;
               }, {})
             : {};
 
-    return { conditionFormat, values };
+    return { conditionFormat, query_params };
 };
 
 /**
@@ -90,16 +88,16 @@ const getSelectByIdQuery = (
     const id = String(requestParams.id);
     const selectByIdAttrs = getAttributesByAction(paramsOperations, 'i');
     const pkAttr = getPKAttr(paramsOperations);
-    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT {limit:UInt8}`;
-    let values = {
+    let query = `SELECT ${selectByIdAttrs} FROM ${table} WHERE ${pkAttr.p} = {${pkAttr.p}:${pkAttr.clht}} LIMIT {limit:Int8}`;
+    let query_params = {
         limit: limit,
     };
 
     if (pkAttr.p === 'sID') {
         // query += ` toUUID('${id}')`;
-        values[pkAttr.p] = `toUUID('${id}')`;
+        query_params[pkAttr.p] = `toUUID('${id}')`;
     } else {
-        values[pkAttr.p] = id;
+        query_params[pkAttr.p] = id;
     }
 
     // if (pkAttr.p === 'sID') {
@@ -114,11 +112,11 @@ const getSelectByIdQuery = (
 
     // console.info(query);
 
-    return { query, values };
+    return { query, query_params };
 };
 
 /**
- * Gets the values for a post query from the request body.
+ * Gets the query_params for a post query from the request body.
  *
  * @param {Array} requestBody - Request body containing objects to post.
  * @param {Array} paramsOperations - Array of parameter operations for the table.
@@ -164,18 +162,18 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const pkAttr = getPKAttr(paramsOperations);
     const idCol = pkAttr.p;
     let query = `ALTER TABLE ${table} DELETE WHERE ${idCol} = {${idCol}:${pkAttr.clht}}`;
-    values = {};
+    query_params = {};
     if (idCol === 'sID') {
-        values[idCol] = `toUUID('${id}')`;
+        query_params[idCol] = `toUUID('${id}')`;
         // query += `sID = toUUID('${id}')`;
     } else {
-        values[idCol] = id;
+        query_params[idCol] = id;
         // query += `${idCol} = ${id}`;
     }
 
     // console.info(query);
 
-    return { query, values };
+    return { query, query_params };
 };
 
 /**
@@ -188,7 +186,7 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
  */
 const getCountQuery = (requestQuery, paramsOperations, table) => {
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    const { conditionFormat, values } = generateWhereConditions(
+    const { conditionFormat, query_params } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
@@ -199,7 +197,7 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
 
     // console.info(query);
 
-    return { query, values };
+    return { query, query_params };
 };
 
 /**

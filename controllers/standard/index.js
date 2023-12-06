@@ -44,17 +44,20 @@ function handleError(error, reply) {
  */
 const getAllEntriesStd = async (request, reply, po_Name, table) => {
     try {
-        const { query, values } = getSelectQuery(request.query, po_Name, table);
-        console.log('QUERY: ', query);
-        console.log('VALUES: ', values);
-
-        const rows = await client.queryPromise(
-            query,
-            values
-            // format: 'JSONEachRow',
+        const { query, query_params } = getSelectQuery(
+            request.query,
+            po_Name,
+            table
         );
-        // let data = await rows.json();
-        let data = rows;
+        console.log('QUERY: ', query);
+        console.log('VALUES: ', query_params);
+
+        const rows = await client.query({
+            query,
+            query_params,
+            format: 'JSONEachRow',
+        });
+        const data = await rows.json();
 
         if (data !== null && data.length > 0) {
             reply.code(200).send(data);
@@ -84,21 +87,21 @@ const getFuncValueStd = async (request, reply, po_Name, table) => {
         }
 
         const func = request.query.f.split(',')[0];
-        const { query, values } = funcParamToQuery(
+        const { query, query_params } = funcParamToQuery(
             func,
             request.query,
             po_Name,
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', values);
-        const rows = await client.queryPromise(
+        console.log('VALUES: ', query_params);
+        const rows = await client.query({
             query,
-            values``
-            // format: 'JSONEachRow',
-        );
-        // const data = await rows.json();
-        const sanitizedData = sanitizeGetFuncResponse(rows, func);
+            query_params,
+            format: 'JSONEachRow',
+        });
+        let data = await rows.json();
+        const sanitizedData = sanitizeGetFuncResponse(data, func);
         reply.code(200).send(sanitizedData);
     } catch (error) {
         if (error.name.startsWith('Invalid function.')) {
@@ -127,26 +130,26 @@ const getEntryByIdStd = async (
     includeFiles = false
 ) => {
     try {
-        const { query, values } = getSelectByIdQuery(
+        const { query, query_params } = getSelectByIdQuery(
             request.params,
             po_Name,
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', values);
-        const rows = await client.queryPromise(
+        console.log('VALUES: ', query_params);
+        const rows = await client.query({
             query,
-            values
-            // format: 'JSONEachRow',
-        );
-        // let data = await rows.json();
+            query_params,
+            format: 'JSONEachRow',
+        });
+        let data = await rows.json();
 
         if (includeFiles) {
-            await processFileAttributes(po_Name, request.params, rows);
+            await processFileAttributes(po_Name, request.params, data);
         }
 
-        if (rows !== null && rows.length > 0) {
-            reply.code(200).send(rows[0]);
+        if (data !== null && data.length > 0) {
+            reply.code(200).send(data[0]);
         } else {
             reply
                 .code(httpResponses.NOT_FOUND.statusCode)
@@ -194,11 +197,11 @@ const postEntryStd = async (
         const cleanedValues = getPostQueryValues(request.body, po_Name);
         console.log('POST ENTRY STD: ', cleanedValues);
 
-        await client.insertPromise(
+        await client.insert({
             table,
-            cleanedValues
-            // format: 'JSONEachRow',
-        );
+            values: cleanedValues,
+            format: 'JSONEachRow',
+        });
 
         if (includeFiles) {
             await processFileInserts(po_Name, request.body);
@@ -241,14 +244,18 @@ const deleteEntryStd = async (
                 .code(httpResponses.BAD_REQUEST.statusCode)
                 .send(httpResponses.BAD_REQUEST);
         }
-        const { query, values } = getDeleteQuery(
+        const { query, query_params } = getDeleteQuery(
             request.params,
             po_Name,
             table
         );
         console.log('QUERY: ', query);
-        console.log('VALUES: ', values);
-        await client.queryPromise(query, values);
+        console.log('VALUES: ', query_params);
+        await client.query({
+            query,
+            query_params,
+            format: 'JSONEachRow',
+        });
 
         if (includeFiles) {
             await processFileDeletions(po_Name, request.params);
