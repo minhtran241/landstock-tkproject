@@ -1,19 +1,6 @@
 'use strict';
 
 /**
- * Converts a parameter and its value into a SQL condition.
- * @param {Object} po - The parameter operation object.
- * @param {Object} query_params - The query_params to use in the condition.
- * @returns {object} - An object containing the condition format and query_params for data binding.
- */
-const paramToCondition = (po, query_params) => {
-    // Get the appropriate condition generator function or use the default
-    const generateCondition =
-        sqlConditionGenerators[po.o] || defaultConditionGenerator;
-    return generateCondition(po, query_params);
-};
-
-/**
  * Default condition generator for basic conditions.
  * @param {Object} po - The parameter operation object.
  * @param {Object} query_params - The query_params to use in the condition.
@@ -26,19 +13,6 @@ const defaultConditionGenerator = (po, query_params) => {
         conditionFormat: `AND ${po.p} ${po.o} {${po.p}:${po.clht}}`,
         query_params: valueParams,
     };
-};
-
-/**
- * Object containing condition generators for each operator.
- * @type {Object}
- * @property {function} IN - IN condition generator.
- * @property {function} LIKEAND - LIKEAND condition generator.
- * @property {function} BETWEEN - BETWEEN condition generator.
- */
-const sqlConditionGenerators = {
-    IN: INCondition,
-    LIKEAND: LIKEANDCondition,
-    BETWEEN: BETWEENCondition,
 };
 
 /**
@@ -141,6 +115,32 @@ const BETWEENCondition = (pattr, rangeString) => {
         }
     }
     return null;
+};
+
+/**
+ * Object containing condition generators for each operator.
+ * @type {Object}
+ * @property {function} IN - IN condition generator.
+ * @property {function} LIKEAND - LIKEAND condition generator.
+ * @property {function} BETWEEN - BETWEEN condition generator.
+ */
+const sqlConditionGenerators = {
+    IN: INCondition,
+    LIKEAND: LIKEANDCondition,
+    BETWEEN: BETWEENCondition,
+};
+
+/**
+ * Converts a parameter and its value into a SQL condition.
+ * @param {Object} po - The parameter operation object.
+ * @param {Object} query_params - The query_params to use in the condition.
+ * @returns {object} - An object containing the condition format and query_params for data binding.
+ */
+const paramToCondition = (po, query_params) => {
+    // Get the appropriate condition generator function or use the default
+    const generateCondition =
+        sqlConditionGenerators[po.o] || defaultConditionGenerator;
+    return generateCondition(po, query_params);
 };
 
 /**
