@@ -162,7 +162,7 @@ const getDeleteQuery = (requestParams, paramsOperations, table) => {
     const pkAttr = getPKAttr(paramsOperations);
     const idCol = pkAttr.p;
     let query = `ALTER TABLE ${table} DELETE WHERE ${idCol} = {${idCol}:${pkAttr.clht}}`;
-    query_params = {};
+    let query_params = {};
     if (idCol === 'sID') {
         query_params[idCol] = `toUUID('${id}')`;
         // query += `sID = toUUID('${id}')`;
