@@ -14,7 +14,7 @@ const { sanitizeLimitAndOffset } = require('./sanitization');
 const getSelectQuery = (requestQuery, paramsOperations, table) => {
     const selectAttrs = getAttributesByAction(paramsOperations, 's');
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    const { conditionFormat, query_params } = generateWhereConditions(
+    let { conditionFormat, query_params } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
@@ -26,7 +26,14 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
         limit ? `LIMIT {limit:UInt8}` : ''
     } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
 
-    return { query, query_params, limit, skip };
+    if (limit) {
+        query_params = { ...query_params, limit };
+    }
+    if (skip) {
+        query_params = { ...query_params, skip };
+    }
+
+    return { query, query_params };
 };
 
 /**
