@@ -67,7 +67,7 @@ const putLeadLand = async (request, reply) => {
     const { body } = request;
 
     // API endpoint for the lead/land operation
-    const mbApiUrl = '/lead/land';
+    const mbApiUrl = '/api/lead/land';
 
     // Get the current timestamp in seconds
     const currentTimestamp = Math.floor(Date.now() / 1000);
