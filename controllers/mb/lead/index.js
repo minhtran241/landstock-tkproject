@@ -16,6 +16,8 @@ const signNewToken = () => {
     // Load the private key
     const privateKey = fs.readFileSync(PRIVATE_KEY_PATH, 'utf-8');
 
+    console.log('privateKey', privateKey);
+
     // Get the current timestamp in seconds
     const currentTimestamp = Math.floor(Date.now() / 1000);
 
