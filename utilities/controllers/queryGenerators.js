@@ -176,11 +176,13 @@ const getSortQuery = (requestQuery, paramsOperations, table) => {
     );
 
     const { sort } = requestQuery;
-    const [sortBy, sortType] = sort.split(':');
+    const [sortBy, sortType] = sort.includes(':')
+        ? sort.toLowerCase().split(':')
+        : [sort, 'asc']; // Default to 'asc' if sortType is not provided
 
     const validSort =
         po_BDS.some((po) => po.p === sortBy) &&
-        ['ASC', 'DESC'].includes(sortType);
+        ['asc', 'desc'].includes(sortType);
 
     if (!validSort) {
         throw new Error('Invalid sort query');
