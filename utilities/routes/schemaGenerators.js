@@ -137,16 +137,16 @@ const deleteSchemaGenerator = (requestHandler) => {
  * @returns {Object} - Generated schema object for GET function requests.
  */
 const getFuncSchemaGenerator = (requestHandler) => {
-    const response200 = {
-        type: 'object',
-    };
+    // const response200 = {
+    //     type: 'object',
+    // };
     const responseMessageSchema = createMessageResponse();
     const response404 = responseMessageSchema;
     const response500 = responseMessageSchema;
 
     return {
         schema: {
-            response: { 200: response200, 404: response404, 500: response500 },
+            response: { 404: response404, 500: response500 },
         },
         handler: requestHandler,
     };
