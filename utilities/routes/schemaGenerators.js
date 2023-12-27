@@ -139,9 +139,6 @@ const deleteSchemaGenerator = (requestHandler) => {
 const getFuncSchemaGenerator = (requestHandler) => {
     const response200 = {
         type: 'object',
-        properties: {
-            value: { type: 'number' },
-        },
     };
     const responseMessageSchema = createMessageResponse();
     const response404 = responseMessageSchema;
