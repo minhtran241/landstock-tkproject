@@ -194,13 +194,13 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
  */
 const buildOrderByClause = (requestQuery) => {
     // Sanitize sort query_param
-    const { sort } = requestQuery;
+    const { _sort } = requestQuery;
     let sortBy, sortType;
-    if (sort) {
+    if (_sort) {
         // Config for sort query
-        [sortBy, sortType] = sort.includes(':')
-            ? sort.split(':')
-            : [sort, 'asc']; // Default to 'asc' if sortType is not provided
+        [sortBy, sortType] = _sort.includes(':')
+            ? _sort.split(':')
+            : [_sort, 'asc']; // Default to 'asc' if sortType is not provided
 
         // Check if sort query is valid
         const validSort =
