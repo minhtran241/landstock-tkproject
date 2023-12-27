@@ -62,9 +62,7 @@ const sanitizeLimitAndOffset = (requestQuery, table) => {
  */
 const sanitizeGetFuncResponse = (data, func) => {
     if (data !== null && func !== null) {
-        return {
-            value: data[0][`${func}()`],
-        };
+        return data;
     } else {
         throw new Error('Data not found');
     }
