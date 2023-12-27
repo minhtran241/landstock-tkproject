@@ -145,9 +145,9 @@ const getFuncSchemaGenerator = (requestHandler) => {
     const response500 = responseMessageSchema;
 
     return {
-        schema: {
-            response: { 404: response404, 500: response500 },
-        },
+        // schema: {
+        //     response: { 404: response404, 500: response500 },
+        // },
         handler: requestHandler,
     };
 };
