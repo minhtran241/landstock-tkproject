@@ -175,6 +175,8 @@ const getSortQuery = (requestQuery, paramsOperations, table) => {
         conditionAttrs
     );
 
+    const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
+
     const { sort } = requestQuery;
     const [sortBy, sortType] = sort.includes(':')
         ? sort.split(':')
@@ -188,7 +190,14 @@ const getSortQuery = (requestQuery, paramsOperations, table) => {
         throw new Error('Invalid sort query');
     }
 
-    const query = `SELECT * FROM ${table} WHERE 1 = 1 ${conditionFormat} ORDER BY ${sortBy} ${sortType}`;
+    const query = `SELECT * FROM ${table} WHERE 1 = 1 ${conditionFormat} ORDER BY ${sortBy} ${sortType} LIMIT {limit:UInt8} OFFSET {skip:UInt8}`;
+
+    if (limit) {
+        query_params = { ...query_params, limit };
+    }
+    if (skip) {
+        query_params = { ...query_params, skip };
+    }
 
     return { query, query_params };
 };
