@@ -21,32 +21,30 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
         conditionAttrs
     );
 
-    // Sanitize sort query_param
-    const { sort } = requestQuery;
-    let sortBy, sortType;
-    if (sort) {
-        // Config for sort query
-        [sortBy, sortType] = sort.includes(':')
-            ? sort.split(':')
-            : [sort, 'asc']; // Default to 'asc' if sortType is not provided
+    // Get system clauses if any, system clause params has prefix '_'. For example: _sort
+    const systemClauses = Object.keys(requestQuery).filter((key) =>
+        key.startsWith('_')
+    );
 
-        // Check if sort query is valid
-        const validSort =
-            po_BDS.some((po) => po.p === sortBy) &&
-            ['asc', 'desc'].includes(sortType.toLowerCase());
-
-        if (!validSort) {
-            throw new Error('Invalid sort query');
-        }
+    let systemClauseFormat = '';
+    // Check if there is any system clause in request query
+    if (systemClauses.length > 0) {
+        systemClauseFormat = systemClauses
+            .map((clause) => {
+                const key = clause.split('_')[1];
+                return buildSystemClause.hasOwnProperty(key)
+                    ? buildSystemClause[key](requestQuery)
+                    : null;
+            })
+            .filter((clause) => clause !== null)
+            .join(' '); // Example: ORDER BY dNgayTao DESC
     }
 
     // Sanitize limit and offset query_params
     const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
-    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${
-        sort ? `ORDER BY ${sortBy} ${sortType}` : ''
-    } ${limit ? `LIMIT {limit:UInt8}` : ''} ${
-        skip ? `OFFSET {skip:UInt8}` : ''
-    }`;
+    const query = `SELECT ${selectAttrs} FROM ${table} WHERE 1 = 1 ${conditionFormat} ${systemClauseFormat} ${
+        limit ? `LIMIT {limit:UInt8}` : ''
+    } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
 
     if (limit) {
         query_params = { ...query_params, limit };
@@ -188,42 +186,33 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
     return { query, query_params };
 };
 
-// const getSortQuery = (requestQuery, paramsOperations, table) => {
-//     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-//     let { conditionFormat, query_params } = generateWhereConditions(
-//         requestQuery,
-//         paramsOperations,
-//         conditionAttrs
-//     );
+/**
+ * Builds an ORDER BY clause based on the request query.
+ *
+ * @param {object} requestQuery - Request query parameters.
+ * @returns {string} - The generated ORDER BY clause.
+ */
+const buildOrderByClause = (requestQuery) => {
+    // Sanitize sort query_param
+    const { sort } = requestQuery;
+    let sortBy, sortType;
+    if (sort) {
+        // Config for sort query
+        [sortBy, sortType] = sort.includes(':')
+            ? sort.split(':')
+            : [sort, 'asc']; // Default to 'asc' if sortType is not provided
 
-//     const { limit, skip } = sanitizeLimitAndOffset(requestQuery, table);
+        // Check if sort query is valid
+        const validSort =
+            po_BDS.some((po) => po.p === sortBy) &&
+            ['asc', 'desc'].includes(sortType.toLowerCase());
 
-//     const { sort } = requestQuery;
-//     const [sortBy, sortType] = sort.includes(':')
-//         ? sort.split(':')
-//         : [sort, 'asc']; // Default to 'asc' if sortType is not provided
-
-//     const validSort =
-//         po_BDS.some((po) => po.p === sortBy) &&
-//         ['asc', 'desc'].includes(sortType.toLowerCase());
-
-//     if (!validSort) {
-//         throw new Error('Invalid sort query');
-//     }
-
-//     const query = `SELECT * FROM ${table} WHERE 1 = 1 ${conditionFormat} ORDER BY ${sortBy} ${sortType} ${
-//         limit ? `LIMIT {limit:UInt8}` : ''
-//     } ${skip ? `OFFSET {skip:UInt8}` : ''}`;
-
-//     if (limit) {
-//         query_params = { ...query_params, limit };
-//     }
-//     if (skip) {
-//         query_params = { ...query_params, skip };
-//     }
-
-//     return { query, query_params };
-// };
+        if (!validSort) {
+            throw new Error('Invalid sort query');
+        }
+    }
+    return `ORDER BY ${sortBy} ${sortType}`;
+};
 
 /**
  * Object containing functions to generate various statistical queries.
@@ -231,7 +220,14 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
  */
 const getStatsQuery = {
     count: getCountQuery,
-    // sort: getSortQuery,
+};
+
+/**
+ * Object containing functions to generate various build system queries.
+ * @namespace
+ */
+const buildSystemClause = {
+    sort: buildOrderByClause,
 };
 
 /**
