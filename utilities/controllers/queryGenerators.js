@@ -3,6 +3,7 @@ const { paramToCondition } = require('./conditionGenerators');
 const { getAttributesByAction, getPKAttr } = require('./actionGenerators');
 const { cleanAndConvert, hasBetweenAttribute } = require('../queryHelper');
 const { sanitizeLimitAndOffset } = require('./sanitization');
+const { po_BDS } = require('../paramsOperations');
 
 /**
  * Generates a SELECT query based on request query parameters.
@@ -166,12 +167,37 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
     return { query, query_params };
 };
 
+const getSortQuery = (requestQuery, paramsOperations, table) => {
+    const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
+    const { conditionFormat, query_params } = generateWhereConditions(
+        requestQuery,
+        paramsOperations,
+        conditionAttrs
+    );
+
+    const { sort, table } = requestQuery;
+    const [sortBy, sortType] = sort.split(':');
+
+    const validSort =
+        po_BDS.some((po) => po.p === sortBy) &&
+        ['ASC', 'DESC'].includes(sortType);
+
+    if (!validSort) {
+        throw new Error('Invalid sort query');
+    }
+
+    const query = `SELECT * FROM ${table} WHERE 1 = 1 ${conditionFormat} ORDER BY ${sortBy} ${sortType}`;
+
+    return { query, query_params };
+};
+
 /**
  * Object containing functions to generate various statistical queries.
  * @namespace
  */
 const getStatsQuery = {
     count: getCountQuery,
+    sort: getSortQuery,
 };
 
 /**
