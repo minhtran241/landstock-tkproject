@@ -169,7 +169,7 @@ const getCountQuery = (requestQuery, paramsOperations, table) => {
 
 const getSortQuery = (requestQuery, paramsOperations, table) => {
     const conditionAttrs = getAttributesByAction(paramsOperations, 'c');
-    const { conditionFormat, query_params } = generateWhereConditions(
+    let { conditionFormat, query_params } = generateWhereConditions(
         requestQuery,
         paramsOperations,
         conditionAttrs
