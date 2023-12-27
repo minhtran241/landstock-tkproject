@@ -21,14 +21,16 @@ const getSelectQuery = (requestQuery, paramsOperations, table) => {
         conditionAttrs
     );
 
-    // check if sort params is in the request query
+    // Sanitize sort query_param
     const { sort } = requestQuery;
     let sortBy, sortType;
     if (sort) {
+        // Config for sort query
         [sortBy, sortType] = sort.includes(':')
             ? sort.split(':')
             : [sort, 'asc']; // Default to 'asc' if sortType is not provided
 
+        // Check if sort query is valid
         const validSort =
             po_BDS.some((po) => po.p === sortBy) &&
             ['asc', 'desc'].includes(sortType.toLowerCase());
