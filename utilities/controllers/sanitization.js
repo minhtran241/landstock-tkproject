@@ -61,11 +61,16 @@ const sanitizeLimitAndOffset = (requestQuery, table) => {
  * @throws Will throw an error if data or func is null.
  */
 const sanitizeGetFuncResponse = (data, func) => {
-    if (data !== null && func !== null) {
-        return data;
-    } else {
-        throw new Error('Data not found');
+    if (data !== null) {
+        if (func !== null && func !== 'sort') {
+            return {
+                value: data[0][`${func}()`],
+            };
+        } else if (func === 'sort') {
+            return data;
+        }
     }
+    throw new Error('Data not found');
 };
 
 module.exports = {
