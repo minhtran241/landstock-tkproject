@@ -175,7 +175,7 @@ const getSortQuery = (requestQuery, paramsOperations, table) => {
         conditionAttrs
     );
 
-    const { sort, table } = requestQuery;
+    const { sort } = requestQuery;
     const [sortBy, sortType] = sort.split(':');
 
     const validSort =
