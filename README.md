@@ -173,6 +173,12 @@ This route handles interactions related to customer properties.
   - **Method:** `DELETE`
   - **Description:** Deletes a customer that matches the provided sMa.
 
+**Note:** GET routes query parameters contain the following properties:
+
+- `limit`: The maximum number of results to return.
+- `offset`: The number of results to skip before returning the first result.
+- `_sort`: The column to sort the results by.
+
 [More route details and documentation can be found in the provided link to the source code.](https://github.com/minhtran241/landstock-tkproject/blob/main/routes/kh/index.js)
 
 </details>
