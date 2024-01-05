@@ -82,7 +82,9 @@ const SubstringCondition = (pattr, query_params) => {
         return `position(${pattr.p}, {${paramName}:${pattr.clht}}) > 0`;
     });
 
-    const conditionFormat = `${operation} ${conditions.join(` ${operation} `)}`;
+    const conditionFormat = `(${operation} ${conditions.join(
+        ` ${operation} `
+    )})`;
 
     const query_params_binding = values.reduce((params, val, index) => {
         params[`${pattr.p}_${index}`] = val;
