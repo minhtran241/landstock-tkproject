@@ -72,7 +72,7 @@ const SubstringCondition = (pattr, query_params) => {
 
         const conditions = values.map((val, index) => {
             const paramName = `${pattr.p}_${index}`;
-            return `position(${pattr.p}, ${paramName}:${pattr.clht}) > 0`;
+            return `position(${pattr.p}, {${paramName}:${pattr.clht}}) > 0`;
         });
 
         const conditionFormat = `${operation} ${conditions.join(
