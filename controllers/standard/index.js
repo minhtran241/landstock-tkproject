@@ -59,8 +59,6 @@ const getAllEntriesStd = async (request, reply, po_Name, table) => {
         });
         const data = await rows.json();
 
-        console.log('DATA: ', data);
-
         if (data !== null && data.length > 0) {
             reply.code(200).send(data);
         } else {

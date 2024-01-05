@@ -64,35 +64,49 @@ const LIKEANDCondition = (pattr, query_params) => {
  * @returns {object} - An object containing the condition format and query_params for data binding.
  */
 const SubstringCondition = (pattr, query_params) => {
+    const pattern = /^[\(\[]([^,\)\]]+(, ?[^,\)\]]+)*)[\)\]]$/; // Ex: [A,B,C] or (A,B,C)
+
+    // Test if the query_params matches the pattern
+    if (!pattern.test(query_params)) {
+        throw new Error(`Invalid format for query_params: ${query_params}`);
+    }
+
     const isAndOperation = query_params.startsWith('[');
     const operation = isAndOperation ? 'AND' : 'OR';
 
-    if (isAndOperation || query_params.startsWith('(')) {
-        const values = query_params.slice(1, -1).split(',');
+    // if (isAndOperation || query_params.startsWith('(')) {
+    const values = query_params.slice(1, -1).split(',');
 
-        const conditions = values.map((val, index) => {
-            const paramName = `${pattr.p}_${index}`;
-            return `position(${pattr.p}, {${paramName}:${pattr.clht}}) > 0`;
-        });
+    const conditions = values.map((val, index) => {
+        const paramName = `${pattr.p}_${index}`;
+        return `position(${pattr.p}, {${paramName}:${pattr.clht}}) > 0`;
+    });
 
-        const conditionFormat = `${operation} ${conditions.join(
-            ` ${operation} `
-        )}`;
+    const conditionFormat = `${operation} ${conditions.join(` ${operation} `)}`;
 
-        const query_params_binding = values.reduce((params, val, index) => {
-            params[`${pattr.p}_${index}`] = val;
-            return params;
-        }, {});
+    const query_params_binding = values.reduce((params, val, index) => {
+        params[`${pattr.p}_${index}`] = val;
+        return params;
+    }, {});
 
-        return {
-            conditionFormat,
-            query_params: query_params_binding,
-        };
-    }
-
-    // Invalid input format, return null or handle accordingly
-    return null;
+    return {
+        conditionFormat,
+        query_params: query_params_binding,
+    };
+    // }
 };
+
+// Example usage
+try {
+    const result = SubstringCondition(
+        { p: 'sLoaiHang', clht: 'utf8' },
+        '[A,B,C]'
+    );
+    console.log(result.conditionFormat);
+    console.log(result.query_params);
+} catch (error) {
+    console.error(error.message);
+}
 
 /**
  * BETWEEN condition generator.
