@@ -58,6 +58,43 @@ const LIKEANDCondition = (pattr, query_params) => {
 };
 
 /**
+ * Substring position condition generator.
+ * @param {Object} pattr - The parameter operation object.
+ * @param {string} query_params - The query_params to use in the condition.
+ * @returns {object} - An object containing the condition format and query_params for data binding.
+ */
+const SubstringCondition = (pattr, query_params) => {
+    const isAndOperation = query_params.startsWith('[');
+    const operation = isAndOperation ? 'AND' : 'OR';
+
+    if (isAndOperation || query_params.startsWith('(')) {
+        const values = query_params.slice(1, -1).split(',');
+
+        const conditions = values.map((val, index) => {
+            const paramName = `${pattr.p}_${index}`;
+            return `position(${pattr.p}, :${paramName}) > 0`;
+        });
+
+        const conditionFormat = `${operation} ${conditions.join(
+            ` ${operation} `
+        )}`;
+
+        const query_params_binding = values.reduce((params, val, index) => {
+            params[`${pattr.p}_${index}`] = val;
+            return params;
+        }, {});
+
+        return {
+            conditionFormat,
+            query_params: query_params_binding,
+        };
+    }
+
+    // Invalid input format, return null or handle accordingly
+    return null;
+};
+
+/**
  * BETWEEN condition generator.
  * @param {Object} pattr - The parameter operation object.
  * @param {Object} query_params - The query_params to use in the condition.
@@ -126,8 +163,9 @@ const BETWEENCondition = (pattr, rangeString) => {
  */
 const sqlConditionGenerators = {
     IN: INCondition,
-    LIKEAND: LIKEANDCondition,
+    // LIKEAND: LIKEANDCondition,
     BETWEEN: BETWEENCondition,
+    SUBSTRING: SubstringCondition,
 };
 
 /**

@@ -24,7 +24,7 @@ const po_BDS = [
     { p: 'sTenPhuongXa', t: 'string', o: 'LIKE', a: 'pi', clht: 'String' },
     { p: 'iID_MaPhuongXa', t: 'number', o: 'IN', a: 'pci', clht: 'Int64' },
     { p: 'sTenDuong', t: 'string', o: 'LIKE', a: 'pi', clht: 'String' },
-    { p: 'sLoaiHang', t: 'string', o: 'LIKEAND', a: 'pci', clht: 'String' },
+    { p: 'sLoaiHang', t: 'string', o: 'SUBSTRING', a: 'pci', clht: 'String' },
     {
         p: 'iDienTich',
         t: 'number',
